@@ -489,13 +489,13 @@ function archive_result(sj::SweepJob)
     # We can always reconstruct the axis array later.
     if isdefined(sj.sweep, :result)
         axarray = sj.sweep.result
-        archive = Dict{String,Any}("data" => axarray.data)
-        firstdim = ndims(axarray) - length(sj.sweep.indep)
+        archive = Dict{String,Any}("data" => axarray.data)    #Add whole data matrix into the Dictionary with key "data"
+        firstdim = ndims(axarray) - length(sj.sweep.indep)    #Last Dimension Number of dependent axes
         for (i,ax) in enumerate(axes(axarray))
-            archive["axis$(i)_$(axisname(ax))"] = ax.val
+            archive["axis$(i)_$(axisname(ax))"] = ax.val      #Storing Axes Types of the axes
         end
         for (i, (s,a)) in enumerate(sj.sweep.indep)
-            archive["desc$(i+firstdim)"] = axislabel(s)
+            archive["desc$(i+firstdim)"] = axislabel(s)       #Storing given names of independent axes
         end
 
         try
@@ -503,10 +503,112 @@ function archive_result(sj::SweepJob)
             if !isdir(dpath)
                 mkdir(dpath)
             end
-            save(joinpath(dpath, "$(sj.job_id).jld"), archive)
+            save(joinpath(dpath, "$(sj.job_id).jld"), archive)  #Saving jld data files for use by Julia codes
+            saveNRRD(joinpath(dpath, "$(sj.job_id)"),sj)  #Save data in NRRD format for other languages
         catch e
             warn("could not save data!")
             rethrow(e)
+        end
+    end
+end
+
+# Save the file in NRRD file format for cross-platform access
+function saveNRRD(filename,sj::SweepJob)
+    axarray = sj.sweep.result
+    #If measured data is real, we write it as it is
+    #Otherwise, we expand data to one more dimension for real and imaginary parts
+    if isreal(axarray)
+        datatyp = typeof(axarray[])
+        dims = ndims(axarray)
+        sizes = ""
+        kinds = ""
+        labels = ""
+        RealFlag = true
+    else
+        datatyp = real(typeof(axarray[]))
+        dims = ndims(axarray)+1     #Extra dimension Added
+        sizes = "2"                 #Extra dimension has size 2 (for Real and Imaginary)
+        kinds = "complex"           #The extra dimension created will be of kind complex
+        labels = "Complex"
+        RealFlag = false
+    end
+    #Setting Field Type:
+    #Note: Some Julia datatypes are not supported by NRRD format
+    if datatyp==Float32
+        typ = "float"
+    elseif datatyp==Float64
+        typ = "double"
+    elseif datatyp==Int8
+        typ = "int8"
+    elseif datatyp==Int16
+        typ = "short"
+    elseif datatyp==Int32
+        typ = "int"
+    elseif datatyp==Int64
+        typ = "int64"
+    elseif datatyp==Int128
+        error("Unsupported datatype")
+    elseif datatyp==Float16
+        error("Unsupported datatype")
+    elseif datatyp==UInt8
+        typ = "uint8"
+    elseif datatyp==UInt16
+        typ = "ushort"
+    elseif datatyp==UInt32
+        typ = "uint"
+    elseif datatyp==UInt64
+        typ = "uint64"
+    elseif datatyp==UInt128
+        error("Unsupported datatype")
+    elseif datatyp==Bool
+        error("Unsupported datatype")
+    else
+        error("Unrecognizable Datatype")
+    end
+    #Setting Field Sizes:
+    for i in size(axarray) sizes=string(sizes," $(i)") end
+    #Setting Fields Kinds: and Labels:
+    if size(axarray)[1]>1
+        kinds = "$(kinds) $(size(axarray)[1])-vector"
+    else
+        kinds = "$(kinds) scalar"
+    end
+    labels = "$(labels) $(axisname(axes(axarray)[1]))"
+    for i=1:1:length(axes(ex2)[1])
+        labels = "$(labels)_$(axes(axarray)[1][i])"
+    end
+    for (s,a) in sj.sweep.indep
+        kinds = "$(kinds) domain"
+        labels = "$(labels) $(axislabel(s))"
+    end
+    #We will be using detached NRRD file format so that a clean only-data file is available always
+    #Writing header files
+    open("$(filename).nhdr","w") do f
+        write(f,"NRRD0004\r\n")
+        write(f,"Content: Job ID $(sj.job_id)\r\n")
+        write(f,"Type: $(typ)\r\n")
+        write(f,"Dimension: $(dims)\r\n")
+        write(f,"Encoding: ascii\r\n")
+        write(f,"Endian: little\r\n")
+        write(f,"Sizes: $(sizes)\r\n")
+        write(f,"Kind: $(kinds)\r\n")
+        write(f,"Labels: $(labels)\r\n")
+        write(f,"Datafile: $(filename).txt\r\n")
+        write(f,"\r\n")
+    end
+    #Writing the datafile
+    open("$(filename).txt","w") do f
+        if RealFlag
+            for ele in axarray.data
+                write(f,"$(ele)\r\n")
+            end
+        else
+            #For complex data, increase dimension by writing real and imaginary
+            #parts separately with a tab (\t) in between
+            #Note: NRRD readers are supposed to interpret all delimiters in same way
+            for ele in axarray.data
+                write(f,"$(real(ele))\t$(imag(ele))\r\n")
+            end
         end
     end
 end
