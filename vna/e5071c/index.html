@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>E5071C - InstrumentControl.jl</title>
+      
+      
+      
+      
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="InstrumentControl.jl">
+    <meta property="og:image" content="None/../../">
+    <meta name="apple-mobile-web-app-title" content="InstrumentControl.jl">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../../assets/fonts/icon.eot?52m981');
+      	src: url('../../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/palettes-05ab2406df.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    <script src="../../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class="palette-primary-indigo palette-accent-blue">
+    
+      
+      
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+              
+                Instruments <i class="icon icon-link"></i>
+              
+            
+              
+                VNAs <i class="icon icon-link"></i>
+              
+            
+          </span>
+        
+        E5071C
+      </div>
+    </div>
+    
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>
+          InstrumentControl.jl
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+          <br>
+          PainterQubits/InstrumentControl.jl
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            
+            <a href="https://github.com/PainterQubits/InstrumentControl.jl/archive/master.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/PainterQubits/InstrumentControl.jl/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Home" href="../..">
+      Home
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Overview</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Design Summary" href="../../design/">
+      Design Summary
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Instruments/Measurements" href="../../ins_meas/">
+      Instruments/Measurements
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Sweep Jobs" href="../../sweep/">
+      Sweep Jobs
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Implementation" href="../../implementation/">
+      Implementation
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Instruments</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Alazar digitizers" href="../../Alazar/">
+      Alazar digitizers
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <span class="section">Waveform generators</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="AWG5014C" href="../../waveform_generator/awg5014c/">
+      AWG5014C
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+      
+        
+  <li>
+    <span class="section">VNAs</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="VNAs" href="../vna/">
+      VNAs
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="current" title="E5071C" href="./">
+      E5071C
+    </a>
+    
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Instrument properties" href="#instrument-properties">
+                Instrument properties
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Methods" href="#methods">
+                Methods
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Miscellaneous</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Documentation building" href="../../docbuild/">
+      Documentation building
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Release notes" href="../../releases/">
+      Release notes
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="License" href="../../LICENSE/">
+      License
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+            <h1>E5071C</h1>
+          
+          <p><a id='Instrument-properties-1'></a></p>
+<h2 id="instrument-properties">Instrument properties</h2>
+<p>We support the following instrument properties for the E5071C:</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">InstrumentControl</span>
+<span class="n">methods</span><span class="p">(</span><span class="n">getindex</span><span class="p">,</span> <span class="p">(</span><span class="n">InstrumentControl</span><span class="o">.</span><span class="n">E5071C</span><span class="o">.</span><span class="n">InsE5071C</span><span class="p">,</span> <span class="n">Vararg</span><span class="p">{</span><span class="kt">Any</span><span class="p">}))</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span># 101 methods for generic function &quot;getindex&quot;:
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.AutoSweepTime}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.AutoSweepTime}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.SweepTime}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.SweepTime}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ElectricalMedium}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ElectricalMedium}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ElectricalMedium}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Format}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Format}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Format}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Parameter}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Parameter}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Parameter}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TriggerOutputPolarity}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TriggerOutputTiming}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.Averaging}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.Averaging}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.AveragingFactor}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.AveragingFactor}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.AveragingTrigger}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ElectricalDelay}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ElectricalDelay}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ElectricalDelay}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ExtTriggerDelay}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.ExtTriggerLowLatency}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencyStart}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencyStart}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencyStop}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencyStop}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencyCenter}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencyCenter}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencySpan}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.FrequencySpan}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.IFBandwidth}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.IFBandwidth}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.NumTraces}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.NumTraces}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.NumPoints}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.NumPoints}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.Output}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PhaseOffset}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PhaseOffset}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PhaseOffset}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PointTrigger}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerCoupled}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerCoupled}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerLevel}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerLevel}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerPortLevel}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerPortLevel}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerPortLevel}, ch::Integer, port::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerSlope}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerSlope}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerSlopeLevel}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerSlopeLevel}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerSweepFrequency}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.PowerSweepFrequency}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TraceDisplay}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TraceDisplay}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TraceDisplay}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.Smoothing}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.Smoothing}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.Smoothing}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.SmoothingAperture}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.SmoothingAperture}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.SmoothingAperture}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TraceMaximized}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TraceMaximized}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.WaveguideCutoff}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.WaveguideCutoff}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.WaveguideCutoff}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YDivisions}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YDivisions}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YScalePerDivision}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YScalePerDivision}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YScalePerDivision}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YReferenceLevel}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YReferenceLevel}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YReferenceLevel}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YReferencePosition}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YReferencePosition}, ch::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.YReferencePosition}, ch::Integer, tr::Integer) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TransferByteOrder}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TransferFormat}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TriggerSlope}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TriggerSource}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.TriggerOutput}) in InstrumentControl.E5071C
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Marker}, m::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:67
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Marker}, m::Integer, ch::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:67
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.Marker}, m::Integer, ch::Integer, tr::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:67
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.MarkerX}, m::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:72
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.MarkerX}, m::Integer, ch::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:72
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.MarkerX}, m::Integer, ch::Integer, tr::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:72
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.MarkerY}, m::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:77
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.MarkerY}, m::Integer, ch::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:77
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.MarkerY}, m::Integer, ch::Integer, tr::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:77
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.SearchTracking}, m::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:83
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.SearchTracking}, m::Integer, ch::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:83
+getindex(ins::InstrumentControl.E5071C.InsE5071C, ::Type{InstrumentControl.VNA.SearchTracking}, m::Integer, ch::Integer, tr::Integer) in InstrumentControl.E5071C at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/instruments/VNAs/E5071C.jl:83
+getindex(ins::ICCommon.Instrument, ::Type{InstrumentControl.Timeout}) in InstrumentControl at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/VISA.jl:192
+getindex(ins::ICCommon.Instrument, ::Type{InstrumentControl.WriteTermCharEnable}) in InstrumentControl at /Users/ajkeller/.julia/v0.6/InstrumentControl/src/VISA.jl:200
+</pre></div>
+
+
+<p><a id='Methods-1'></a></p>
+<h2 id="methods">Methods</h2>
+<p><a id='InstrumentControl.E5071C.screen' href='#InstrumentControl.E5071C.screen'>#</a>
+<strong><code>InstrumentControl.E5071C.screen</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>screen(ins::InsE5071C, filename::AbstractString=&quot;screen.png&quot;, display::Bool=true)
+</pre></div>
+
+
+<p>Take and retrieve a local copy of a screenshot. Display the screenshot if <code>display</code> is true.</p>
+<p>Whatever is at <code>filename</code> on the computer calling this method will be overwritten with the screenshot. The screenshot is also saved on the instrument.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/E5071C.jl#L241-L251' class='documenter-source'>source</a><br></p>
+          <aside class="copyright" role="note">
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../vna/" title="VNAs">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                VNAs
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../../docbuild/" title="Documentation building">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                Documentation building
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '../..';
+      var repo_id  = 'PainterQubits/InstrumentControl.jl';
+    </script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
+    
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    
+      <script src="../../assets/mathjaxhelper.js"></script>
+    
+    
+  </body>
+</html>

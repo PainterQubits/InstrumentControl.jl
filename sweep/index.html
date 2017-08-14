@@ -9,12 +9,12 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
       
-        <title>Sweep - InstrumentControl.jl</title>
+        <title>Sweep Jobs - InstrumentControl.jl</title>
       
       
       
       
-        <meta name="author" content="Andrew Keller">
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
       
     
     <meta property="og:url" content="None">
@@ -25,8 +25,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     
-    <link rel="shortcut icon" type="image/x-icon" href="../None">
-    <link rel="icon" type="image/x-icon" href="../None">
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
     <style>
       @font-face {
       	font-family: 'Icon';
@@ -43,7 +43,7 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="../assets/stylesheets/application-54f87043f3.css">
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
     
       <link rel="stylesheet" href="../assets/stylesheets/palettes-05ab2406df.css">
     
@@ -51,7 +51,7 @@
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -100,7 +100,7 @@
             
           </span>
         
-        Sweep
+        Sweep Jobs
       </div>
     </div>
     
@@ -184,9 +184,54 @@
       
         
   <li>
-    <a class="" title="Design" href="../design/">
-      Design
+    <a class="" title="Design Summary" href="../design/">
+      Design Summary
     </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Instruments/Measurements" href="../ins_meas/">
+      Instruments/Measurements
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="current" title="Sweep Jobs" href="./">
+      Sweep Jobs
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Prerequisites for a Sweep" href="#prerequisites-for-a-sweep">
+                Prerequisites for a Sweep
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Queueing" href="#queueing">
+                Queueing
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Interacting with a sweep job" href="#interacting-with-a-sweep-job">
+                Interacting with a sweep job
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -196,34 +241,6 @@
     <a class="" title="Implementation" href="../implementation/">
       Implementation
     </a>
-    
-  </li>
-
-      
-        
-  <li>
-    <a class="current" title="Sweep" href="./">
-      Sweep
-    </a>
-    
-      
-      
-        <ul>
-          
-            <li class="anchor">
-              <a title="Sweeps" href="#sweeps">
-                Sweeps
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Sweep queue" href="#sweep-queue">
-                Sweep queue
-              </a>
-            </li>
-          
-        </ul>
-      
     
   </li>
 
@@ -248,8 +265,31 @@
       
         
   <li>
-    <a class="" title="AWG5014C" href="../awg5014c/">
+    <span class="section">Waveform generators</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="AWG5014C" href="../waveform_generator/awg5014c/">
       AWG5014C
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+      
+        
+  <li>
+    <span class="section">VNAs</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="VNAs" href="../vna/vna/">
+      VNAs
     </a>
     
   </li>
@@ -257,10 +297,14 @@
       
         
   <li>
-    <a class="" title="E5071C" href="../e5071c/">
+    <a class="" title="E5071C" href="../vna/e5071c/">
       E5071C
     </a>
     
+  </li>
+
+      
+    </ul>
   </li>
 
       
@@ -314,147 +358,102 @@
       <article class="article">
         <div class="wrapper">
           
-            <h1>Sweep</h1>
-          
           <p><a id='Sweeps-1'></a></p>
-<h2 id="sweeps">Sweeps</h2>
-<p><a id='InstrumentControl.sweep' href='#InstrumentControl.sweep'>#</a>
-<strong><code>InstrumentControl.sweep</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span><span class="nt">sweep</span><span class="o">(</span><span class="nt">dep</span><span class="o">:</span><span class="nd">:Response</span><span class="o">,</span> <span class="nt">indep</span><span class="o">:</span><span class="nd">:Tuple</span><span class="p">{</span><span class="n">Stimulus</span><span class="o">,</span> <span class="n">AbstractVector</span><span class="p">}</span><span class="o">...;</span>
-    <span class="nt">priority</span> <span class="o">=</span> <span class="nt">NORMAL</span><span class="o">,</span> <span class="nt">queue</span> <span class="o">=</span> <span class="nt">sweepqueue</span><span class="o">)</span>
+<h1 id="sweeps">Sweeps</h1>
+<p>When thinking of measurement, one generally imagines measuring some dependent variable with respect to some independent variable that is swept across a range of values. While the devil is in the details of the measurement, with Julia's multiple dispatch functionality, it should be possible to abstract executing a "sweep" to just one function, thus affording a simple but general interface for the user to conduct his measurements.</p>
+<p>Moreover, the need to automate measurements and facilitate use of the same instruments by multiple users warrants some sort of queueing structure for "sweeps", which is maintained automatically and in the background of the Julia interface that the user is using.</p>
+<p>We have achieved precisely these goals in a object-oriented way with our "Sweep" portion of IntrumentControl.jl" package. Below we describe the functionality meant for the user: how to use <code>Response</code> and <code>Stimulus</code> objects as well as <code>source</code> and <code>measure</code> functions to submit a sweep, how to interact with the sweep job to see it's result, estimated time of completion, etc. In <a href="https://painterqubits.github.io/InstrumentControl.jl/implementation/">Implementation</a> we describe how exactly sweep and queueing functionality is implemented</p>
+<p><a id='Prerequisites-for-a-Sweep-1'></a></p>
+<h2 id="prerequisites-for-a-sweep">Prerequisites for a Sweep</h2>
+<p>A sweep is submitted by the user via the <code>sweep</code> function:</p>
+<div class="codehilite"><pre><span></span><span class="n">sweep</span><span class="p">{</span><span class="n">N</span><span class="p">}(</span><span class="n">dep</span><span class="p">::</span><span class="n">Response</span><span class="p">,</span> <span class="n">indep</span><span class="p">::</span><span class="n">Vararg</span><span class="p">{</span><span class="n">Tuple</span><span class="p">{</span><span class="n">Stimulus</span><span class="p">,</span> <span class="n">AbstractVector</span><span class="p">},</span> <span class="n">N</span><span class="p">};</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="n">NORMAL</span><span class="p">)</span>
 </pre></div>
 
 
-<p>Measures a response as a function of an arbitrary number of stimuli, and returns a handle to the sweep job. This can be used to access the results while the sweep is being measured.</p>
-<p>This function is responsible for initializing an appropriate array, preparing a <a href="./#InstrumentControl.Sweep"><code>InstrumentControl.Sweep</code></a> object, and launching an asynchronous sweep job. The actual <code>source</code> and <code>measure</code> loops are in a private function <a href="./#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a>.</p>
-<p>The <code>priority</code> keyword may be <code>LOW</code>, <code>NORMAL</code>, or <code>HIGH</code>, or any integer greater than or equal to zero. You should not provide the <code>queue</code> keyword argument unless you know what you are doing.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L332-L350' class='documenter-source'>source</a><br></p>
-<p><a id='InstrumentControl._sweep!' href='#InstrumentControl._sweep!'>#</a>
-<strong><code>InstrumentControl._sweep!</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>@generated function _sweep!(updated_status_of, sw, dep::Response,
-        indep::Tuple{Stimulus, AbstractVector}...)
-</pre></div>
-
-
-<p>This is a private function which should not be called directly by the user. It is launched asynchronously by <a href="./#InstrumentControl.sweep"><code>sweep</code></a>. The implementation uses <code>@generated</code> and macros from <a href="http://docs.julialang.org/en/release-0.5/devdocs/cartesian/">Base.Cartesian</a>. The stimuli are sourced only when they need to be, at the start of each <code>for</code> loop level.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L373-L385' class='documenter-source'>source</a><br></p>
-<p><a id='InstrumentControl.abort!' href='#InstrumentControl.abort!'>#</a>
-<strong><code>InstrumentControl.abort!</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>abort!(x::Sweep)
-</pre></div>
-
-
-<p>Abort a sweep. Guaranteed to bail out of the sweep in such a way that the data has been measured for most recent sourcing of a stimulus, i.e. at the very start of a for loop in <a href="./#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a>. You can also abort a sweep before it even begins. Presently this function does not interrupt <a href="../@ref"><code>measure</code></a>, so if a single measurement takes a long time then the sweep is only aborted after that finishes.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L169-L180' class='documenter-source'>source</a><br></p>
-<p><a id='InstrumentControl.status' href='#InstrumentControl.status'>#</a>
-<strong><code>InstrumentControl.status</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>status(x::Sweep)
-</pre></div>
-
-
-<p>Return the sweep status.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L145-L151' class='documenter-source'>source</a><br></p>
-<p><a id='InstrumentControl.progress' href='#InstrumentControl.progress'>#</a>
-<strong><code>InstrumentControl.progress</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>progress(x::Sweep)
-</pre></div>
-
-
-<p>Returns the sweep progress, a <code>Float64</code> between 0 and 1 (inclusive).</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L157-L163' class='documenter-source'>source</a><br></p>
-<p><a id='Base.Math.eta-Tuple{InstrumentControl.Sweep}' href='#Base.Math.eta-Tuple{InstrumentControl.Sweep}'>#</a>
-<strong><code>Base.Math.eta</code></strong> &mdash; <em>Method</em>.</p>
-<div class="codehilite"><pre><span></span>eta(x::Sweep)
-</pre></div>
-
-
-<p>Return the estimated time of completion for sweep <code>x</code>. WIP; will not return correct time if job has been paused.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L127-L134' class='documenter-source'>source</a><br></p>
-<p><a id='InstrumentControl.Sweep' href='#InstrumentControl.Sweep'>#</a>
-<strong><code>InstrumentControl.Sweep</code></strong> &mdash; <em>Type</em>.</p>
-<div class="codehilite"><pre><span></span>type Sweep
-    dep::Response
-    indep::Tuple{Tuple{Stimulus, AbstractVector}}
-    priority::Int
-    job_id::Int
-    has_started::Bool
-    status::Channel{SweepStatus}
-    progress::Channel{Float64}
-    whensub::DateTime
-    whenstart::DateTime
-    result::Array
-    Sweep(a,b,c,d,e,f,g,h,i) = new(a,b,c,d,e,f,g,h,i)
-    Sweep(a,b,c,d,e,f,g,h,i,j) = new(a,b,c,d,e,f,g,h,i,j)
-end
-</pre></div>
-
-
-<p>Object representing a sweep. <code>priority</code> is an <code>Int</code> from 0 to <code>typemax(Int)</code>, inclusive, typically one of the following:</p>
+<p><code>sweep</code> measures a response as a function of an arbitrary number of stimuli, sourced over the values given in the <code>AbstractVector</code> input, and returns a handle to the sweep job in the form of a <code>SweepJob</code> object, which will be discussed more in detail in <a href="https://painterqubits.github.io/InstrumentControl.jl/implementation/">Implementation</a>. This can be used to access the results while the sweep is being measured. <code>priority</code> is an <code>Int</code> from 0 to <code>typemax(Int)</code>, inclusive, and is used to prioritize the next sweep in a queue (with multiple sweeps) to be run. It is typically one of the following:</p>
 <ul>
 <li><code>HIGH == 10</code></li>
 <li><code>NORMAL == 5</code></li>
 <li><code>LOW == 0</code></li>
 </ul>
-<p><code>status</code> and <code>progress</code> are channels for intertask communication about the status and progress of the sweep. <code>whensub</code> is when the <code>Sweep</code> was created, <code>whenstart</code> is when the <code>Sweep</code> was initially run. <code>result</code> is the result array of the sweep, which need not be provided at the time the <code>Sweep</code> is created.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L39-L68' class='documenter-source'>source</a><br></p>
-<p><a id='InstrumentControl.SweepStatus' href='#InstrumentControl.SweepStatus'>#</a>
-<strong><code>InstrumentControl.SweepStatus</code></strong> &mdash; <em>Type</em>.</p>
-<div class="codehilite"><pre><span></span>@enum SweepStatus Waiting Running Aborted Done
+<p>Thus, the <code>priority</code> keyword argument may be <code>LOW</code>, <code>NORMAL</code>, or <code>HIGH</code>, or any integer greater than or equal to zero.</p>
+<p>The <code>sweep</code> functions assumes that appropriate <code>measure</code> methods have been written for the dep object passed, and that appropriate <code>source</code> methods have been written for all <code>Stimulus</code> objects in the passed <code>indep</code> argument. Thus, to use the function the user must have defined <code>Response</code> and <code>Stimulus</code> subtypes, as well as <code>source</code> and <code>measure</code> functions for those types.</p>
+<p>For example, ... put example here with definition of <code>Stimulus</code>, <code>source</code>, <code>response</code>, <code>measure</code>, and <code>sweep</code></p>
+<p><a id='Queueing-1'></a></p>
+<h2 id="queueing">Queueing</h2>
+<p>InstrumentControl employs a queueing structure for job handling through manipulation of <code>SweepJob</code> objects, which are instantiated when the <code>sweep</code> function is used. The actual "queue" is a <code>SweepJobQueue</code> object, described more in detail in <a href="https://painterqubits.github.io/InstrumentControl.jl/implementation/">Implementation</a> When the InstrumentControl package is imported by the user, a 'SweepJobQueue' object, as well as communication with the database set up by <a href="https://github.com/PainterQubits/ICDataServer.jl">ICDataServer.jl</a>, is automatically initialized; in the documentation this object is referred to as the "default sweep job queue object".</p>
+<p>When <code>sweep</code> is used, a job ID is automatically obtained for the new sweep job (which exists in Julia as a <code>SweepJob</code> object) via communication with the database; the job is then put into the queue with the job ID as it's identifier. In essence, a <code>SweepJobQueue</code> object can be thought of as a <em>collection</em> (in the Julia sense) of <code>SweepJob</code> objects, indexed by their job ID, along with other fields and helper functions for automatic scheduling of jobs in the background. The queue prioritizes jobs based on their priorities; for equal priority values, the job submitted earlier takes precedent</p>
+<p><a id='Interacting-with-a-sweep-job-1'></a></p>
+<h2 id="interacting-with-a-sweep-job">Interacting with a sweep job</h2>
+<p>When <code>sweep</code> is called, the returned <code>SweepJob</code> object displays it's job ID as well as it's status (waiting, running, done, etc), priority, progress (percentage of job completed), and time of submission. Both the job ID and the returned <code>SweepJob</code> object itself can be used to interact with the job in the following ways:</p>
+<p><a id='Base.eta' href='#Base.eta'>#</a>
+<strong><code>Base.eta</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>eta(x::SweepJob)
 </pre></div>
 
 
-<p>Sweep statuses are represented with an enum.</p>
-<div class="codehilite"><pre><span></span><span class="gp">julia&gt;</span> <span class="n">InstrumentControl</span><span class="o">.</span><span class="n">SweepStatus</span>
-<span class="go">Enum InstrumentControl.SweepStatus:</span>
-<span class="go">Waiting = 0</span>
-<span class="go">Running = 1</span>
-<span class="go">Aborted = 2</span>
-<span class="go">Done = 3</span>
+<p>Return the estimated time of completion for sweep job <code>x</code>. It estimates this time by first calculating the amount of time passed from when the job was submitted to the time the function is called, and then calculating the ETA based on the current progress of the job and this passed time</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L146-L152' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.progress' href='#InstrumentControl.progress'>#</a>
+<strong><code>InstrumentControl.progress</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>progress(x::SweepJob)
 </pre></div>
 
 
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L21-L36' class='documenter-source'>source</a><br></p>
-<p><a id='Sweep-queue-1'></a></p>
-<h2 id="sweep-queue">Sweep queue</h2>
-<p>A priority queue has been implemented for running sweep jobs. Jobs with higher priority run first; jobs with the same priority are prioritized by submission date.</p>
-<p><a id='InstrumentControl.jobs' href='#InstrumentControl.jobs'>#</a>
-<strong><code>InstrumentControl.jobs</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>jobs()
-</pre></div>
-
-
-<p>Returns the default job queue object. Typically you call this to see what jobs are waiting, aborted, or finished, and what job is running.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L259-L266' class='documenter-source'>source</a><br></p>
+<p>Returns the sweep job progress, a <code>Float64</code> between 0 and 1 (inclusive).</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L175-L178' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.jobs-Tuple{Any}' href='#InstrumentControl.jobs-Tuple{Any}'>#</a>
+<strong><code>InstrumentControl.jobs</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span>jobs(job_id)
 </pre></div>
 
 
-<p>Return the job associated with <code>job_id</code>.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L269-L275' class='documenter-source'>source</a><br></p>
+<p>Return the <code>SweepJob</code> object associated with <code>job_id</code> scheduled in the default sweep job queue object.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L509-L513' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.result' href='#InstrumentControl.result'>#</a>
+<strong><code>InstrumentControl.result</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>result(sj::SweepJob)
+</pre></div>
+
+
+<p>Returns the result array of a sweep job <code>sj</code>. Throws an error if the result array has not yet been initialized.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L184-L188' class='documenter-source'>source</a><br></p>
+<div class="codehilite"><pre><span></span>result(i::Integer)
+</pre></div>
+
+
+<p>Returns a result array by job id scheduled in the default sweep job queue object.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L516-L519' class='documenter-source'>source</a><br></p>
+<div class="codehilite"><pre><span></span>result()
+</pre></div>
+
+
+<p>Returns the result array from the last finished or aborted job scheduled in the default sweep job queue object.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L522-L526' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.abort!' href='#InstrumentControl.abort!'>#</a>
+<strong><code>InstrumentControl.abort!</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>abort!(x::SweepJob)
+</pre></div>
+
+
+<p>Abort a sweep job. Practically, the status of the job is changed to "Aborted", and the job is put into the update_channel of the default <code>SweepJobQueue</code> object. This automatically leads to: update of job metadata in the <code>SweepJob</code> object as well as in the ICDatabase, update of queue metadata, archieving of the job's result array, and start of the highest priority job in the default sweep job queue. Thus, aborting a job is guaranteed to bail out of the sweep in such a way that the data that has been measured for most recent sourcing of a stimulus, i.e. at the very start of a for loop in <a href="../implementation/#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a>, is archieved. You can also abort a sweep before it even begins.</p>
+<p>Presently this function does not interrupt <code>measure</code>, so if a single measurement takes a long time then the sweep is only aborted after that finishes.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L535-L549' class='documenter-source'>source</a><br></p>
+<div class="codehilite"><pre><span></span>abort!()
+</pre></div>
+
+
+<p>Abort the currently running job (if any). If no job is running, the method does not throw an error.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L568-L572' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.prune!' href='#InstrumentControl.prune!'>#</a>
 <strong><code>InstrumentControl.prune!</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>prune!(q::SweepQueue)
+<div class="codehilite"><pre><span></span>prune!(q::SweepJobQueue)
 </pre></div>
 
 
-<p>Prunes a <a href="./#InstrumentControl.SweepQueue"><code>SweepQueue</code></a> of all <a href="./#InstrumentControl.Sweep"><code>InstrumentControl.Sweep</code></a>s with a status of <code>Done</code> or <code>Aborted</code>.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L314-L321' class='documenter-source'>source</a><br></p>
-<p><a id='InstrumentControl.SweepQueue' href='#InstrumentControl.SweepQueue'>#</a>
-<strong><code>InstrumentControl.SweepQueue</code></strong> &mdash; <em>Type</em>.</p>
-<div class="codehilite"><pre><span></span>type SweepQueue
-    q::PriorityQueue{Int,Sweep,
-        Base.Order.ReverseOrdering{Base.Order.ForwardOrdering}}
-    next_job_id::Int
-    update_condition::Condition
-    function SweepQueue()
-        new(PriorityQueue(Int[],Sweep[],Base.Order.Reverse), 1, Condition())
-    end
-end
-</pre></div>
-
-
-<p>A queue responsible for prioritizing sweeps and executing them accordingly.</p>
-<p><a target='_blank' href='https://github.com/painterqubits/InstrumentControl.jl/tree/ba586e2571e90ba6f07196442bee1e25d207a455/src/Sweep.jl#L187-L201' class='documenter-source'>source</a><br></p>
+<p>Prunes a <a href="../implementation/#InstrumentControl.SweepJobQueue"><code>SweepJobQueue</code></a> of all <a href="../implementation/#InstrumentControl.SweepJob"><code>InstrumentControl.SweepJob</code></a>s with a status of <code>Done</code> or <code>Aborted</code>. This will have the side effect of releasing old sweep results if there remain no references to them in julia, however they should still be saved to disk and can be recovered later.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/Sweep.jl#L581-L587' class='documenter-source'>source</a><br></p>
           <aside class="copyright" role="note">
             
             Documentation built with
@@ -471,7 +470,7 @@ end
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../implementation/" title="Implementation">
+        <a href="../ins_meas/" title="Instruments/Measurements">
           <span class="direction">
             Previous
           </span>
@@ -481,7 +480,7 @@ end
             </div>
             <div class="stretch">
               <div class="title">
-                Implementation
+                Instruments/Measurements
               </div>
             </div>
           </div>
@@ -490,14 +489,14 @@ end
     </div>
     <div class="next">
       
-        <a href="../Alazar/" title="Alazar digitizers">
+        <a href="../implementation/" title="Implementation">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Alazar digitizers
+                Implementation
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

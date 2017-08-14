@@ -16,7 +16,7 @@
       
       
       
-        <meta name="author" content="Andrew Keller">
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
       
     
     <meta property="og:url" content="None">
@@ -27,8 +27,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     
-    <link rel="shortcut icon" type="image/x-icon" href="./None">
-    <link rel="icon" type="image/x-icon" href="./None">
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon-e565ddfa3b.ico">
     <style>
       @font-face {
       	font-family: 'Icon';
@@ -45,7 +45,7 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="./assets/stylesheets/application-54f87043f3.css">
+    <link rel="stylesheet" href="./assets/stylesheets/application-a422ff04cc.css">
     
       <link rel="stylesheet" href="./assets/stylesheets/palettes-05ab2406df.css">
     
@@ -53,7 +53,7 @@
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -185,8 +185,8 @@
             </li>
           
             <li class="anchor">
-              <a title="Quick start" href="#quick-start">
-                Quick start
+              <a title="Example Notebooks" href="#example-notebooks">
+                Example Notebooks
               </a>
             </li>
           
@@ -203,8 +203,26 @@
       
         
   <li>
-    <a class="" title="Design" href="design/">
-      Design
+    <a class="" title="Design Summary" href="design/">
+      Design Summary
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Instruments/Measurements" href="ins_meas/">
+      Instruments/Measurements
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Sweep Jobs" href="sweep/">
+      Sweep Jobs
     </a>
     
   </li>
@@ -214,15 +232,6 @@
   <li>
     <a class="" title="Implementation" href="implementation/">
       Implementation
-    </a>
-    
-  </li>
-
-      
-        
-  <li>
-    <a class="" title="Sweep" href="sweep/">
-      Sweep
     </a>
     
   </li>
@@ -248,8 +257,31 @@
       
         
   <li>
-    <a class="" title="AWG5014C" href="awg5014c/">
+    <span class="section">Waveform generators</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="AWG5014C" href="waveform_generator/awg5014c/">
       AWG5014C
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+      
+        
+  <li>
+    <span class="section">VNAs</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="VNAs" href="vna/vna/">
+      VNAs
     </a>
     
   </li>
@@ -257,10 +289,14 @@
       
         
   <li>
-    <a class="" title="E5071C" href="e5071c/">
+    <a class="" title="E5071C" href="vna/e5071c/">
       E5071C
     </a>
     
+  </li>
+
+      
+    </ul>
   </li>
 
       
@@ -321,21 +357,17 @@
 <h2 id="installation">Installation</h2>
 <ul>
 <li>Install <a href="https://www.ni.com/visa/">National Instruments VISA libraries</a> (tested with v15.0.1 on Windows 10)</li>
-<li>Install <a href="http://www.alazartech.com">AlazarTech</a> digitizer drivers and shared libraries (may need to contact AlazarTech)</li>
-<li>Install <a href="http://www.github.com/painterqubits/VISA.jl">VISA.jl</a></li>
-<li>Install <a href="http://www.github.com/painterqubits/Alazar.jl">Alazar.jl</a></li>
-<li>Install <a href="http://www.github.com/painterqubits/InstrumentControl.jl">InstrumentControl.jl</a></li>
+<li>Install <a href="http://www.alazartech.com">AlazarTech</a> digitizer drivers and shared libraries (may need to contact AlazarTech) if using Alazar digitizer</li>
+<li>Install <a href="http://www.github.com/painterqubits/VISA.jl">VISA.jl</a> package</li>
+<li>Install <a href="http://www.github.com/painterqubits/Alazar.jl">Alazar.jl</a> package</li>
+<li>Install <a href="https://github.com/PainterQubits/ICCommon.jl">ICCommon.jl</a> package</li>
+<li>Install <a href="https://github.com/PainterQubits/ICDataServer.jl">ICDataServer.jl</a> package and follow it's <a href="https://painterqubits.github.io/ICDataServer.jl/">installation procedure</a></li>
+<li>Install <a href="http://www.github.com/painterqubits/InstrumentControl.jl">InstrumentControl.jl</a> package</li>
 </ul>
-<p><a id='Quick-start-1'></a></p>
-<h2 id="quick-start">Quick start</h2>
-<div class="codehilite"><pre><span></span>using InstrumentControl
-using InstrumentControl.Alazar
-using InstrumentControl.AWG5014C  # etc.
-
-awg = InsAWG5014C(tcpip_socket(&quot;1.2.3.4&quot;,5000))
-ats = InsAlazarATS9360()
-
-# do something with awg and ats
+<p><a id='Example-Notebooks-1'></a></p>
+<h2 id="example-notebooks">Example Notebooks</h2>
+<p>InstrumentControl.jl relies on having physical instruments, communication with a database set up by ICDataServer.jl, and various files with machine specific configuration information in order to run. As such, we provide some example notebooks in order to showcase this package's functionality.</p>
+<div class="codehilite"><pre><span></span># put example notebooks here
 </pre></div>
           <aside class="copyright" role="note">
             
@@ -356,14 +388,14 @@ ats = InsAlazarATS9360()
     </div>
     <div class="next">
       
-        <a href="design/" title="Design">
+        <a href="design/" title="Design Summary">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Design
+                Design Summary
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

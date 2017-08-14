@@ -9,12 +9,12 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
       
-        <title>Design - InstrumentControl.jl</title>
+        <title>Design Summary - InstrumentControl.jl</title>
       
       
       
       
-        <meta name="author" content="Andrew Keller">
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
       
     
     <meta property="og:url" content="None">
@@ -25,8 +25,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     
-    <link rel="shortcut icon" type="image/x-icon" href="../None">
-    <link rel="icon" type="image/x-icon" href="../None">
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
     <style>
       @font-face {
       	font-family: 'Icon';
@@ -43,7 +43,7 @@
       	font-style: normal;
       }
     </style>
-    <link rel="stylesheet" href="../assets/stylesheets/application-54f87043f3.css">
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
     
       <link rel="stylesheet" href="../assets/stylesheets/palettes-05ab2406df.css">
     
@@ -51,7 +51,7 @@
       
       
       
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
       <style>
         body, input {
           font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
@@ -100,7 +100,7 @@
             
           </span>
         
-        Design
+        Design Summary
       </div>
     </div>
     
@@ -184,8 +184,8 @@
       
         
   <li>
-    <a class="current" title="Design" href="./">
-      Design
+    <a class="current" title="Design Summary" href="./">
+      Design Summary
     </a>
     
       
@@ -201,26 +201,8 @@
             </li>
           
             <li class="anchor">
-              <a title="How do we take measurements?" href="#how-do-we-take-measurements">
-                How do we take measurements?
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="What is an instrument?" href="#what-is-an-instrument">
-                What is an instrument?
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="How do we configure instruments?" href="#how-do-we-configure-instruments">
-                How do we configure instruments?
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Future directions" href="#future-directions">
-                Future directions
+              <a title="Summary of Functionality" href="#summary-of-functionality">
+                Summary of Functionality
               </a>
             </li>
           
@@ -232,8 +214,8 @@
       
         
   <li>
-    <a class="" title="Implementation" href="../implementation/">
-      Implementation
+    <a class="" title="Instruments/Measurements" href="../ins_meas/">
+      Instruments/Measurements
     </a>
     
   </li>
@@ -241,8 +223,17 @@
       
         
   <li>
-    <a class="" title="Sweep" href="../sweep/">
-      Sweep
+    <a class="" title="Sweep Jobs" href="../sweep/">
+      Sweep Jobs
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Implementation" href="../implementation/">
+      Implementation
     </a>
     
   </li>
@@ -268,8 +259,31 @@
       
         
   <li>
-    <a class="" title="AWG5014C" href="../awg5014c/">
+    <span class="section">Waveform generators</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="AWG5014C" href="../waveform_generator/awg5014c/">
       AWG5014C
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+      
+        
+  <li>
+    <span class="section">VNAs</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="VNAs" href="../vna/vna/">
+      VNAs
     </a>
     
   </li>
@@ -277,10 +291,14 @@
       
         
   <li>
-    <a class="" title="E5071C" href="../e5071c/">
+    <a class="" title="E5071C" href="../vna/e5071c/">
       E5071C
     </a>
     
+  </li>
+
+      
+    </ul>
   </li>
 
       
@@ -334,74 +352,19 @@
       <article class="article">
         <div class="wrapper">
           
-          <p><a id='Design-overview-1'></a></p>
-<h1 id="design-overview">Design overview</h1>
+          <p><a id='Design-Summary-1'></a></p>
+<h1 id="design-summary">Design Summary</h1>
 <p><a id='What-should-good-measurement-code-do?-1'></a></p>
 <h2 id="what-should-good-measurement-code-do">What should good measurement code do?</h2>
 <p>Anyone who has written code in MATLAB or something comparable (IGOR Pro, in the author's case) has undoubtedly seen spaghetti code. Often there are many copies of a measurement routine that differ only slightly, perhaps in the functionality of what happens inside some for loop, etc.</p>
 <p>We would like to have clear, reusable code to avoid redundancy and accidental errors, both of which consume precious time on the part of the experimenters. Consider an archetypal measurement scheme wherein we measure a device's response to various stimuli (perhaps we measure current as a function of applied bias). We should be able to write just one sweep function to do this.</p>
-<p>The idea of <em>multiple dispatch</em>, natively supported in Julia, permits writing such convenient and abstract code. This is just one example where the advantages of multiple dispatch are obvious. We hope it will more broadly simplify the extension of measurement code while ensuring continued reliability.</p>
-<p><a id='How-do-we-take-measurements?-1'></a></p>
-<h2 id="how-do-we-take-measurements">How do we take measurements?</h2>
-<p><a id='Source-and-measure-1'></a></p>
-<h3 id="source-and-measure">Source and measure</h3>
-<p>Two functions are provided to abstract away many kinds of measurements: <code>source</code> and <code>measure</code>. In an experiment you source some stimulus and measure a response. Therefore <code>source</code> takes as an argument an object matching type signature <code>Stimulus</code>, which can have different fields for different types of stimuli, as well as some value. <code>measure</code> takes as an argument an object matching type signature <code>Response</code>. The idea is to write new subtypes of <code>Stimulus</code> and <code>Response</code> to describe what you are doing, as well as new methods for <code>source</code> and <code>measure</code>.</p>
-<p><a id='Stimuli-1'></a></p>
-<h3 id="stimuli">Stimuli</h3>
-<p>All stimuli are objects, subtyped from the abstract <code>Stimulus</code> type. Many stimuli, associated with the capabilities of particular instruments, are already implemented.</p>
-<p>Not all stimuli are associated with a physical instrument. For instance, sourcing a <code>DelayStimulus</code> will cause the script to block until a specified time after creation of the <code>DelayStimulus</code> object.</p>
-<p>Stimuli could also be associated with several instruments. Maybe a stimulus that makes sense for a particular experiment would be to change all gate voltages at once. These gate voltages could of course be sourced by several physical instruments.</p>
-<p><a id='Responses-1'></a></p>
-<h3 id="responses">Responses</h3>
-<p>All responses are objects, subtyped from the abstract <code>Response</code> type. Usually a response is associated with a particular instrument.</p>
-<p>However, responses need not come from instruments. For test purposes, suppose we want to mimic a measurement by generating random numbers. <code>RandomResponse</code> produces a random number in the unit interval when it is measured. A <code>TimerResponse</code> will measure the time since creation of the <code>TimerResponse</code> object.</p>
-<p><a id='What-is-an-instrument?-1'></a></p>
-<h2 id="what-is-an-instrument">What is an instrument?</h2>
-<p>For the purposes of this package, an instrument is just something connected to the computer that we need to communicate with, and which can source or measure something. Every instrument may connect to the computer by different hardware, comms protocols, and command dialects.</p>
-<p>All instruments are Julia objects, subtypes of the abstract type <code>Instrument</code>.</p>
-<p><a id='Instrument-types-1'></a></p>
-<h3 id="instrument-types">Instrument types</h3>
-<p>Many instruments share the same communications protocols. We subtype <code>Instrument</code> based on these protocols.</p>
-<p><a id='VISA-1'></a></p>
-<h4 id="visa">VISA</h4>
-<p>Many instruments are able to be addressed using the <a href="http://www.ivifoundation.org/docs/vpp432_2014-06-19.pdf">VISA</a> standard (Virtual Instrument Software Architecture), currently maintained by the IVI Foundation. <code>InstrumentVISA</code> is an abstract subtype of <code>Instrument</code>.</p>
-<p>To talk to VISA instruments will require the Julia package <a href="http://www.github.com/ajkeller34/VISA.jl">VISA.jl</a> as well as the <a href="https://www.ni.com/visa/">National Instruments VISA libraries</a>. Installation instructions are available at each link.</p>
-<p><a id='Alazar-digitizers-1'></a></p>
-<h4 id="alazar-digitizers">Alazar digitizers</h4>
-<p>Digitizers made by <a href="http://www.alazartech.com">AlazarTech</a> are notably <em>not</em> compatible with the VISA standard. All Alazar digitizers are addressable by an API supplied by the company, which talks to the card through a shared library (a .dll on Windows or .so on Linux). <code>InstrumentAlazar</code> is an abstract subtype of <code>Instrument</code>.</p>
-<p>The shared library files and API documentation are only available from AlazarTech.</p>
-<p><a id='How-do-we-configure-instruments?-1'></a></p>
-<h2 id="how-do-we-configure-instruments">How do we configure instruments?</h2>
-<p><a id='Properties-1'></a></p>
-<h3 id="properties">Properties</h3>
-<p>Instrument properties are configured and inspected using two functions, <code>setindex!</code> and <code>getindex</code>. This results in a convenient and concise syntax (<a href="https://groups.google.com/d/msg/julia-users/Dt6nbfhtaNQ/81KgQmttCwAJ">credit due to Oliver Schulz</a> for this idea).</p>
-<p>For example:</p>
-<div class="codehilite"><pre><span></span><span class="n">awg</span><span class="p">[</span><span class="n">TriggerSlope</span><span class="p">]</span> <span class="o">=</span> <span class="p">:</span><span class="n">Rising</span>
-<span class="n">awg</span><span class="p">[</span><span class="n">SampleRate</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10e6</span>
-</pre></div>
-
-
-<p><a id='Difference-between-stimuli-and-instrument-properties-1'></a></p>
-<h3 id="difference-between-stimuli-and-instrument-properties">Difference between stimuli and instrument properties</h3>
-<p>Because a stimulus is defined so broadly, the difference between a stimulus and an instrument property is not obvious. A stimulus is like a generalized instrument property: sourcing a stimulus may entail configuring zero or more instrument properties.</p>
-<p>It is useful to think of a stimulus to be something that what you are measuring has a chance to react to. For example, this could be applied voltage, sourced by one or more instruments. The applied voltages would be seen by the device under test, which would respond accordingly. The stimulus could also just be a time delay, provided by the measurement computer. It could even be the number of threads used by Julia for real-time processing.</p>
-<p>An instrument property is any persistent setting of an instrument. Tweaking an instrument property could affect the device under test, but it might not. Averaging is a good example. With averaging a measurement may look less noisy, but your device under test doesn't know the difference. The trigger engine of a digitizer would also have associated instrument properties.</p>
-<p>In many cases there is an overlap between stimuli and properties. Consider that the frequency of a signal generator is an instrument property. In this case sourcing a frequency stimulus results in configuring an instrument property. Rather than make a <code>FrequencyStimulus</code> type, we provide a <code>PropertyStimulus</code> type which can be used more generically. Consider the following example, where we make a <code>PropertyStimulus</code> for sweeping the frequency of our E8257D signal generator:</p>
-<div class="codehilite"><pre><span></span><span class="n">stim</span> <span class="o">=</span> <span class="n">PropertyStimulus</span><span class="p">(</span><span class="n">siggen</span><span class="p">::</span><span class="n">E8257D</span><span class="p">,</span> <span class="n">Frequency</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">freq</span> <span class="k">in</span> <span class="mf">1e9</span><span class="p">:</span><span class="mf">1e8</span><span class="p">:</span><span class="mf">5e9</span>     <span class="c"># 1 GHz to 5 GHz in steps of 100 MHz</span>
-    <span class="n">source</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
-    <span class="c"># measure(something)</span>
-<span class="k">end</span>
-</pre></div>
-
-
-<p>Note that <code>Frequency</code> is a subtype of <code>InstrumentProperty</code>, which is required for making a <code>PropertyStimulus</code>.</p>
-<p>Again, stimuli need not be tied to a particular property. Rather, this is just one convenient and easily generalized example. In more complicated instances it is probably better to make a new <code>Stimulus</code> subtype rather than use <code>PropertyStimulus</code>.</p>
-<p><a id='Future-directions-1'></a></p>
-<h2 id="future-directions">Future directions</h2>
-<p><a id='Feedback-loops-1'></a></p>
-<h3 id="feedback-loops">Feedback loops</h3>
-<p>In principle, asynchronous software feedback loops could be implemented with the <a href="http://www.github.com/shashi/Reactive.jl">Reactive.jl</a> package. This would probably only be suitable for slowly varying signals, e.g. PID temperature control. Ultimately benchmarking needs to be done to determine how useful this approach would be.</p>
+<p>The idea of <em>multiple dispatch</em>, natively supported in Julia, permits writing such convenient and abstract code. For example, one sweep function could encompass various sweep methods, where there is a unique method for any particular combination of stimuli to measure a response. Multiple dispatch would be able to discern which method to use based on the <em>types</em> of stimuli and response passed to the function. This is just one example where the advantages of multiple dispatch are obvious. We hope it will more broadly simplify the extension of measurement code while ensuring continued reliability.</p>
+<p><a id='Summary-of-Functionality-1'></a></p>
+<h2 id="summary-of-functionality">Summary of Functionality</h2>
+<p>This package approaches the problem of measurement in an object oriented manner. As such, Julia types are defined for instrument, instrument properties, independent variables to be swept over during measurement, and dependent variables to be measured. Interfacing with instruments, such as configuring their properties, sweeping through parameters such as voltage, frequency, etc, and actually recording measurement values coming from instruments, are all done through manipulation of instances of these types.</p>
+<p>A careful framework of abstract super types has been fleshed out in this package, along with sweeping and job scheduling/queueing functionality that expects subtypes of the aforementioned super types. However, each user will have their own unique instruments and measurements to perform. As such, users are expected to write their own type definitions and some methods for those types; but when properly written, they fit in seamlessly into the functionality written around the super types described in the rest of this documentation.</p>
+<p>Notably, this package implements queueing structure for measurement "jobs" , which affords automation of measurements and facilitates use of the same instruments by multiple users warrants. The queue schedules jobs automatically and in the background of the Julia interface that the user is using. We call these jobs "sweep jobs", in accordance with what one usually thinking of measurement: measuring some dependent variable with respect to some independent variable that is swept across a range of values. When the user executes the <code>sweep</code> function, job objects are automatically generated, passed to the queue, and schedules jobs according to their priority without any additional input from the user.</p>
+<p>Finally, InstrumentControl.jl communicates with a relational database server, set up by <a href="https://github.com/PainterQubits/ICDataServer.jl">ICDataServer.jl</a>, which is used to maintain a log of information for each job. An entry in the database is automatically made for each job submitted to the queue  </p>
           <aside class="copyright" role="note">
             
             Documentation built with
@@ -437,14 +400,14 @@
     </div>
     <div class="next">
       
-        <a href="../implementation/" title="Implementation">
+        <a href="../ins_meas/" title="Instruments/Measurements">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Implementation
+                Instruments/Measurements
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

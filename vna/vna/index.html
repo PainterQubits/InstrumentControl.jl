@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>VNAs - InstrumentControl.jl</title>
+      
+      
+      
+      
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="InstrumentControl.jl">
+    <meta property="og:image" content="None/../../">
+    <meta name="apple-mobile-web-app-title" content="InstrumentControl.jl">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../../assets/fonts/icon.eot?52m981');
+      	src: url('../../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/palettes-05ab2406df.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+      <link rel="stylesheet" href="../../assets/Documenter.css">
+    
+    <script src="../../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class="palette-primary-indigo palette-accent-blue">
+    
+      
+      
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+              
+                Instruments <i class="icon icon-link"></i>
+              
+            
+              
+                VNAs <i class="icon icon-link"></i>
+              
+            
+          </span>
+        
+        VNAs
+      </div>
+    </div>
+    
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>
+          InstrumentControl.jl
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+          <br>
+          PainterQubits/InstrumentControl.jl
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            
+            <a href="https://github.com/PainterQubits/InstrumentControl.jl/archive/master.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/PainterQubits/InstrumentControl.jl/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Home" href="../..">
+      Home
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Overview</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Design Summary" href="../../design/">
+      Design Summary
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Instruments/Measurements" href="../../ins_meas/">
+      Instruments/Measurements
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Sweep Jobs" href="../../sweep/">
+      Sweep Jobs
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Implementation" href="../../implementation/">
+      Implementation
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Instruments</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Alazar digitizers" href="../../Alazar/">
+      Alazar digitizers
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <span class="section">Waveform generators</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="AWG5014C" href="../../waveform_generator/awg5014c/">
+      AWG5014C
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+      
+        
+  <li>
+    <span class="section">VNAs</span>
+    <ul>
+      
+        
+  <li>
+    <a class="current" title="VNAs" href="./">
+      VNAs
+    </a>
+    
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Stimuli and responses" href="#stimuli-and-responses">
+                Stimuli and responses
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Instrument properties" href="#instrument-properties">
+                Instrument properties
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Methods" href="#methods">
+                Methods
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Miscellaneous" href="#miscellaneous">
+                Miscellaneous
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="E5071C" href="../e5071c/">
+      E5071C
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Miscellaneous</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Documentation building" href="../../docbuild/">
+      Documentation building
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Release notes" href="../../releases/">
+      Release notes
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="License" href="../../LICENSE/">
+      License
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+            <h1>VNAs</h1>
+          
+          <p>Most of the time you will probably want <a href="./#InstrumentControl.VNA.stimdata"><code>VNA.stimdata</code></a>, <a href="./#InstrumentControl.VNA.data"><code>VNA.data</code></a>, and <a href="./#InstrumentControl.VNA.FrequencySweep"><code>VNA.FrequencySweep</code></a>.</p>
+<p><a id='Stimuli-and-responses-1'></a></p>
+<h2 id="stimuli-and-responses">Stimuli and responses</h2>
+<p><a id='InstrumentControl.VNA.FrequencySweep' href='#InstrumentControl.VNA.FrequencySweep'>#</a>
+<strong><code>InstrumentControl.VNA.FrequencySweep</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct FrequencySweep &lt;: Response
+    ins::InstrumentVNA
+    reject::Int
+end
+</pre></div>
+
+
+<p>Your standard frequency sweep using a VNA. <code>reject</code> lets you reject a number of traces to reject before keeping measurements.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L15-L25' class='documenter-source'>source</a><br></p>
+<p><a id='Instrument-properties-1'></a></p>
+<h2 id="instrument-properties">Instrument properties</h2>
+<p><a id='InstrumentControl.VNA.Format' href='#InstrumentControl.VNA.Format'>#</a>
+<strong><code>InstrumentControl.VNA.Format</code></strong> &mdash; <em>Type</em>.</p>
+<p>Format of returned data. Search for <code>VNA.Format</code> in the instrument template files to find valid options; some examples include <code>:LogMagnitude</code>, <code>:GroupDelay</code>, <code>:PolarComplex</code>, etc.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L88-L92' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.Graphs' href='#InstrumentControl.VNA.Graphs'>#</a>
+<strong><code>InstrumentControl.VNA.Graphs</code></strong> &mdash; <em>Type</em>.</p>
+<p>Graph layout on the VNA display. Specify with a matrix of integers.</p>
+<p>The following example will have graph 1 occupying the top half of the screen, graph 2 occupying the lower-left, and graph 3 the lower-right:</p>
+<div class="codehilite"><pre><span></span>ins[Graphs] = [1 1; 2 3]
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L95-L104' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.Marker' href='#InstrumentControl.VNA.Marker'>#</a>
+<strong><code>InstrumentControl.VNA.Marker</code></strong> &mdash; <em>Type</em>.</p>
+<p>Marker state for a given marker (on/off).</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L107-L109' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.MarkerX' href='#InstrumentControl.VNA.MarkerX'>#</a>
+<strong><code>InstrumentControl.VNA.MarkerX</code></strong> &mdash; <em>Type</em>.</p>
+<p>X-axis value for a given marker.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L112-L114' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.MarkerY' href='#InstrumentControl.VNA.MarkerY'>#</a>
+<strong><code>InstrumentControl.VNA.MarkerY</code></strong> &mdash; <em>Type</em>.</p>
+<p>Y-axis value for a marker.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L117-L119' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.Parameter' href='#InstrumentControl.VNA.Parameter'>#</a>
+<strong><code>InstrumentControl.VNA.Parameter</code></strong> &mdash; <em>Type</em>.</p>
+<p>Scattering parameter. For two-port VNAs, you can specify <code>:S11</code>, <code>:S12</code>, <code>:S21</code>, or <code>:S22</code>.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>channel, trace = 1, 2
+ins[Parameter, channel, trace] = :S21
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L122-L131' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.SearchTracking' href='#InstrumentControl.VNA.SearchTracking'>#</a>
+<strong><code>InstrumentControl.VNA.SearchTracking</code></strong> &mdash; <em>Type</em>.</p>
+<p>Do a marker search with each trace update (yes/no).</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L134-L136' class='documenter-source'>source</a><br></p>
+<p><a id='Methods-1'></a></p>
+<h2 id="methods">Methods</h2>
+<p><a id='InstrumentControl.VNA.clearavg' href='#InstrumentControl.VNA.clearavg'>#</a>
+<strong><code>InstrumentControl.VNA.clearavg</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>clearavg(ins::InstrumentVNA, ch::Integer=1)
+</pre></div>
+
+
+<p>Restart averaging for a given channel <code>ch</code> (defaults to 1).</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L210-L216' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.data' href='#InstrumentControl.VNA.data'>#</a>
+<strong><code>InstrumentControl.VNA.data</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>data(ins::InstrumentVNA, fmt::Symbol, ch::Integer=1, tr::Integer=1)
+data(ins::InstrumentVNA, ch::Integer=1, tr::Integer=1)
+</pre></div>
+
+
+<p>Read the trace data from the VNA. If you provide <code>fmt</code> (which should be a symbol suitable for setting the <code>VNA.Format</code> property) the data will be returned in that format.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L221-L230' class='documenter-source'>source</a><br></p>
+<p><a id='Base.search-Tuple{InstrumentControl.VNA.InstrumentVNA,InstrumentControl.VNA.MarkerSearch,InstrumentControl.VNA.MarkerSearch,Vararg{InstrumentControl.VNA.MarkerSearch,N} where N}' href='#Base.search-Tuple{InstrumentControl.VNA.InstrumentVNA,InstrumentControl.VNA.MarkerSearch,InstrumentControl.VNA.MarkerSearch,Vararg{InstrumentControl.VNA.MarkerSearch,N} where N}'>#</a>
+<strong><code>Base.search</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>search(ins::InstrumentVNA, m1::MarkerSearch, m2::MarkerSearch, m3::MarkerSearch...)
+</pre></div>
+
+
+<p>Execute marker searches defined by any number of <code>MarkerSearch</code> objects.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L258-L264' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.shotgun' href='#InstrumentControl.VNA.shotgun'>#</a>
+<strong><code>InstrumentControl.VNA.shotgun</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>shotgun(ins::InstrumentVNA, m::AbstractArray=1:9, ch::Integer=1, tr::Integer=1)
+</pre></div>
+
+
+<p>Markers with numbers in the range <code>m</code> are spread across the frequency span. The first marker begins at the start frequency but the last marker is positioned before the stop frequency, such that each marker has the same frequency span to the right of it within the stimulus window.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L268-L277' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.stimdata' href='#InstrumentControl.VNA.stimdata'>#</a>
+<strong><code>InstrumentControl.VNA.stimdata</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>stimdata(ins::InstrumentVNA, ch::Integer=1)
+</pre></div>
+
+
+<p>Short for "stimulus data," reads the frequency axis from the VNA.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L249-L255' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.sweeptime' href='#InstrumentControl.VNA.sweeptime'>#</a>
+<strong><code>InstrumentControl.VNA.sweeptime</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>sweeptime(ins::InstrumentVNA)
+</pre></div>
+
+
+<p>Returns the sweep time for a given VNA, including averaging.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L288-L294' class='documenter-source'>source</a><br></p>
+<p><a id='Miscellaneous-1'></a></p>
+<h2 id="miscellaneous">Miscellaneous</h2>
+<p><a id='InstrumentControl.VNA.MarkerSearch' href='#InstrumentControl.VNA.MarkerSearch'>#</a>
+<strong><code>InstrumentControl.VNA.MarkerSearch</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>struct MarkerSearch{T}
+    ch::Int
+    tr::Int
+    m::Int
+    val::Float64
+    pol::Polarity
+end
+</pre></div>
+
+
+<p>Type encapsulating a marker search query. The type parameter should be a symbol specifying the search type. The available options may depend on VNA capabilities.</p>
+<p>The E5071C supports:</p>
+<div class="codehilite"><pre><span></span><span class="p">:</span><span class="n">Max</span>
+<span class="p">:</span><span class="n">Min</span>
+<span class="p">:</span><span class="n">Peak</span>
+<span class="p">:</span><span class="n">LeftPeak</span>
+<span class="p">:</span><span class="n">RightPeak</span>
+<span class="p">:</span><span class="n">Target</span>
+<span class="p">:</span><span class="n">LeftTarget</span>
+<span class="p">:</span><span class="n">RightTarget</span>
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L152-L179' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.VNA.MarkerSearch-Tuple{Symbol,Any,Any,Any}' href='#InstrumentControl.VNA.MarkerSearch-Tuple{Symbol,Any,Any,Any}'>#</a>
+<strong><code>InstrumentControl.VNA.MarkerSearch</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>MarkerSearch(typ::Symbol, ch, tr, m, val=0.0, pol::Polarity=Both())
+</pre></div>
+
+
+<p>You are recommended to construct a <code>MarkerSearch</code> object using this function, which makes a suitable one given the type of search you want to do (specified by <code>typ::Symbol</code>), the channel <code>ch</code>, trace <code>tr</code>, marker number <code>m</code>, value <code>val</code> and polarity <code>pol::Polarity</code> (<code>Positive()</code>, <code>Negative()</code>, or <code>Both()</code>). The value will depend on what you're doing but is typically a peak excursion or transition threshold.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/3e75bb51608ac74a11983adff3df37fb3f06fedf/src/instruments/VNAs/VNA.jl#L188-L199' class='documenter-source'>source</a><br></p>
+          <aside class="copyright" role="note">
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../../waveform_generator/awg5014c/" title="AWG5014C">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                AWG5014C
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../e5071c/" title="E5071C">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                E5071C
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '../..';
+      var repo_id  = 'PainterQubits/InstrumentControl.jl';
+    </script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
+    
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    
+      <script src="../../assets/mathjaxhelper.js"></script>
+    
+    
+  </body>
+</html>

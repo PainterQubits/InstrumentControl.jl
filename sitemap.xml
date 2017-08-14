@@ -3,8 +3,8 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/</loc>
+     <lastmod>2017-08-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,42 +12,26 @@
     
         
     <url>
-     <loc>None/design/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/design/</loc>
+     <lastmod>2017-08-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/implementation/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/ins_meas/</loc>
+     <lastmod>2017-08-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/sweep/</loc>
-     <lastmod>2016-10-07</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>None/Alazar/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/sweep/</loc>
+     <lastmod>2017-08-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/awg5014c/</loc>
-     <lastmod>2016-10-07</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/e5071c/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/implementation/</loc>
+     <lastmod>2017-08-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -56,20 +40,42 @@
     
         
     <url>
-     <loc>None/docbuild/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/Alazar/</loc>
+     <lastmod>2017-08-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/releases/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc></loc>
+     <lastmod></lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/LICENSE/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc></loc>
+     <lastmod></lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>/docbuild/</loc>
+     <lastmod>2017-08-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/releases/</loc>
+     <lastmod>2017-08-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/LICENSE/</loc>
+     <lastmod>2017-08-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
