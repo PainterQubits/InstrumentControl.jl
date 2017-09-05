@@ -190,6 +190,12 @@
               </a>
             </li>
           
+            <li class="anchor">
+              <a title="New to Julia" href="#new-to-julia">
+                New to Julia
+              </a>
+            </li>
+          
         </ul>
       
     
@@ -360,6 +366,7 @@
 <li>Install <a href="http://www.alazartech.com">AlazarTech</a> digitizer drivers and shared libraries (may need to contact AlazarTech) if using Alazar digitizer</li>
 <li>Install <a href="http://www.github.com/painterqubits/VISA.jl">VISA.jl</a> package</li>
 <li>Install <a href="http://www.github.com/painterqubits/Alazar.jl">Alazar.jl</a> package</li>
+<li>Install <a href="https://github.com/PainterQubits/KeysightInstruments.jl">KeysightInstruments.jl</a> package</li>
 <li>Install <a href="https://github.com/PainterQubits/ICCommon.jl">ICCommon.jl</a> package</li>
 <li>Install <a href="https://github.com/PainterQubits/ICDataServer.jl">ICDataServer.jl</a> package and follow it's <a href="https://painterqubits.github.io/ICDataServer.jl/">installation procedure</a></li>
 <li>Install <a href="http://www.github.com/painterqubits/InstrumentControl.jl">InstrumentControl.jl</a> package</li>
@@ -369,6 +376,50 @@
 <p>InstrumentControl.jl relies on having physical instruments, communication with a database set up by ICDataServer.jl, and various files with machine specific configuration information in order to run. As such, we provide some example notebooks in order to showcase this package's functionality.</p>
 <div class="codehilite"><pre><span></span># put example notebooks here
 </pre></div>
+
+
+<p><a id='New-to-Julia-1'></a></p>
+<h2 id="new-to-julia">New to Julia</h2>
+<p>This documentation seeks to provide a higher-level description of the architecture and control-flow of the code, with references to the source code only to facilitate explanation. If the user seeks to understand the source code, while this documentation is a useful aid, aptitude and understanding of the Julia language will be necessary to fully understand it's implementation in a line by line level. For those who have a background in programming, but not in Julia, below is a list of Julia features used in the source code which might not be featured in other languages, along with links to the Julia docs explaining them. It is our hope that, with the reading listed below and this documentation, that any reader with some background in programming would be able to satisfactorily understand the source code:</p>
+<ul>
+<li>
+<p>Types</p>
+<ul>
+<li><a href="https://docs.julialang.org/en/stable/manual/types/">Julia Types in general</a></li>
+<li><a href="https://docs.julialang.org/en/stable/manual/types/#Parametric-Types-1">Parametric Types</a></li>
+<li><a href="https://docs.julialang.org/en/stable/manual/types/#man-singleton-types-1">Singleton Types</a></li>
+<li>
+<p>Functions and Methods</p>
+</li>
+<li>
+<p><a href="https://docs.julialang.org/en/stable/manual/functions/#Optional-Arguments-1">Optional and Keyword Arguments</a></p>
+</li>
+<li><a href="https://docs.julialang.org/en/stable/manual/functions/#man-anonymous-functions-1">Anonymous Functions</a></li>
+<li><a href="https://docs.julialang.org/en/stable/manual/methods/#Parametric-Methods-1">Parametric Methods</a></li>
+<li><a href="https://docs.julialang.org/en/stable/manual/functions/#Varargs-Functions-1">Vararg Functions</a></li>
+<li>
+<p>Macros and Metaprogramming</p>
+</li>
+<li>
+<p><a href="https://docs.julialang.org/en/stable/manual/metaprogramming/">Metaprogramming in general</a> (also describes the <code>Symbol</code> type and expressions)</p>
+</li>
+<li><a href="https://docs.julialang.org/en/stable/manual/metaprogramming/#man-macros-1">Macros</a></li>
+<li>
+<p>Tasks</p>
+</li>
+<li>
+<p><a href="https://docs.julialang.org/en/stable/manual/control-flow/#man-tasks-1">Tasks</a></p>
+</li>
+<li><a href="https://docs.julialang.org/en/stable/manual/parallel-computing/#Synchronization-With-Remote-References-1">Dynamic Scheduling of Tasks</a></li>
+<li>
+<p>Miscellaneous</p>
+</li>
+<li>
+<p><a href="https://docs.julialang.org/en/stable/manual/control-flow/#Short-Circuit-Evaluation-1">Short Circuit Evaluation</a></p>
+</li>
+</ul>
+</li>
+</ul>
           <aside class="copyright" role="note">
             
             Documentation built with

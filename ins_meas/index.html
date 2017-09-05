@@ -364,9 +364,6 @@
 <h2 id="what-is-an-instrument">What is an instrument?</h2>
 <p>For the purposes of this package, an instrument is just something connected to the computer that we need to communicate with, and which can apply some stimulus or measure something. Every instrument may connect to the computer by different hardware, comms protocols, and command dialects.</p>
 <p>All instruments are Julia objects, subtypes of the abstract type <code>Instrument</code>. The implementation of each subtype (it's fields, constructors, etc) depend on the specific instrument.</p>
-<p><a id='Instrument-types-1'></a></p>
-<h3 id="instrument-types">Instrument types</h3>
-<p>Many instruments share the same communications protocols. We subtype <code>Instrument</code> based on these protocols.</p>
 <p><a id='VISA-1'></a></p>
 <h4 id="visa">VISA</h4>
 <p>Many instruments are able to be addressed using the <a href="http://www.ivifoundation.org/docs/vpp432_2014-06-19.pdf">VISA</a> standard (Virtual Instrument Software Architecture), currently maintained by the IVI Foundation.</p>
@@ -390,10 +387,10 @@
 <h2 id="how-do-we-take-measurements">How do we take measurements?</h2>
 <p><a id='Source-and-measure-1'></a></p>
 <h3 id="source-and-measure">Source and measure</h3>
-<p>Two functions are provided to abstract away many kinds of measurements: <code>source</code> and <code>measure</code>. In an experiment you source  some stimulus and measure a response. Therefore <code>source</code> takes as arguments: an instance of some subtype of the <code>Stimulus</code> type (which can have different fields for different subtypes), as well as the numerical value for the particular stimulus. <code>measure</code> takes as argument an instance of some subtype of type <code>Response</code>. The idea is to write new subtypes of <code>Stimulus</code> and <code>Response</code> to describe what you are doing, as well as new methods for <code>source</code> and <code>measure</code> that know how to communicate with the instrument based on the Stimuli and Response arguments passed to them</p>
+<p>Two functions are provided to abstract away many kinds of measurements: <code>source</code> and <code>measure</code>. In an experiment you source  some stimulus and measure a response. Therefore <code>source</code> takes as arguments: an instance of some subtype of the <code>Stimulus</code> type (which can have different fields for different subtypes), as well as the numerical value(s) for the particular stimulus. <code>measure</code> takes as argument an instance of some subtype of type <code>Response</code>. The idea is to write new subtypes of <code>Stimulus</code> and <code>Response</code> to describe what you are doing, as well as new methods for <code>source</code> and <code>measure</code> that know how to communicate with the instrument(s) based on the Stimuli and Response arguments passed to them</p>
 <p><a id='Stimuli-1'></a></p>
 <h3 id="stimuli">Stimuli</h3>
-<p>All stimuli are objects, subtyped from the abstract <code>Stimulus</code> type. Many stimuli, associated with the capabilities of particular instruments, are already implemented. The implementation of each subtype depends on the specific goals of the user: demonstrations of different stimuli being used can be found in the example notebooks.</p>
+<p>All stimuli are objects, subtyped from the abstract <code>Stimulus</code> type. Many stimuli, either general or associated with the capabilities of particular instruments, are already implemented. The implementation of each subtype depends on the specific goals of the user: demonstrations of different stimuli being used can be found in the example notebooks.</p>
 <p>As a simple example, consider the <code>PropertyStimulus</code> type (defined in <a href="https://github.com/PainterQubits/ICCommon.jl">ICCommon.jl</a>) :</p>
 <div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">PropertyStimulus</span><span class="p">{</span><span class="n">T</span><span class="o">&lt;:</span><span class="n">InstrumentProperty</span><span class="p">}</span> <span class="o">&lt;:</span> <span class="n">Stimulus</span>
     <span class="n">typ</span><span class="p">::</span><span class="n">Type</span><span class="p">{</span><span class="n">T</span><span class="p">}</span>
@@ -424,7 +421,6 @@
 
 
 <p>Easy right?</p>
-<p>Again, stimuli need not be tied to a particular property. Rather, this is just one convenient and easily generalized example. In more complicated instances it is probably better to make a new <code>Stimulus</code> subtype rather than use <code>PropertyStimulus</code>.</p>
 <p>Note that one may assign whatever fields and constructor one wishes for a newly created <code>Stimulus</code> subtype. Also, note that not all stimuli need to be associated with a physical instrument. For instance, sourcing a <code>DelayStimulus</code> will cause the script to block until a specified time after creation of the <code>DelayStimulus</code> object. Moreover, a Stimulus could also be associated with several instruments. Maybe a stimulus that makes sense for a particular experiment would be to change all gate voltages at once. These gate voltages could of course be sourced by several physical instruments.</p>
 <p><a id='Responses-1'></a></p>
 <h3 id="responses">Responses</h3>
@@ -433,7 +429,7 @@
 <p>However, responses need not come from instruments. For test purposes, suppose we want to mimic a measurement by generating random numbers. <code>RandomResponse</code> produces a random number in the unit interval when it is measured. A <code>TimerResponse</code> will measure the time since creation of the <code>TimerResponse</code> object.</p>
 <p><a id='Difference-between-stimuli-and-instrument-properties-1'></a></p>
 <h3 id="difference-between-stimuli-and-instrument-properties">Difference between stimuli and instrument properties</h3>
-<p>Because a stimulus is defined so broadly, the difference between a stimulus and an instrument property is not obvious. While in many cases there is an overlap between stimuli and properties, a stimulus is like a generalized instrument property: sourcing a stimulus may entail configuring zero or more instrument properties, on zero or more different instruments. As was mentioned earlier, a useful stimulus to change gate voltages on multiple different instruments all at once.</p>
+<p>Because a stimulus is defined so broadly, the difference between a stimulus and an instrument property is not obvious. While in many cases there is an overlap between stimuli and properties, a stimulus is like a generalized instrument property: sourcing a stimulus may entail configuring zero or more instrument properties, on zero or more different instruments. As was mentioned earlier, a useful stimulus could be to change gate voltages on multiple different instruments all at once.</p>
 <p>It is useful to think of a stimulus as something which has a chance to react to what you are measuring. For example, this could be applied voltage, sourced by one or more instruments. The applied voltages would be seen by the device under test, which would respond accordingly. The stimulus could also just be a time delay, provided by the measurement computer. It could even be the number of threads used by Julia for real-time processing.</p>
 <p>An instrument property is any persistent setting of an instrument. Tweaking an instrument property could affect the device under test, but it might not. Averaging is a good example. With averaging a measurement may look less noisy, but your device under test doesn't know the difference.</p>
           <aside class="copyright" role="note">

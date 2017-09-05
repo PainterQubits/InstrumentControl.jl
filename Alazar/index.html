@@ -240,8 +240,14 @@
         <ul>
           
             <li class="anchor">
-              <a title="Buffer allocation" href="#buffer-allocation">
-                Buffer allocation
+              <a title="Usage" href="#usage">
+                Usage
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Technical details" href="#technical-details">
+                Technical details
               </a>
             </li>
           
@@ -348,103 +354,137 @@
           
           <p><a id='Alazar-digitizers-1'></a></p>
 <h1 id="alazar-digitizers">Alazar digitizers</h1>
-<p>We put all Alazar digitizers in module <code>Alazar</code>; the feature set and API is so similar for the various models that just one module makes sense.</p>
-<p>A response type is given for each measurement mode: continuous streaming (<code>ContinuousStreamResponse</code>), triggered streaming ( <code>TriggeredStreamResponse</code>), NPT records (<code>NPTRecordResponse</code>), and FPGA-based FFT calculations (<code>FFTHardwareResponse</code>). Traditional record mode has not been implemented yet for lack of immediate need.</p>
-<p>Looking at the source code, it would seem that there is some redundancy in the types, for instance there is an <code>NPTRecordMode</code> and an <code>NPTRecordResponse</code> object. The difference is that the former is used internally in the code to denote a particular method of configuring the instrument, allocating buffers, etc., whereas the latter specifies what you actually want to do: retrieve NPT records from the digitizer, perhaps doing some post-processing or processing during acquisition along the way. Perhaps different responses would dictate different processing behavior, while the instrument is ultimately configured the same way.</p>
-<p>In the following discussion, it is important to understand some Alazar terminology. Newer Alazar digitizers use direct memory access (DMA) to stream data into a computer's RAM. A single <em>acquisition</em> uses one or many <em>buffers</em>, which constitute preallocated regions in the computer's physical memory. Each buffer contains one or many <em>records</em>. Each <em>record</em> contains many <em>samples</em>, which are the voltages measured by the digitizer.</p>
-<p>In streaming mode, there is only one record per buffer, but in other modes there can be many records per buffer.</p>
-<p><a id='Buffer-allocation-1'></a></p>
-<h2 id="buffer-allocation">Buffer allocation</h2>
+<p>We put all Alazar digitizers in module <code>AlazarModule</code>; the feature set and API is so similar for the various models that just one module makes sense.</p>
+<p>An <a href="./#InstrumentControl.AlazarModule.AlazarResponse"><code>AlazarResponse</code></a> type is given for each measurement mode of the digitizer. ("Traditional record mode" has not been implemented yet for lack of immediate need.) Additionally, one can define custom <code>AlazarResponse</code> types so that some custom computations or data reductions can be performed during acquisition. <a href="./#InstrumentControl.AlazarModule.IQSoftwareResponse"><code>IQSoftwareResponse</code></a> is a good example of this.</p>
+<p>In the following discussion, it is important to understand some Alazar terminology. Newer Alazar digitizers use direct memory access (DMA) to stream data into a computer's RAM. A single <em>acquisition</em> uses one or many <em>buffers</em>, which constitute preallocated regions in the computer's physical memory. Each buffer contains one or many <em>records</em>. Each <em>record</em> contains many <em>samples</em>, which are the voltages measured by the digitizer. In streaming mode, there is only one record per buffer, but in other modes there can be many records per buffer.</p>
+<p>Looking at the source code, it would seem that there is some redundancy in the types, for instance there is an <code>NPTRecordMode</code> and an <code>NPTRecordResponse</code> object. The former is used internally in the code to denote a particular method of configuring the instrument, mirroring the terminology used in the Alazar API documentation. The latter specifies what you actually want to do using that configuration of the instrument. Perhaps you want to measure in a given mode, but do some custom post-processing or processing during acquisition. <code>IQSoftwareResponse</code> is an example of this: it uses <code>NPTRecordMode</code> but reduces the data during measurement. Typically the user doesn't have to deal with the various mode objects, unless developing a new <code>AlazarResponse</code> type.</p>
+<p><a id='Usage-1'></a></p>
+<h2 id="usage">Usage</h2>
+<p>Here are the currently defined <code>AlazarResponse</code> types you can use:</p>
+<p><a id='InstrumentControl.AlazarModule.ContinuousStreamResponse' href='#InstrumentControl.AlazarModule.ContinuousStreamResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.ContinuousStreamResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct ContinuousStreamResponse{S,T} &lt;: StreamResponse{S,T}
+</pre></div>
+
+
+<p>Response type implementing the "continuous streaming mode" of the Alazar API.</p>
+<p>Usage example:</p>
+<div class="codehilite"><pre><span></span>ats = AlazarATS9870()
+samples_per_ch = 1024
+res = ContinuousStreamResponse(ats, samples_per_ch)
+measure(res)
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L34-L45' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.AlazarModule.TriggeredStreamResponse' href='#InstrumentControl.AlazarModule.TriggeredStreamResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.TriggeredStreamResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct TriggeredStreamResponse{S,T} &lt;: StreamResponse{S,T}
+</pre></div>
+
+
+<p>Response type implementing the "triggered streaming mode" of the Alazar API.</p>
+<p>Usage example:</p>
+<div class="codehilite"><pre><span></span>ats = AlazarATS9870()
+samples_per_ch = 1024
+res = TriggeredStreamResponse(ats, samples_per_ch)
+measure(res)
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L61-L72' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.AlazarModule.NPTRecordResponse' href='#InstrumentControl.AlazarModule.NPTRecordResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.NPTRecordResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct NPTRecordResponse{S,T} &lt;: RecordResponse{S,T}
+</pre></div>
+
+
+<p>Response type implementing the "NPT record mode" of the Alazar API.</p>
+<p>Usage example:</p>
+<div class="codehilite"><pre><span></span>ats = AlazarATS9870()
+samples_per_rec_per_ch = 1024
+total_recs = 10
+res = NPTRecordResponse(ats, sam_per_rec_per_ch, total_recs)
+measure(res)
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L88-L100' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.AlazarModule.FFTHardwareResponse' href='#InstrumentControl.AlazarModule.FFTHardwareResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.FFTHardwareResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct FFTHardwareResponse{S,T,U} &lt;: FFTResponse{S,T}
+</pre></div>
+
+
+<p>Response type implementing the FPGA-based "FFT record mode" of the Alazar API. Not all Alazar digitizers support this mode.</p>
+<p>Usage example:</p>
+<div class="codehilite"><pre><span></span>ats = AlazarATS9360()
+samples_per_rec = 1024
+sam_per_fft = 512
+total_recs = 10
+res = FFTHardwareResponse(ats, sam_per_rec, sam_per_fft, total_recs, Alazar.S32Real)
+measure(res)
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L118-L132' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.AlazarModule.IQSoftwareResponse' href='#InstrumentControl.AlazarModule.IQSoftwareResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.IQSoftwareResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct IQSoftwareResponse{S,T} &lt;: RecordResponse{S,T}
+</pre></div>
+
+
+<p>Response type for measuring with NPT record mode and mixing in software to find the phase and amplitude of a component at frequency <code>f</code>. Slower than doing it in an FPGA, but ultimately necessary if we want to use both channels as inputs to the FFT.</p>
+<p>Usage example:</p>
+<div class="codehilite"><pre><span></span>ats = AlazarATS9870()
+samples_per_rec_per_ch = 1024
+total_recs = 10
+f = 100e6
+res = IQSoftwareResponse(ats, samples_per_rec_per_ch, total_recs, f)
+measure(res)
+</pre></div>
+
+
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L155-L170' class='documenter-source'>source</a><br></p>
+<p>These definitions referenced some abstract types, described here:</p>
+<p><a id='InstrumentControl.AlazarModule.AlazarResponse' href='#InstrumentControl.AlazarModule.AlazarResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.AlazarResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>abstract type AlazarResponse{S,T} &lt;: Response
+</pre></div>
+
+
+<p>Abstract <code>Response</code> from an Alazar digitizer instrument. Subtypes should implement <code>return_type</code> to specify the output array type if they rely on the generic method <code>measure(::AlazarResponse)</code>.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L7-L12' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.AlazarModule.StreamResponse' href='#InstrumentControl.AlazarModule.StreamResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.StreamResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>abstract type StreamResponse{S,T} &lt;: AlazarResponse{S,T}
+</pre></div>
+
+
+<p>Abstract time-domain streaming <code>Response</code> from an Alazar digitizer instrument.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L16-L19' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.AlazarModule.RecordResponse' href='#InstrumentControl.AlazarModule.RecordResponse'>#</a>
+<strong><code>InstrumentControl.AlazarModule.RecordResponse</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>abstract type RecordResponse{S,T} &lt;: AlazarResponse{S,T}
+</pre></div>
+
+
+<p>Abstract time-domain record <code>Response</code> from an Alazar digitizer instrument.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/f13df278e8fd3a01d42b75ef268a60d3d371abab/src/instruments/Digitizers/Alazar/ResponseTypes.jl#L22-L25' class='documenter-source'>source</a><br></p>
+<p><a id='Technical-details-1'></a></p>
+<h2 id="technical-details">Technical details</h2>
 <p><a id='Digitizer-requirements-1'></a></p>
 <h3 id="digitizer-requirements">Digitizer requirements</h3>
 <p>The Alazar digitizers expect buffers in physical memory which are page-aligned. The size of each buffer should also be chosen appropriately.</p>
 <p>The behavior of the digitizer is not specified when the buffer is made larger than 64 MB. On our computer, it seems like an <code>ApiWaitTimeout</code> error is thrown when the buffer is too large (for some unspecified definition of "large" greater than 64 MB). The digitizer will then throw <code>ApiInsufficientResources</code> errors whenever another acquisition is attempted, until the computer is restarted. Just restarting the Julia kernel, forcing a reload of the Alazar DLLs, does not appear to be enough to reset the digitizer fully.</p>
 <p>For performance reasons, a buffer should not be made much smaller than 1 MB if mulitple buffers are required. There is also a minimum record size for each model of digitizer. For the ATS9360, if a record has fewer than 256 samples (could be 128 from channel A + 128 from channel B) then the acquisition will proceed, but return garbage data. Allocating too small of a buffer is therefore still bad, but less fatal than allocating one that is too large.</p>
-<!– In our code a "sample" may be considered as a pair of values if two channels are being measured, which is probably inconsistent with the API's definition. We will clean this up eventually. –>
-
 <p><a id='How-to-allocate-appropriate-buffers-in-Julia-1'></a></p>
 <h3 id="how-to-allocate-appropriate-buffers-in-julia">How to allocate appropriate buffers in Julia</h3>
-<p>In Julia, just allocating a fixed-size array will not necessarily return a page-aligned block in memory. One approach would be to allocate our own page-aligned memory using <code>valloc</code> and <code>vfree</code> (or their Windows equivalents).</p>
-<div class="codehilite"><pre><span></span>function virtualalloc{T&lt;:Union{UInt8,UInt16}}(size_bytes::Integer, ::Type{T})
-    @windows? begin
-        MEM_COMMIT = U32(0x1000)
-        PAGE_READWRITE = U32(0x4)
-        addr = ccall((:VirtualAlloc, &quot;Kernel32&quot;), Ptr{T},
-                     (Ptr{Void}, Culonglong, Culong, Culong),
-                     C_NULL, size_bytes, MEM_COMMIT, PAGE_READWRITE)
-    end : (@linux? begin
-        addr = ccall((:valloc, libc), Ptr{T}, (Culonglong,), size_bytes)
-    end : throw(SystemError()))
-
-    addr == C_NULL &amp;&amp; throw(OutOfMemoryError())
-
-    addr::Ptr{T}
-end
-
-function virtualfree{T&lt;:Union{UInt16,UInt8}}(addr::Ptr{T})
-    @windows? begin
-        MEM_RELEASE = 0x8000
-        ccall((:VirtualFree, &quot;Kernel32&quot;), Cint, (Ptr{Void}, Culonglong, Culong),
-            addr, Culonglong(0), MEM_RELEASE)
-    end : (@linux? begin
-        ccall((:free, &quot;libc&quot;), Void, (Ptr{Void},), addr)
-    end : throw(SystemError()))
-    nothing
-end
-</pre></div>
-
-
-<p>In case it wasn't obvious, this was my original approach. Note that memory allocated in this way will not be visible to multiple processes without extra work, and moreover we will need to deallocate the memory ourselves at a later time, perhaps using <code>finalizer()</code> if the memory is made to be part of a Julia object.</p>
-<p>Fortunately, there is a special kind of array in Julia called the <code>SharedArray</code>. It can be viewed and modified from multiple processes, and the memory is page-aligned. Hopefully this continues to be the case in future Julia releases. We implement a type called the <code>DMABufferArray</code> whose definition is worth repeating here:</p>
-<div class="codehilite"><pre><span></span>type DMABufferArray{sample_type} &lt;:
-        AbstractArray{Ptr{sample_type},1}
-
-    bytes_buf::Int
-    n_buf::Int
-    backing::SharedArray{sample_type}
-
-    DMABufferArray(bytes_buf, n_buf) = begin
-        n_buf &gt; 1 &amp;&amp; bytes_buf % Base.Mmap.PAGESIZE != 0 &amp;&amp;
-            error(&quot;Bytes per buffer must be a multiple of Base.Mmap.PAGESIZE when &quot;,
-                  &quot;there is more than one buffer.&quot;)
-
-        backing = SharedArray(sample_type,
-                        Int((bytes_buf * n_buf) / sizeof(sample_type)))
-
-        dmabuf = new(bytes_buf,
-                     n_buf,
-                     backing)
-
-        return dmabuf
-    end
-
-end
-
-Base.size(dma::DMABufferArray) = (dma.n_buf,)
-Base.linearindexing(::Type{DMABufferArray}) = Base.LinearFast()
-Base.getindex(dma::DMABufferArray, i::Int) =
-    pointer(dma.backing) + (i-1) * dma.bytes_buf
-Base.length(dma::DMABufferArray) = dma.n_buf
-
-bytespersample{T}(buf_array::DMABufferArray{T}) = sizeof(T)
-sampletype{T}(buf_array::DMABufferArray{T}) = T
-</pre></div>
-
-
-<p>Some comments:</p>
+<p>In Julia, just allocating an array will not necessarily return a page-aligned block in memory. The Alazar.jl package provides two array types to help with this. These arrays are not required to be created by the user.</p>
 <ul>
-<li>A single SharedArray is used to back <em>all</em> DMA buffers. Memory is therefore</li>
+<li><code>Alazar.PageAlignedVector</code> is just like <code>Base.Vector</code> except that the memory backing the array is guaranteed to be page-aligned.</li>
+<li>The elements of an <code>Alazar.DMABufferVector</code> are pointers to different locations in memory which are page-aligned and can act as DMA buffers. The array is iterable and indexable as usual. The <code>Alazar.DMABufferVector</code> must itself be backed by a page-aligned array type, like <code>Alazar.PageAlignedVector</code> or <code>Base.SharedVector</code> (although support for <code>Base.SharedVector</code> is absent in InstrumentControl).</li>
 </ul>
-<p>contiguous and page-aligned.</p>
-<ul>
-<li>The memory for each DMA buffer is required to be a multiple of the page size</li>
-</ul>
-<p>when there is more than one buffer.</p>
-<ul>
-<li>The memory can be accessed by multiple processes.</li>
-<li>The elements of a <code>DMABufferArray</code> are pointers to the the different</li>
-</ul>
-<p>locations in memory which act as DMA buffers. The array is iterable and indexable as usual.</p>
           <aside class="copyright" role="note">
             
             Documentation built with
