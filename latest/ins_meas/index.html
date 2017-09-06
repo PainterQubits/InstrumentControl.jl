@@ -1,0 +1,859 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Package for instrument control and superconducting qubit measurement.">
+      
+      
+      
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
+      
+      
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.0">
+    
+    
+      
+        <title>Instruments/Measurements - InstrumentControl.jl</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-e826f8942a.js"></script>
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application-b6a6d08807.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-23f75ab9c7.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../assets/Documenter.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="InstrumentControl.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon md-icon--home"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Overview
+                </span>
+              
+            
+            Instruments/Measurements
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <div class="md-nav__button md-logo">
+      
+        <i class="md-icon md-icon--home"></i>
+      
+    </div>
+    InstrumentControl.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Overview
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Overview
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../design/" title="Design Summary" class="md-nav__link">
+      Design Summary
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Instruments/Measurements
+      </label>
+    
+    <a href="./" title="Instruments/Measurements" class="md-nav__link md-nav__link--active">
+      Instruments/Measurements
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-an-instrument" title="What is an instrument?" class="md-nav__link">
+    What is an instrument?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visa" title="VISA" class="md-nav__link">
+    VISA
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alazar-digitizers" title="Alazar digitizers" class="md-nav__link">
+    Alazar digitizers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-we-configure-instruments" title="How do we configure instruments?" class="md-nav__link">
+    How do we configure instruments?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properties" title="Properties" class="md-nav__link">
+    Properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-we-take-measurements" title="How do we take measurements?" class="md-nav__link">
+    How do we take measurements?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-and-measure" title="Source and measure" class="md-nav__link">
+    Source and measure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stimuli" title="Stimuli" class="md-nav__link">
+    Stimuli
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responses" title="Responses" class="md-nav__link">
+    Responses
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#difference-between-stimuli-and-instrument-properties" title="Difference between stimuli and instrument properties" class="md-nav__link">
+    Difference between stimuli and instrument properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sweep/" title="Sweep Jobs" class="md-nav__link">
+      Sweep Jobs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../implementation/" title="Implementation" class="md-nav__link">
+      Implementation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Instruments
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Instruments
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Alazar/" title="Alazar digitizers" class="md-nav__link">
+      Alazar digitizers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Waveform generators
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Waveform generators
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../waveform_generator/awg5014c/" title="AWG5014C" class="md-nav__link">
+      AWG5014C
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      VNAs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        VNAs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../vna/vna/" title="VNAs" class="md-nav__link">
+      VNAs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../vna/e5071c/" title="E5071C" class="md-nav__link">
+      E5071C
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Miscellaneous
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Miscellaneous
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../docbuild/" title="Documentation building" class="md-nav__link">
+      Documentation building
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../releases/" title="Release notes" class="md-nav__link">
+      Release notes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../LICENSE/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-an-instrument" title="What is an instrument?" class="md-nav__link">
+    What is an instrument?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visa" title="VISA" class="md-nav__link">
+    VISA
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alazar-digitizers" title="Alazar digitizers" class="md-nav__link">
+    Alazar digitizers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-we-configure-instruments" title="How do we configure instruments?" class="md-nav__link">
+    How do we configure instruments?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properties" title="Properties" class="md-nav__link">
+    Properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-we-take-measurements" title="How do we take measurements?" class="md-nav__link">
+    How do we take measurements?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-and-measure" title="Source and measure" class="md-nav__link">
+    Source and measure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stimuli" title="Stimuli" class="md-nav__link">
+    Stimuli
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responses" title="Responses" class="md-nav__link">
+    Responses
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#difference-between-stimuli-and-instrument-properties" title="Difference between stimuli and instrument properties" class="md-nav__link">
+    Difference between stimuli and instrument properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/PainterQubits/InstrumentControl.jl/edit/master/docs/ins_meas.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='Interfacing-with-Instruments-and-Making-Measurements-1'></a></p>
+<h1 id="interfacing-with-instruments-and-making-measurements">Interfacing with Instruments and Making Measurements</h1>
+<p><a id='What-is-an-instrument?-1'></a></p>
+<h2 id="what-is-an-instrument">What is an instrument?</h2>
+<p>For the purposes of this package, an instrument is just something connected to the computer that we need to communicate with, and which can apply some stimulus or measure something. Every instrument may connect to the computer by different hardware, comms protocols, and command dialects.</p>
+<p>All instruments are Julia objects, subtypes of the abstract type <code>Instrument</code>. The implementation of each subtype (it's fields, constructors, etc) depend on the specific instrument.</p>
+<p><a id='VISA-1'></a></p>
+<h4 id="visa">VISA</h4>
+<p>Many instruments are able to be addressed using the <a href="http://www.ivifoundation.org/docs/vpp432_2014-06-19.pdf">VISA</a> standard (Virtual Instrument Software Architecture), currently maintained by the IVI Foundation.</p>
+<p>To talk to VISA instruments will require the Julia package <a href="http://www.github.com/ajkeller34/VISA.jl">VISA.jl</a> as well as the <a href="https://www.ni.com/visa/">National Instruments VISA libraries</a>. Installation instructions are available at each link.</p>
+<p><a id='Alazar-digitizers-1'></a></p>
+<h4 id="alazar-digitizers">Alazar digitizers</h4>
+<p>Digitizers made by <a href="http://www.alazartech.com">AlazarTech</a> are notably <em>not</em> compatible with the VISA standard. All Alazar digitizers are addressable by an API supplied by the company, which talks to the card through a shared library (a .dll on Windows or .so on Linux). <code>InstrumentAlazar</code> is an abstract subtype of <code>Instrument</code>.</p>
+<p>The shared library files and API documentation are only available from AlazarTech.</p>
+<p><a id='How-do-we-configure-instruments?-1'></a></p>
+<h2 id="how-do-we-configure-instruments">How do we configure instruments?</h2>
+<p><a id='Properties-1'></a></p>
+<h3 id="properties">Properties</h3>
+<p>Instrument properties are configured and inspected using two functions, <code>setindex!</code> and <code>getindex</code>, which are methods from the Base module that have been overloaded in this package to work with instrument objects. This results in a convenient and concise syntax (<a href="https://groups.google.com/d/msg/julia-users/Dt6nbfhtaNQ/81KgQmttCwAJ">credit due to Oliver Schulz</a> for this idea).</p>
+<p>For example:</p>
+<div class="codehilite"><pre><span></span><span class="n">awg</span><span class="p">[</span><span class="n">TriggerSlope</span><span class="p">]</span> <span class="o">=</span> <span class="o">:</span><span class="n">Rising</span>
+<span class="n">awg</span><span class="p">[</span><span class="n">SampleRate</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10e6</span>
+</pre></div>
+
+
+<p><a id='How-do-we-take-measurements?-1'></a></p>
+<h2 id="how-do-we-take-measurements">How do we take measurements?</h2>
+<p><a id='Source-and-measure-1'></a></p>
+<h3 id="source-and-measure">Source and measure</h3>
+<p>Two functions are provided to abstract away many kinds of measurements: <code>source</code> and <code>measure</code>. In an experiment you source  some stimulus and measure a response. Therefore <code>source</code> takes as arguments: an instance of some subtype of the <code>Stimulus</code> type (which can have different fields for different subtypes), as well as the numerical value(s) for the particular stimulus. <code>measure</code> takes as argument an instance of some subtype of type <code>Response</code>. The idea is to write new subtypes of <code>Stimulus</code> and <code>Response</code> to describe what you are doing, as well as new methods for <code>source</code> and <code>measure</code> that know how to communicate with the instrument(s) based on the Stimuli and Response arguments passed to them</p>
+<p><a id='Stimuli-1'></a></p>
+<h3 id="stimuli">Stimuli</h3>
+<p>All stimuli are objects, subtyped from the abstract <code>Stimulus</code> type. Many stimuli, either general or associated with the capabilities of particular instruments, are already implemented. The implementation of each subtype depends on the specific goals of the user: demonstrations of different stimuli being used can be found in the example notebooks.</p>
+<p>As a simple example, consider the <code>PropertyStimulus</code> type (defined in <a href="https://github.com/PainterQubits/ICCommon.jl">ICCommon.jl</a>) :</p>
+<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">PropertyStimulus</span><span class="p">{</span><span class="n">T</span><span class="o">&lt;:</span><span class="n">InstrumentProperty</span><span class="p">}</span> <span class="o">&lt;:</span> <span class="n">Stimulus</span>
+    <span class="n">typ</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">T</span><span class="p">}</span>
+    <span class="n">ins</span><span class="o">::</span><span class="n">Instrument</span>    
+    <span class="n">tuple</span><span class="o">::</span><span class="kt">Tuple</span>
+    <span class="n">axisname</span><span class="o">::</span><span class="kt">Symbol</span>
+    <span class="n">axislabel</span><span class="o">::</span><span class="n">String</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>with corresponding source method:</p>
+<div class="codehilite"><pre><span></span><span class="k">function</span> <span class="n">source</span><span class="p">(</span><span class="n">ch</span><span class="o">::</span><span class="n">PropertyStimulus</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+    <span class="n">ch</span><span class="o">.</span><span class="n">ins</span><span class="p">[</span><span class="n">ch</span><span class="o">.</span><span class="n">typ</span><span class="p">,</span> <span class="n">ch</span><span class="o">.</span><span class="n">tuple</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Notable among the fields  of <code>PropertyStimulus</code> are the <code>typ</code> and <code>ins</code> fields: <code>typ</code> is the instrument property the stimulus object is associated with, and <code>ins</code> is the instrument which that property corresponds to (Type{T} is a special kind of abstract type whose only instance is the object T; visit the <a href="https://docs.julialang.org/en/stable/manual/types/#man-singleton-types-1">docs</a> for further discussion). <code>tuple</code> are essentially "qualifiers" or "infixes" for the instrument property. For example, if we wanted to change (source) the amplitude of a waveform in a waveform generator instrument with multiple channels, the instrument property at hand is <code>SourceLevel</code> while <code>tuple</code> would specify on <em>what channel</em> we are changing the amplitude.  </p>
+<p>Thus, this <code>Stimulus</code> object holds all the necessary information for a <code>source</code> method to change the value of instrument property <code>T</code> to any value passed to it. And the corresponding source function in fact does just that: it calls a setindex! method to change property <code>T</code> (with qualifiers <code>tuple</code>) on instrument <code>ins</code> to value <code>val</code>. Again, stimuli need not be tied to a particular property; rather, this is just one convenient and easily generalizable example.</p>
+<p>For a concrete example on the use of <code>PropertyStimulus</code>, consider needing to source various frequencies in our E8257D signal generator, where the frequency of a signal generator is an instrument property called <code>Frequency</code>. We can accomplish this task using <code>PropertyStimulus</code> in the following way:</p>
+<div class="codehilite"><pre><span></span><span class="n">stim</span> <span class="o">=</span> <span class="n">PropertyStimulus</span><span class="p">(</span><span class="n">siggen</span><span class="o">::</span><span class="n">E8257D</span><span class="p">,</span> <span class="n">Frequency</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">freq</span> <span class="kp">in</span> <span class="mf">1e9</span><span class="o">:</span><span class="mf">1e8</span><span class="o">:</span><span class="mf">5e9</span>     <span class="c"># 1 GHz to 5 GHz in steps of 100 MHz</span>
+    <span class="n">source</span><span class="p">(</span><span class="n">stim</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
+    <span class="c"># measure(something)</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Easy right?</p>
+<p>Note that one may assign whatever fields and constructor one wishes for a newly created <code>Stimulus</code> subtype. Also, note that not all stimuli need to be associated with a physical instrument. For instance, sourcing a <code>DelayStimulus</code> will cause the script to block until a specified time after creation of the <code>DelayStimulus</code> object. Moreover, a Stimulus could also be associated with several instruments. Maybe a stimulus that makes sense for a particular experiment would be to change all gate voltages at once. These gate voltages could of course be sourced by several physical instruments.</p>
+<p><a id='Responses-1'></a></p>
+<h3 id="responses">Responses</h3>
+<p>All responses are objects, subtyped from the abstract <code>Response</code> type. Usually a response is associated with a particular instrument. The implementation of each subtype depends on the specific goals of the user: demonstrations of different response being used can be found in the example notebooks.</p>
+<p>(put example here)</p>
+<p>However, responses need not come from instruments. For test purposes, suppose we want to mimic a measurement by generating random numbers. <code>RandomResponse</code> produces a random number in the unit interval when it is measured. A <code>TimerResponse</code> will measure the time since creation of the <code>TimerResponse</code> object.</p>
+<p><a id='Difference-between-stimuli-and-instrument-properties-1'></a></p>
+<h3 id="difference-between-stimuli-and-instrument-properties">Difference between stimuli and instrument properties</h3>
+<p>Because a stimulus is defined so broadly, the difference between a stimulus and an instrument property is not obvious. While in many cases there is an overlap between stimuli and properties, a stimulus is like a generalized instrument property: sourcing a stimulus may entail configuring zero or more instrument properties, on zero or more different instruments. As was mentioned earlier, a useful stimulus could be to change gate voltages on multiple different instruments all at once.</p>
+<p>It is useful to think of a stimulus as something which has a chance to react to what you are measuring. For example, this could be applied voltage, sourced by one or more instruments. The applied voltages would be seen by the device under test, which would respond accordingly. The stimulus could also just be a time delay, provided by the measurement computer. It could even be the number of threads used by Julia for real-time processing.</p>
+<p>An instrument property is any persistent setting of an instrument. Tweaking an instrument property could affect the device under test, but it might not. Averaging is a good example. With averaging a measurement may look less noisy, but your device under test doesn't know the difference.</p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../design/" title="Design Summary" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Design Summary
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../sweep/" title="Sweep Jobs" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Sweep Jobs
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application-f3ab9e5ff8.js"></script>
+      
+      
+      <script>app.initialize({url:{base:".."}})</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>

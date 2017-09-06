@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Package for instrument control and superconducting qubit measurement.">
+      
+      
+      
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
+      
+      
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.0">
+    
+    
+      
+        <title>Implementation - InstrumentControl.jl</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-e826f8942a.js"></script>
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application-b6a6d08807.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-23f75ab9c7.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../assets/Documenter.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="InstrumentControl.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon md-icon--home"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Overview
+                </span>
+              
+            
+            Implementation
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <div class="md-nav__button md-logo">
+      
+        <i class="md-icon md-icon--home"></i>
+      
+    </div>
+    InstrumentControl.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Overview
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Overview
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../design/" title="Design Summary" class="md-nav__link">
+      Design Summary
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ins_meas/" title="Instruments/Measurements" class="md-nav__link">
+      Instruments/Measurements
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sweep/" title="Sweep Jobs" class="md-nav__link">
+      Sweep Jobs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Implementation
+      </label>
+    
+    <a href="./" title="Implementation" class="md-nav__link md-nav__link--active">
+      Implementation
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-organization" title="Code organization" class="md-nav__link">
+    Code organization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#communication-with-icdataserver" title="Communication with ICDataServer" class="md-nav__link">
+    Communication with ICDataServer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metaprogramming-for-visa-instruments" title="Metaprogramming for VISA instruments" class="md-nav__link">
+    Metaprogramming for VISA instruments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sweep-sweep-jobs-and-sweep-queueing-implementation" title="Sweep, Sweep Jobs, and Sweep Queueing implementation" class="md-nav__link">
+    Sweep, Sweep Jobs, and Sweep Queueing implementation
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Instruments
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Instruments
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Alazar/" title="Alazar digitizers" class="md-nav__link">
+      Alazar digitizers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Waveform generators
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Waveform generators
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../waveform_generator/awg5014c/" title="AWG5014C" class="md-nav__link">
+      AWG5014C
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      VNAs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        VNAs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../vna/vna/" title="VNAs" class="md-nav__link">
+      VNAs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../vna/e5071c/" title="E5071C" class="md-nav__link">
+      E5071C
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Miscellaneous
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Miscellaneous
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../docbuild/" title="Documentation building" class="md-nav__link">
+      Documentation building
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../releases/" title="Release notes" class="md-nav__link">
+      Release notes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../LICENSE/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-organization" title="Code organization" class="md-nav__link">
+    Code organization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#communication-with-icdataserver" title="Communication with ICDataServer" class="md-nav__link">
+    Communication with ICDataServer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metaprogramming-for-visa-instruments" title="Metaprogramming for VISA instruments" class="md-nav__link">
+    Metaprogramming for VISA instruments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sweep-sweep-jobs-and-sweep-queueing-implementation" title="Sweep, Sweep Jobs, and Sweep Queueing implementation" class="md-nav__link">
+    Sweep, Sweep Jobs, and Sweep Queueing implementation
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/PainterQubits/InstrumentControl.jl/edit/master/docs/implementation.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='Implementation-overview-1'></a></p>
+<h1 id="implementation-overview">Implementation overview</h1>
+<p><a id='Code-organization-1'></a></p>
+<h2 id="code-organization">Code organization</h2>
+<ul>
+<li>Each instrument is defined within its own module, a submodule of <code>InstrumentControl</code>.</li>
+</ul>
+<p>Each instrument is a subtype of <code>Instrument</code>. By convention, instrument model numbers are used for module definitions (e.g. <code>AWG5014C</code>), so type names have "Ins" prepended (e.g. <code>InsAWG5014</code>).</p>
+<ul>
+<li>Low-level wrappers for shared libraries are kept in their own packages (e.g. <code>VISA</code>, <code>Alazar</code>, and <code>KeysightInstruments</code> calls).</li>
+</ul>
+<p>This way, at least some code can be reused if someone else does not want to use our codebase.</p>
+<ul>
+<li>All sweep related type definitions and functions described in <a href="https://painterqubits.github.io/InstrumentControl.jl/sweep/">Sweep Jobs</a></li>
+</ul>
+<p>can be found in <code>src/Sweep.jl</code></p>
+<ul>
+<li>Abstract type definitions like <code>Instrument</code> and <code>Stimulus</code>, are defined in</li>
+</ul>
+<p><a href="https://github.com/PainterQubits/ICCommon.jl">ICCommon.jl</a>  </p>
+<ul>
+<li><code>src/Definitions.jl</code> contains some definitions of other commonly used functions</li>
+</ul>
+<p>and types. <code>src/config.jl</code> parses information in <code>deps/config.json</code> for talking to the database set up by ICDataServer, such as username information, database server address, path for saving results of sweeps, and stores it in a dictionary for access to all other functions that need this information to communicate with the database</p>
+<p><a id='Communication-with-ICDataServer-1'></a></p>
+<h2 id="communication-with-icdataserver">Communication with ICDataServer</h2>
+<p>The functionality of the InstrumentControl.jl package is intertwined with the <a href="https://github.com/PainterQubits/ICDataServer.jl">ICDataServer.jl</a> package. ICDataServer sets up a relational database (RDBMS) with which it communicates with through SQL. InstrumentControl talks to that database; this database is used to maintain a log of information for each job: the job is identified by the job ID, and it mantains any metadata specified by the database creator. In its current implementation, the data saved to the database is the time of job submission, the time of job completion, and the latest job status, but we hope to add more logging functionality to the code over time.</p>
+<p>When <code>sweep</code> is executed, the function communicates with the ICDataServer to create a new entry in the database table; the identifier of the new entry is a new job ID that the RDMS itself creates. ICDataServer then communicates back to InstrumentControl with this particular job ID and the time of submission; this job metadata is immediately stored in the <code>SweepJob</code> object (created by the <code>sweep</code> function as a handle to the new job). The job is then queued with the provided job ID as it's identifier.</p>
+<p>The actual communication between the two packages is mediated by the popular <a href="http://zeromq.org/">ZeroMQ</a> distributed messaging software; we utilize it's <a href="https://github.com/JuliaInterop/ZMQ.jl">ZMQ</a> Julia interface. While the reader is encouraged to go to these links for in-depth information, what you essentially need to communicate between a client and a server with ZeroMQ is a <em>Context</em> and a <em>socket</em>. In Julia, a <code>ZMQ.Context</code> object provides the framework for communication via a TCP connection (or any analagous form of communication). The client and server respectively will connect to a TCP port to send/receive information. The point of entry/exit for information being passed along this TCP connection are the ZMQ.Socket objects; they "bind" to the TCP ports and are the objects that the user actually calls on the send and receive information.</p>
+<p>When InstrumentControl is imported, a <code>ZMQ.Context</code> object is automatically initialized. <code>ZMQ.Socket</code> objects are initialized in the first instance of communication with the ICDataServer, and the same object is used thereafter for communication within the same usage session. The socket objects are automatically bound to TCP ports that the user specifies in the <code>deps/config.json</code> file. InstrumentControl and ICDataServer communicate by binding to the same TCP connection.</p>
+<p><a id='Metaprogramming-for-VISA-instruments-1'></a></p>
+<h2 id="metaprogramming-for-visa-instruments">Metaprogramming for VISA instruments</h2>
+<p>Many commercial instruments support a common communications protocol and command syntax (VISA and SCPI respectively). For such instruments, methods for <code>setindex!</code> and <code>getindex</code>, as well as <code>Instrument</code> subtype and <code>InstrumentProperty</code> subtype definitions, can be generated with metaprogramming, rather than typing them out explicitly.</p>
+<p>The file <code>src/MetaprogrammingVISA.jl</code> is used heavily for code generation based on JSON template files. Since much of the logic for talking to instruments is the same between VISA instruments, in some cases no code needs to be written to control a new instrument provided an appropriate template file is prepared. The metaprogramming functions are described below although they are not intended to be used interactively.</p>
+<p><a id='InstrumentControl.insjson' href='#InstrumentControl.insjson'>#</a>
+<strong><code>InstrumentControl.insjson</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>insjson(file::AbstractString)
+</pre></div>
+
+
+<p>Parses a JSON file with a standardized schema to describe how to control an instrument.</p>
+<p>Here is an example of a valid JSON file with valid schema for parsing:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;instrument&quot;</span><span class="p">:{</span>
+            <span class="nt">&quot;module&quot;</span><span class="p">:</span><span class="s2">&quot;E5071C&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;InsE5071C&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Keysight&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;E5071C&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;writeterminator&quot;</span><span class="p">:</span><span class="s2">&quot;\n&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;properties&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;cmd&quot;</span><span class="p">:</span><span class="s2">&quot;:CALCch:TRACtr:CORR:EDEL:TIME&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;VNA.ElectricalDelay&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;values&quot;</span><span class="p">:[</span>
+                <span class="s2">&quot;v::Real&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;infixes&quot;</span><span class="p">:[</span>
+                <span class="s2">&quot;ch::Integer=1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tr::Integer=1&quot;</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;My documentation&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><code>JSON.parse</code> takes such a file and makes an 'instrument' dictionary and a 'properties' array. The <code>instrument</code> dictionary is described in the <a href="./#InstrumentControl.@generate_instruments"><code>@generate_instruments</code></a> documentation. The <code>properties</code> array contains one or more dictionaries, each with keys:</p>
+<ul>
+<li><code>cmd</code>: Specifies what must be sent to the instrument (it should be terminated</li>
+</ul>
+<p>with "?" for query-only commands). The lower-case characters are replaced by "infixes", which are either numerical arguments or strings</p>
+<ul>
+<li><code>type</code>: Specifies the <code>InstrumentProperty</code> subtype to use <code>cmd</code>.</li>
+<li><code>values</code>: Specifies the required argument for <code>setindex!</code>, which will appear</li>
+</ul>
+<p>after <code>cmd</code> in the string sent to the instrument.</p>
+<ul>
+<li><code>infixes</code>: Specifies the infix arguments to be put in <code>cmd</code>. This key is not</li>
+</ul>
+<p>required if there are no infixes.</p>
+<ul>
+<li><code>doc</code>: Specifies documentation for the generated Julia functions. This key</li>
+</ul>
+<p>is not required if there is no documentation. This is used not only for interactive help but also in generating the documentation you are reading.</p>
+<p>The value of the <code>properties.type</code> field and entries in the <code>properties.values</code> and <code>properties.infixes</code> arrays are parsed into expressions or symbols for further manipulation. All generated dictionary keys are also converted to symbols for further manipulation.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/MetaprogrammingVISA.jl#L8-L62' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.@generate_instruments' href='#InstrumentControl.@generate_instruments'>#</a>
+<strong><code>InstrumentControl.@generate_instruments</code></strong> &mdash; <em>Macro</em>.</p>
+<div class="codehilite"><pre><span></span>@generate_instruments(metadata)
+</pre></div>
+
+
+<p>This macro takes a dictionary of metadata, typically obtained from a call to <a href="./#InstrumentControl.insjson"><code>insjson</code></a>. It operates on the <code>:instrument</code> field of the dictionary which is expected to have the following structure:</p>
+<ul>
+<li><code>module</code>: The module name. Can already exist but is created if it does not.</li>
+</ul>
+<p>This field is converted from a string to a <code>Symbol</code> by <a href="./#InstrumentControl.insjson"><code>insjson</code></a>.</p>
+<ul>
+<li><code>type</code>: The name of the type to create for the new instrument.</li>
+</ul>
+<p>This field is converted from a string to a <code>Symbol</code> by <a href="./#InstrumentControl.insjson"><code>insjson</code></a>.</p>
+<ul>
+<li><code>super</code>: This field is optional. If provided it will be the supertype of</li>
+</ul>
+<p>the new instrument type, otherwise the supertype will be <code>Instrument</code>. This field is converted from a string to a <code>Symbol</code> by <a href="./#InstrumentControl.insjson"><code>insjson</code></a>.</p>
+<ul>
+<li><code>make</code>: The make of the instrument, e.g. Keysight, Tektronix, etc.</li>
+<li><code>model</code>: The model of the instrument, e.g. E5071C, AWG5014C, etc.</li>
+<li><code>writeterminator</code>: Write termination string for sending SCPI commands.</li>
+</ul>
+<p>The macro imports required modules and methods, defines and exports the <code>Instrument</code> subtype, and defines and exports and the <code>make</code> and <code>model</code> methods if they do not exist already (note generic functions <code>make</code> and <code>model</code> are defined in <code>src/Definitions.jl</code>).</p>
+<p>By convention we typically have the module name be the same as the model name, and the type is just the model prefixed by "Ins", e.g. <code>InsE5071C</code>. This is not required.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/MetaprogrammingVISA.jl#L135-L160' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.@generate_properties' href='#InstrumentControl.@generate_properties'>#</a>
+<strong><code>InstrumentControl.@generate_properties</code></strong> &mdash; <em>Macro</em>.</p>
+<div class="codehilite"><pre><span></span>@generate_properties(metadata)
+</pre></div>
+
+
+<p>This macro takes a dictionary of metadata, typically obtained from a call to <a href="./#InstrumentControl.insjson"><code>insjson</code></a>. It operates on the <code>:properties</code> field of the dictionary, which is expected to be a list of dictionaries with information on each "property" of the instrument. This macro specifically operates on the <code>:type</code> field of each property dictionary; this field contains the name of the type we would like to assign to a given property of the instrument.</p>
+<p>For every property dictionary, the macro first checks if a type with name corresponding to the dictionary's <code>:type</code> field  has already been defined. If not, it then defines an abstract type with that name, and makes it a subtype of the <code>InstrumentProperty</code> type defined in the ICCommon package. The macro then finally exports that type</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/MetaprogrammingVISA.jl#L207-L221' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.@generate_handlers' href='#InstrumentControl.@generate_handlers'>#</a>
+<strong><code>InstrumentControl.@generate_handlers</code></strong> &mdash; <em>Macro</em>.</p>
+<div class="codehilite"><pre><span></span>@generate_handlers(instype, p)
+</pre></div>
+
+
+<p>This macro takes a symbol <code>instype</code> bound to an <code>Instrument</code> subtype (i.e. if the symbol was evaluated, it would return an <code>Instrument</code> subtype ), and a property dictionary <code>p</code> located in the <code>:properties</code> field of the dictionary of metadata generated by a call to <a href="./#InstrumentControl.insjson"><code>insjson</code></a>. with the auxiliary JSON file described above.</p>
+<p>This macro is written to handle the cases where an instrument command does not accept numerical arguments, but rather a small set of options. Here is an example of the property dictionary (prior to parsing) for such a command, which sets/gets the format for a given channel and trace on the E5071C vector network analyzer:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;cmd&quot;</span><span class="p">:</span><span class="s2">&quot;:CALCch:TRACtr:FORM&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;VNAFormat&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;values&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;v::Symbol in symbols&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;symbols&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;LogMagnitude&quot;</span><span class="p">:</span><span class="s2">&quot;MLOG&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;Phase&quot;</span><span class="p">:</span><span class="s2">&quot;PHAS&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;GroupDelay&quot;</span><span class="p">:</span><span class="s2">&quot;GDEL&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;SmithLinear&quot;</span><span class="p">:</span><span class="s2">&quot;SLIN&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;SmithLog&quot;</span><span class="p">:</span><span class="s2">&quot;SLOG&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;SmithComplex&quot;</span><span class="p">:</span><span class="s2">&quot;SCOM&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;Smith&quot;</span><span class="p">:</span><span class="s2">&quot;SMIT&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;SmithAdmittance&quot;</span><span class="p">:</span><span class="s2">&quot;SADM&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;PolarLinear&quot;</span><span class="p">:</span><span class="s2">&quot;PLIN&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;PolarLog&quot;</span><span class="p">:</span><span class="s2">&quot;PLOG&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;PolarComplex&quot;</span><span class="p">:</span><span class="s2">&quot;POL&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;LinearMagnitude&quot;</span><span class="p">:</span><span class="s2">&quot;MLIN&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;SWR&quot;</span><span class="p">:</span><span class="s2">&quot;SWR&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;RealPart&quot;</span><span class="p">:</span><span class="s2">&quot;REAL&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;ImagPart&quot;</span><span class="p">:</span><span class="s2">&quot;IMAG&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;ExpandedPhase&quot;</span><span class="p">:</span><span class="s2">&quot;UPH&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;PositivePhase&quot;</span><span class="p">:</span><span class="s2">&quot;PPH&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;infixes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;ch::Integer=1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tr::Integer=1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;doc&quot;</span><span class="p">:</span><span class="s2">&quot;Hey&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>We see here that the <code>values</code> key is saying that we are only going to accept <code>Symbol</code> type for our <code>setindex!</code> method and the symbol has to come out of <code>symbols</code>, a dictionary that is defined on the next line. The keys of this dictionary are going to be interpreted as symbols (e.g. <code>:LogMagnitude</code>) and the values are just ASCII strings to be sent to the instrument. We want to associate these symbols with the specific ASCII strings because these strings are not very descriptive, so we would like a more descriptive handle for them, as well as a handle that could be potentially shared between different instruments which have different "spellings" for the same command. We make the handles symbols because they are a more flexible type (which can always be parsed into strings)</p>
+<p><code>generate_handlers</code> makes a bidirectional mapping between the symbols and the strings. For the example above, the macro defines the following functions:</p>
+<div class="codehilite"><pre><span></span><span class="k">function</span> <span class="n">symbols</span><span class="p">(</span><span class="n">ins</span><span class="o">::</span><span class="n">InsE5071C</span><span class="p">,</span> <span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">VNAFormat</span><span class="p">},</span> <span class="n">v</span><span class="o">::</span><span class="kt">Symbol</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="o">:</span><span class="n">LogMagnitude</span>
+      <span class="s">&quot;MLOG&quot;</span>
+    <span class="k">else</span>
+      <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="o">:</span><span class="n">Phase</span>
+        <span class="s">&quot;PHAS&quot;</span>
+      <span class="k">else</span><span class="o">...</span>
+
+        <span class="k">else</span>
+          <span class="n">error</span><span class="p">(</span><span class="s">&quot;unexpected input.&quot;</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="n">VNAFormat</span><span class="p">(</span><span class="n">ins</span><span class="o">::</span><span class="n">InsE5071C</span><span class="p">,</span> <span class="n">s</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="s">&quot;MLOG&quot;</span>
+      <span class="o">:</span><span class="n">LogMagnitude</span>
+    <span class="k">else</span>
+      <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="s">&quot;PHAS&quot;</span>
+        <span class="o">:</span><span class="n">Phase</span>
+      <span class="k">else</span><span class="o">...</span>
+
+
+        <span class="k">else</span>
+          <span class="n">error</span><span class="p">(</span><span class="s">&quot;unexpected input.&quot;</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>The above functions will be defined in the module where the macro is run. Note that the function <code>symbols</code> has its name chosen based on the dictionary name in the JSON file. Since this function is not exported from the instrument's module there should be few namespace worries and we maintain future flexibliity.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/MetaprogrammingVISA.jl#L237-L331' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.@generate_configure' href='#InstrumentControl.@generate_configure'>#</a>
+<strong><code>InstrumentControl.@generate_configure</code></strong> &mdash; <em>Macro</em>.</p>
+<div class="codehilite"><pre><span></span>@generate_configure(instype, p)
+</pre></div>
+
+
+<p>This macro takes a symbol <code>instype</code> bound to an <code>Instrument</code> subtype (i.e. if the symbol was evaluated, it would return an <code>Instrument</code> subtype ), and a property dictionary <code>p</code> located in the <code>:properties</code> field of the dictionary of metadata generated by a call to <a href="./#InstrumentControl.insjson"><code>insjson</code></a>. with the auxiliary JSON file described above.</p>
+<p>This macro overloads the base method <code>setindex!</code>. In this implementation of <code>setindex!</code>, the instrument acts as the collection, the key is the InstrumentProperty type defined from the <code>:type</code> field of the <code>p</code> dictionary, and the value is specified by the user. This method also takes infix arguments; infixes are currently implemented as keyword arguments, so the <code>setindex!</code> method applies some standard infixes if none are specified by the user.</p>
+<p>The method constructs a configuration command to send to the instrument to change the specific instrument property the dictionary <code>p</code> corresponds to (with user specified infixes). The command has "#" in place of the (user specified) value the property will be set to. It then sends the command to the instrument with the <code>write</code> method (NOTE: currently only defined in the VISA module for VISA instruments) where the command and the user-specified property value are passed to it. The <code>write</code> method replaces "#" with the proper value, and sends the command to the instrument</p>
+<p>The macro accomplishes this by constructing and evaluating (approximately) the following expression:</p>
+<div class="codehilite"><pre><span></span><span class="kd">function</span> <span class="nx">setindex</span><span class="o">!</span><span class="p">(</span><span class="nx">ins</span><span class="o">::</span><span class="nx">instype</span><span class="p">,</span> <span class="nx">v</span><span class="o">::</span><span class="nx">values_Type</span><span class="p">,</span> <span class="o">::</span><span class="nx">Type</span><span class="p">{</span><span class="nx">p</span><span class="p">[</span><span class="o">:</span><span class="nx">type</span><span class="p">]},</span> <span class="nx">infixes_keyword_args</span><span class="p">)</span>
+  <span class="nx">command</span><span class="o">=</span><span class="nx">p</span><span class="p">[</span><span class="o">:</span><span class="nx">cmd</span><span class="p">]</span>
+  <span class="nx">command</span><span class="o">*</span><span class="s2">&quot; #&quot;</span>
+  <span class="nx">cmd</span><span class="err"> </span><span class="o">=</span><span class="err"> </span><span class="nx">replace</span><span class="p">(</span><span class="nx">cmd</span><span class="p">,</span><span class="err"> </span><span class="s2">&quot;infix_name&quot;</span><span class="p">,</span><span class="err"> </span><span class="nx">infix_keyword_arg1</span><span class="p">)</span>
+  <span class="nx">cmd</span><span class="err"> </span><span class="o">=</span><span class="err"> </span><span class="nx">replace</span><span class="p">(</span><span class="nx">cmd</span><span class="p">,</span><span class="err"> </span><span class="s2">&quot;infix_name&quot;</span><span class="p">,</span><span class="err"> </span><span class="nx">infix_keyword_arg2</span><span class="p">)</span>
+  <span class="p">...</span> <span class="err">#</span><span class="nx">etc</span>
+  <span class="p">...</span><span class="nx">manipulation</span> <span class="nx">of</span> <span class="nx">input</span> <span class="nx">v</span> <span class="nx">into</span> <span class="nx">format</span> <span class="nx">instrument</span> <span class="nx">accepts</span>
+  <span class="nx">write</span><span class="p">(</span><span class="nx">ins</span><span class="p">,</span><span class="nx">cmd</span><span class="p">,</span><span class="nx">v</span><span class="p">)</span>
+<span class="nx">end</span>
+</pre></div>
+
+
+<p>The function should be defined in the module where the instrument type was defined.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/MetaprogrammingVISA.jl#L505-L542' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.@generate_inspect' href='#InstrumentControl.@generate_inspect'>#</a>
+<strong><code>InstrumentControl.@generate_inspect</code></strong> &mdash; <em>Macro</em>.</p>
+<div class="codehilite"><pre><span></span>@generate_inspect(instype, p)
+</pre></div>
+
+
+<p>This macro takes a symbol <code>instype</code> bound to an <code>Instrument</code> subtype (i.e. if the symbol was evaluated, it would return an <code>Instrument</code> subtype ), and a property dictionary <code>p</code> located in the <code>:properties</code> field of the dictionary of metadata generated by a call to <a href="./#InstrumentControl.insjson"><code>insjson</code></a>. with the auxiliary JSON file described above.</p>
+<p>This macro overloads the base method <code>getindex</code>. In this implementation of <code>getindex</code>, the instrument acts as the collection, and the key is the InstrumentProperty type defined from the <code>:type</code> field of the <code>p</code> dictionary. This method also takes infix arguments; infixes are currently implemented as keyword arguments, so the <code>getindex</code> method applies some standard infixes if none are specified by the user.</p>
+<p>The method constructs a query command to send to the instrument regarding the specific instrument property the dictionary <code>p</code> corresponds to. It then sends the command to the instrument with the <code>ask</code> method (NOTE: currently defined in the VISA module for VISA instruments). The <code>ask</code> method returns the value or state of the instrument property being queried.</p>
+<p>The macro accomplishes this by constructing and evaluating (approximately) the following expression:</p>
+<div class="codehilite"><pre><span></span><span class="kd">function</span> <span class="nx">getindex</span><span class="p">(</span><span class="nx">ins</span><span class="o">::</span><span class="nx">instype</span><span class="p">,</span> <span class="o">::</span><span class="nx">Type</span><span class="p">{</span><span class="nx">p</span><span class="p">[</span><span class="o">:</span><span class="nx">type</span><span class="p">]},</span> <span class="nx">infixes_keyword_args</span><span class="p">)</span>
+  <span class="nx">command</span><span class="o">=</span><span class="nx">p</span><span class="p">[</span><span class="o">:</span><span class="nx">cmd</span><span class="p">]</span>
+  <span class="nx">command</span><span class="p">[</span><span class="nx">end</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;?&#39;</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">command</span> <span class="o">*=</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
+  <span class="nx">cmd</span><span class="err"> </span><span class="o">=</span><span class="err"> </span><span class="nx">replace</span><span class="p">(</span><span class="nx">cmd</span><span class="p">,</span><span class="err"> </span><span class="s2">&quot;infix_name&quot;</span><span class="p">,</span><span class="err"> </span><span class="nx">infix_keyword_arg1</span><span class="p">)</span>
+  <span class="nx">cmd</span><span class="err"> </span><span class="o">=</span><span class="err"> </span><span class="nx">replace</span><span class="p">(</span><span class="nx">cmd</span><span class="p">,</span><span class="err"> </span><span class="s2">&quot;infix_name&quot;</span><span class="p">,</span><span class="err"> </span><span class="nx">infix_keyword_arg2</span><span class="p">)</span>
+  <span class="p">...</span> <span class="err">#</span><span class="nx">etc</span>
+  <span class="nx">ask</span><span class="p">(</span><span class="nx">ins</span><span class="p">,</span><span class="nx">cmd</span><span class="p">)</span>
+  <span class="p">...</span><span class="nx">further</span> <span class="nx">manipulation</span> <span class="nx">of</span> <span class="nx">output</span> <span class="k">for</span> <span class="nx">display</span>
+<span class="nx">end</span>
+</pre></div>
+
+
+<p>The function should be defined in the module where the instrument type was defined.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/MetaprogrammingVISA.jl#L409-L444' class='documenter-source'>source</a><br></p>
+<p><a id='Sweep,-Sweep-Jobs,-and-Sweep-Queueing-implementation-1'></a></p>
+<h2 id="sweep-sweep-jobs-and-sweep-queueing-implementation">Sweep, Sweep Jobs, and Sweep Queueing implementation</h2>
+<p>We stratify InstrumentControl "sweeps" functionality into different types, along with helper functions for each type, in order to achieve a object-oriented architecture with code modularity.</p>
+<p>Measurement specific information, such as what independent variables will be swept and what response will be measured, are contained in a <code>Sweep</code> type:</p>
+<p><a id='InstrumentControl.Sweep' href='#InstrumentControl.Sweep'>#</a>
+<strong><code>InstrumentControl.Sweep</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct Sweep
+    dep::Response
+    indep::Tuple{Tuple{Stimulus, AbstractVector}}
+    result::AxisArray
+    Sweep(a,b) = new(a,b)
+    Sweep(a,b,c) = new(a,b,c)
+end
+</pre></div>
+
+
+<p>Object representing a sweep; which will contain information on stimuli sent to the instruments, information on what kind of response we will be measuring, and the numerical data obtained from the measurement. <code>dep</code> (short for dependent) is a <code>Response</code> that will be measured. <code>indep</code> is a tuple of <code>Stimulus</code> objects and the values they will be sourced over. <code>result</code> is the result array of the sweep, which need not be provided at the time the <code>Sweep</code> object is created.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L16-L33' class='documenter-source'>source</a><br></p>
+<p>However, additional metadata is needed for scheduling and queueing of sweeps, as well as logging of job information on ICDataServer. We "bundle" that information, along with a <code>Sweep</code> object, in a more comprehensive <code>SweepJob</code> type:</p>
+<div class="codehilite"><pre><span></span>InstrumentControl.SweepJob
+InstrumentControl.SweepJob()
+</pre></div>
+
+
+<p>Finally, we require a <em>collection</em> object that can hold <code>SweepJob</code> objects, and sort them by job priority, in addition to having  functionality for  automatic scheduling of jobs in the background. For this purpose we define the <code>SweepJobQueue</code> type, as well as a initialization inner constructor.</p>
+<p><a id='InstrumentControl.SweepJobQueue' href='#InstrumentControl.SweepJobQueue'>#</a>
+<strong><code>InstrumentControl.SweepJobQueue</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span>mutable struct SweepJobQueue
+    #PriorityQueue is essentially a glorified dictionary with built-in functionality
+    #for sorting of keys
+    q::PriorityQueue{Int,SweepJob,
+        Base.Order.ReverseOrdering{Base.Order.ForwardOrdering}}
+    running_id::Channel{Int}
+    last_finished_id::Channel{Int}
+    trystart::Condition #used to communicate with the job_starter function
+    update_taskref::Ref{Task} #used to communicate with the job_updater function
+    update_channel::Channel{SweepJob} #channel for communicating with the job_updater function
+    function SweepJobQueue()
+        sjq = new(PriorityQueue(Int[],SweepJob[],Base.Order.Reverse),
+            Channel{Int}(1), Channel{Int}(1), Condition())
+        put!(sjq.running_id, -1)
+        put!(sjq.last_finished_id,-1)
+        sjq.update_taskref = Ref{Task}() #initializing a pointer for a task
+        sjq.update_channel = Channel(t-&gt;job_updater(sjq, t);
+            ctype = SweepJob, taskref=sjq.update_taskref)
+        #the job_updater function is wrapped in a Task through this Channel constructor
+        @schedule job_starter(sjq) #the job_started function is wrapped in a Task here
+        sjq
+    end
+end
+</pre></div>
+
+
+<p>A queue responsible for prioritizing sweeps and executing them accordingly. The queue holds <code>SweepJob</code> objects, and "indexes" them by their <code>job_id</code>. It prioritizes jobs based on their priorities; for equal priority values, the job submitted earlier takes precedent. The queue keeps track of which job is running (if any) by its <code>running_id</code> <code>Channel</code>. The queue keeps track of the last finished job by the <code>last_finished_id</code> channel, for easy access to the data of the last finished job. Other fields are used for intertask communication. Note that a <code>running_id of</code> -1 signifies that no job is running.</p>
+<p>When a <code>SweepJobQueue</code> is created through it's argumentless inner constructor (made for initialization purposes), two tasks are initialized. One task manages job updates, the other task is responsible for starting jobs; the former task executes the <code>job_updater</code> function, the latter task executes the <code>job_starter</code> function. Both functions execute infinite while loops, therefore they never end.</p>
+<p>When the job starter task is notified with the <code>trystart::Condition</code> object in the <code>SweepJobQueue</code> object, it will find the highest priority job in the queue. Then, if a job is not running, and the prioritized job is waiting, and if the prioritized job is runnable (the priority may be "NEVER"), then the job is started. The database is updated asynchronously to reflect the new job, the queue's <code>running_id</code> is changed to the job's id, and the job's status is changed to "Running".</p>
+<p>The job updater task tries to take a <code>SweepJob</code> from <code>update_channel</code>, the unbuffered job <code>Channel</code> of the <code>SweepJobQueue</code> object. The task is blocked until a job is put into the channel. Once a job arrives, provided the job has finished or has been aborted, the database is asynchronously updated, the job is marked as no longer running (by updating the <code>running_id</code> and <code>last_finished_id</code> channels), the sweep result is asynchronously saved to disk, and finally the job starter task is notified through the queue's <code>trystart</code> <code>Condition</code> object. The job updater task loops around and waits for another job to arrive at its channel.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L261-L319' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.job_updater' href='#InstrumentControl.job_updater'>#</a>
+<strong><code>InstrumentControl.job_updater</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>job_updater(sjq::SweepJobQueue, update_channel::Channel{SweepJob})
+</pre></div>
+
+
+<p>Used when a sweep job finishes; archieves the result of the finished sweep job, updates all job and queue metadata, asynchronously updates ICDataServer, and notifies the job_starter task to run through <code>sjq</code>'s <code>trystart</code> <code>Condition</code> object. This function continuously runs continuously without stopping once called. In its current implementation, this function is executed through a Task when a <code>SweepJobQueue</code> object is initialized; this allows the function to be stopped and recontinued asynchronously as is appropriate.</p>
+<p>The function first waits until the update_channel is populated with a job. Once a job arrives, the function takes the job from the channel, and given that it's status is "Done" or "Aborted", it executes the items described above</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L345-L358' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.job_starter' href='#InstrumentControl.job_starter'>#</a>
+<strong><code>InstrumentControl.job_starter</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>job_starter(sjq::SweepJobQueue)
+</pre></div>
+
+
+<p>Used when starting a new sweep job. The function first obtains the highest priority job in <code>sjq</code>; and given that a job is not running, it's status is "Waiting", and if the prioritized job is runnable (the priority may be "never"), then the job is started. The function updates all job and queue metadata and asynchronously updates ICDataServer. This function continuously runs continuously without stopping once called. In its current implementation, this function is executed through a Task when a <code>SweepJobQueue</code> object is initialized; this allows the function to be stopped and recontinued asynchronously as is appropriate.</p>
+<p>The last thing the function does is change the job status to "Running". When a job is scheduled with the sweep function, the sweep function waits for the status of the job to be changed from "Waiting" to start sourcing the instruments and performing measurements</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L389-L404' class='documenter-source'>source</a><br></p>
+<p>When InstrumentControl is imported, a default 'SweepJobQueue' object is instantiated via the <code>SweepJobQueue()</code> constructor, and associated with a pointer called <code>sweepjobqueue</code>. This is THE queue running in the background automatically scheduling jobs, and referred to as the "default sweep job queue object" in the documentation. This object can be returned by the following function:</p>
+<p><a id='InstrumentControl.jobs-Tuple{}' href='#InstrumentControl.jobs-Tuple{}'>#</a>
+<strong><code>InstrumentControl.jobs</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>jobs()
+</pre></div>
+
+
+<p>Returns the default <code>SweepJobQueue</code> object, initialized when the InstrumentControl module is imported/used. All jobs are scheduled in this object. Typically you call this to see what jobs are waiting, aborted, or finished, and what job is running.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L499-L504' class='documenter-source'>source</a><br></p>
+<p>Sweeps are scheduled by a call to the <code>sweep</code> function:</p>
+<p><a id='InstrumentControl.sweep' href='#InstrumentControl.sweep'>#</a>
+<strong><code>InstrumentControl.sweep</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span><span class="nt">sweep</span><span class="p">{</span><span class="err">N</span><span class="p">}</span><span class="o">(</span><span class="nt">dep</span><span class="p">::</span><span class="nd">Response</span><span class="o">,</span> <span class="nt">indep</span><span class="p">::</span><span class="nd">Vararg</span><span class="p">{</span><span class="err">Tuple{Stimulus,</span> <span class="err">AbstractVector</span><span class="p">}</span><span class="o">,</span> <span class="nt">N</span><span class="err">}</span><span class="o">;</span>
+    <span class="nt">priority</span> <span class="o">=</span> <span class="nt">NORMAL</span><span class="o">)</span>
+</pre></div>
+
+
+<p><code>sweep</code> measures a response as a function of an arbitrary number of stimuli, sourced over the values given in the <code>AbstractVector</code> input, and returns a handle to the sweep job. This can be used to access the results while the sweep is being measured.</p>
+<p>This function is responsible for 1) initialzing sockets for communication with the ICDataServer, 2) initializing an appropriate array to hold the reults of the sweep,</p>
+<ol>
+<li>preparing a <a href="./#InstrumentControl.SweepJob"><code>InstrumentControl.SweepJob</code></a> object with an appropriate <code>job_id</code></li>
+</ol>
+<p>obtained from the database, 4) adding the job to the default <code>SweepJobQueue</code> object (defined when the InstrumentControl module is used/imported), and 5) launching an asynchronous sweep job.</p>
+<p>The <code>priority</code> keyword may be <code>LOW</code>, <code>NORMAL</code>, or <code>HIGH</code>, or any integer greater than or equal to zero.</p>
+<p>The actual sweeping, i.e., the actual <code>source</code> and <code>measure</code> loops to measure data are in a private function <a href="./#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a>. Note that if <a href="./#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a> is not defined yet, this function will also define the method in order to it to be used to schedule a sweep.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L596-L619' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl._sweep!' href='#InstrumentControl._sweep!'>#</a>
+<strong><code>InstrumentControl._sweep!</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>_sweep!(::Val{D}, ::Val{N}, sj, update_channel)
+</pre></div>
+
+
+<p>This is a private function which should not be called directly by the user. It is launched asynchronously by <a href="./#InstrumentControl.sweep"><code>sweep</code></a>. The implementation uses macros from <a href="https://docs.julialang.org/en/stable/devdocs/cartesian/">Base.Cartesian</a>. The stimuli are sourced only when they need to be, at the start of each <code>for</code> loop level.</p>
+<p><code>D</code> is the dimension of the output array of the measure function (if multiple things are measured for one Response type, the array will be multi-dimensional). <code>N</code> is the number of stimuli which the sweep sources over. sj is the handle to the <code>SweepJob</code> object, and update_channel is a channel of the queue used for intertask comunication.</p>
+<p>The axis scaling of <code>measure(sj.sweep.dep)</code>, i.e., the dimensions of the output array of the function. is presumed to be fixed, as it is only looked at once, the first time <code>measure</code> is called.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L655-L674' class='documenter-source'>source</a><br></p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../sweep/" title="Sweep Jobs" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Sweep Jobs
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../Alazar/" title="Alazar digitizers" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Alazar digitizers
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application-f3ab9e5ff8.js"></script>
+      
+      
+      <script>app.initialize({url:{base:".."}})</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>

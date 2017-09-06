@@ -1,0 +1,746 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Package for instrument control and superconducting qubit measurement.">
+      
+      
+      
+        <meta name="author" content="Andrew Keller, Vinicius Ferreira">
+      
+      
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.0">
+    
+    
+      
+        <title>Sweep Jobs - InstrumentControl.jl</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-e826f8942a.js"></script>
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application-b6a6d08807.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-23f75ab9c7.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../assets/Documenter.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="InstrumentControl.jl" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon md-icon--home"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Overview
+                </span>
+              
+            
+            Sweep Jobs
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <div class="md-nav__button md-logo">
+      
+        <i class="md-icon md-icon--home"></i>
+      
+    </div>
+    InstrumentControl.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/PainterQubits/InstrumentControl.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Overview
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Overview
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../design/" title="Design Summary" class="md-nav__link">
+      Design Summary
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ins_meas/" title="Instruments/Measurements" class="md-nav__link">
+      Instruments/Measurements
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Sweep Jobs
+      </label>
+    
+    <a href="./" title="Sweep Jobs" class="md-nav__link md-nav__link--active">
+      Sweep Jobs
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites-for-a-sweep" title="Prerequisites for a Sweep" class="md-nav__link">
+    Prerequisites for a Sweep
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#queueing" title="Queueing" class="md-nav__link">
+    Queueing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interacting-with-a-sweep-job" title="Interacting with a sweep job" class="md-nav__link">
+    Interacting with a sweep job
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../implementation/" title="Implementation" class="md-nav__link">
+      Implementation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Instruments
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Instruments
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Alazar/" title="Alazar digitizers" class="md-nav__link">
+      Alazar digitizers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Waveform generators
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Waveform generators
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../waveform_generator/awg5014c/" title="AWG5014C" class="md-nav__link">
+      AWG5014C
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      VNAs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        VNAs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../vna/vna/" title="VNAs" class="md-nav__link">
+      VNAs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../vna/e5071c/" title="E5071C" class="md-nav__link">
+      E5071C
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Miscellaneous
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Miscellaneous
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../docbuild/" title="Documentation building" class="md-nav__link">
+      Documentation building
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../releases/" title="Release notes" class="md-nav__link">
+      Release notes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../LICENSE/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites-for-a-sweep" title="Prerequisites for a Sweep" class="md-nav__link">
+    Prerequisites for a Sweep
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#queueing" title="Queueing" class="md-nav__link">
+    Queueing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interacting-with-a-sweep-job" title="Interacting with a sweep job" class="md-nav__link">
+    Interacting with a sweep job
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/PainterQubits/InstrumentControl.jl/edit/master/docs/sweep.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a id='Sweeps-1'></a></p>
+<h1 id="sweeps">Sweeps</h1>
+<p>When thinking of measurement, one generally imagines measuring some dependent variable with respect to some independent variable that is swept across a range of values. While the devil is in the details of the measurement, with Julia's multiple dispatch functionality, it should be possible to abstract executing a "sweep" to just one function, thus affording a simple but general interface for the user to conduct his measurements.</p>
+<p>Moreover, the need to automate measurements and facilitate use of the same instruments by multiple users warrants some sort of queueing structure for "sweeps", which is maintained automatically in the background of the Julia interface that the user is using.</p>
+<p>We have achieved precisely these goals in a object-oriented way with our "Sweep" portion of IntrumentControl.jl" package. Below we describe the functionality meant for the user: how to use <code>Response</code> and <code>Stimulus</code> objects as well as <code>source</code> and <code>measure</code> functions to submit a sweep, how to interact with the sweep job to see it's result, estimated time of completion, etc. In <a href="https://painterqubits.github.io/InstrumentControl.jl/implementation/">Implementation</a> we describe how exactly sweep and queueing functionality is implemented</p>
+<p><a id='Prerequisites-for-a-Sweep-1'></a></p>
+<h2 id="prerequisites-for-a-sweep">Prerequisites for a Sweep</h2>
+<p>A sweep is submitted by the user via the <code>sweep</code> function:</p>
+<div class="codehilite"><pre><span></span><span class="n">sweep</span><span class="p">{</span><span class="n">N</span><span class="p">}(</span><span class="n">dep</span><span class="o">::</span><span class="n">Response</span><span class="p">,</span> <span class="n">indep</span><span class="o">::</span><span class="kt">Vararg</span><span class="p">{</span><span class="kt">Tuple</span><span class="p">{</span><span class="n">Stimulus</span><span class="p">,</span> <span class="kt">AbstractVector</span><span class="p">},</span> <span class="n">N</span><span class="p">};</span> <span class="n">priority</span> <span class="o">=</span> <span class="n">NORMAL</span><span class="p">)</span>
+</pre></div>
+
+
+<p><code>sweep</code> measures a response as a function of an arbitrary number of stimuli, sourced over the values given in the <code>AbstractVector</code> input, and returns a handle to the sweep job in the form of a <code>SweepJob</code> object, which will be discussed more in detail in <a href="https://painterqubits.github.io/InstrumentControl.jl/implementation/">Implementation</a>. This can be used to access the results while the sweep is being measured. <code>priority</code> is an <code>Int</code> from 0 to <code>typemax(Int)</code>, inclusive, and is used to prioritize the next sweep in a queue (with multiple sweeps) to be run. It is typically one of the following:</p>
+<ul>
+<li><code>HIGH == 10</code></li>
+<li><code>NORMAL == 5</code></li>
+<li><code>LOW == 0</code></li>
+</ul>
+<p>Thus, the <code>priority</code> keyword argument may be <code>LOW</code>, <code>NORMAL</code>, or <code>HIGH</code>, or any integer greater than or equal to zero.</p>
+<p>The <code>sweep</code> functions assumes that appropriate <code>measure</code> methods have been written for the <code>dep</code> object passed, and that appropriate <code>source</code> methods have been written for all <code>Stimulus</code> objects in the passed <code>indep</code> argument. Thus, to use the function the user must have defined <code>Response</code> and <code>Stimulus</code> subtypes, as well as <code>source</code> and <code>measure</code> functions for those types.</p>
+<p>For example, ... put example here with definition of <code>Stimulus</code>, <code>source</code>, <code>response</code>, <code>measure</code>, and <code>sweep</code></p>
+<p><a id='Queueing-1'></a></p>
+<h2 id="queueing">Queueing</h2>
+<p>InstrumentControl employs a queueing structure for job handling through manipulation of <code>SweepJob</code> objects, which are instantiated when the <code>sweep</code> function is used. The actual "queue" is a <code>SweepJobQueue</code> object, described more in detail in <a href="https://painterqubits.github.io/InstrumentControl.jl/implementation/">Implementation</a>. When the InstrumentControl package is imported by the user, a 'SweepJobQueue' object, as well as communication with the database set up by <a href="https://github.com/PainterQubits/ICDataServer.jl">ICDataServer.jl</a>, is automatically initialized; in the documentation this object is referred to as the "default sweep job queue object".</p>
+<p>When <code>sweep</code> is used, a job ID is automatically obtained for the new sweep job (which exists in Julia as a <code>SweepJob</code> object) via communication with the database; the job is then put into the queue with the job ID as it's identifier. In essence, a <code>SweepJobQueue</code> object can be thought of as a <em>collection</em> (in the Julia sense) of <code>SweepJob</code> objects, indexed by their job ID, along with other fields and helper functions for automatic scheduling of jobs in the background. The queue prioritizes jobs based on their priorities; for equal priority values, the job submitted earlier takes precedent.</p>
+<p><a id='Interacting-with-a-sweep-job-1'></a></p>
+<h2 id="interacting-with-a-sweep-job">Interacting with a sweep job</h2>
+<p>When <code>sweep</code> is called, the returned <code>SweepJob</code> object displays it's job ID as well as it's status (waiting, running, done, etc), priority, progress (percentage of job completed), and time of submission. Both the job ID and the returned <code>SweepJob</code> object itself can be used to interact with the job in the following ways:</p>
+<p><a id='Base.eta' href='#Base.eta'>#</a>
+<strong><code>Base.eta</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>eta(x::SweepJob)
+</pre></div>
+
+
+<p>Return the estimated time of completion for sweep job <code>x</code>. It estimates this time by first calculating the amount of time passed from when the job was submitted to the time the function is called, and then calculating the ETA based on the current progress of the job and this passed time</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L146-L152' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.progress' href='#InstrumentControl.progress'>#</a>
+<strong><code>InstrumentControl.progress</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>progress(x::SweepJob)
+</pre></div>
+
+
+<p>Returns the sweep job progress, a <code>Float64</code> between 0 and 1 (inclusive).</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L175-L178' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.jobs-Tuple{Any}' href='#InstrumentControl.jobs-Tuple{Any}'>#</a>
+<strong><code>InstrumentControl.jobs</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>jobs(job_id)
+</pre></div>
+
+
+<p>Return the <code>SweepJob</code> object associated with <code>job_id</code> scheduled in the default sweep job queue object.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L507-L511' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.result' href='#InstrumentControl.result'>#</a>
+<strong><code>InstrumentControl.result</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>result(sj::SweepJob)
+</pre></div>
+
+
+<p>Returns the result array of a sweep job <code>sj</code>. Throws an error if the result array has not yet been initialized.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L184-L188' class='documenter-source'>source</a><br></p>
+<div class="codehilite"><pre><span></span>result(i::Integer)
+</pre></div>
+
+
+<p>Returns a result array by job id in job scheduled in the default sweep job queue object.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L514-L517' class='documenter-source'>source</a><br></p>
+<div class="codehilite"><pre><span></span>result()
+</pre></div>
+
+
+<p>Returns the result array from the last finished or aborted job scheduled in the default sweep job queue object.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L520-L524' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.abort!' href='#InstrumentControl.abort!'>#</a>
+<strong><code>InstrumentControl.abort!</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>abort!(x::SweepJob)
+</pre></div>
+
+
+<p>Abort a sweep job. Practically, the status of the job is changed to "Aborted", and the job is put into the update_channel of the default <code>SweepJobQueue</code> object. This automatically leads to: update of job metadata in the <code>SweepJob</code> object as well as in the ICDataServer, update of queue metadata, archiving of the job's result array, and start of the highest priority job in the default sweep job queue. Thus, aborting a job is guaranteed to bail out of the sweep in such a way that the data that has been measured for most recent sourcing of a stimulus, i.e. at the very start of a "for loop" in <a href="../implementation/#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a>. You can also abort a sweep before it even begins.</p>
+<p>Presently this function does not interrupt <code>measure</code>, so if a single measurement takes a long time then the sweep is only aborted after that finishes.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L533-L547' class='documenter-source'>source</a><br></p>
+<div class="codehilite"><pre><span></span>abort!()
+</pre></div>
+
+
+<p>Abort the currently running job (if any). If no job is running, the method does not throw an error.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L566-L570' class='documenter-source'>source</a><br></p>
+<p><a id='InstrumentControl.prune!' href='#InstrumentControl.prune!'>#</a>
+<strong><code>InstrumentControl.prune!</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>prune!(q::SweepJobQueue)
+</pre></div>
+
+
+<p>Prunes a <a href="../implementation/#InstrumentControl.SweepJobQueue"><code>SweepJobQueue</code></a> of all <a href="../implementation/#InstrumentControl.SweepJob"><code>InstrumentControl.SweepJob</code></a>s with a status of <code>Done</code> or <code>Aborted</code>. This will have the side effect of releasing old sweep results if there remain no references to them in julia, however they should still be saved to disk and can be recovered later.</p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/9d317474cacbb0e1f3a9edb571668917bad3a6ed/src/Sweep.jl#L579-L585' class='documenter-source'>source</a><br></p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../ins_meas/" title="Instruments/Measurements" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Instruments/Measurements
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../implementation/" title="Implementation" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Implementation
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application-f3ab9e5ff8.js"></script>
+      
+      
+      <script>app.initialize({url:{base:".."}})</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+        <script src="../assets/mathjaxhelper.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>
