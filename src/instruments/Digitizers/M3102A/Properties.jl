@@ -1,4 +1,3 @@
-export ClockFrequency
 export ChScale
 export ChInputMode
 export ChImpedance
@@ -12,9 +11,6 @@ export DAQCycles
 export DAQTrigSource
 export DAQTrigBehavior
 export DAQAnalogTrigSource
-
-# digitizer properties
-abstract type ClockFrequency <: InstrumentProperty end
 
 # channel properties
 abstract type ChScale <: InstrumentProperty end
@@ -94,4 +90,5 @@ function symbol_to_keysight(sym::Symbol)
         return KSI.CLK_FAST_TUNE
     else
         error("Symbol input not acceptable")
+    end
 end

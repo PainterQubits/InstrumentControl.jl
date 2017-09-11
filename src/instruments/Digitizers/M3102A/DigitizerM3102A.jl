@@ -17,7 +17,7 @@ export InsDigitizerM3102A
 
 """
 ```
-mutable struct InsDigitizerM3102A
+mutable struct InsDigitizerM3102A <: Instrument
     serial_num::String
     product_name::String
     index::Int
@@ -46,40 +46,40 @@ information described above with the passed arguments, and initializes all the
 channels properties to some standard values and records them in the `channels`
 dictionary through the `configure_channels!` function
 """
-mutable struct InsDigitizerM3102A
+mutable struct InsDigitizerM3102A <: Instrument
     serial_num::String
     product_name::String
-    index::Int
+    ID::Int
     chassis_num::Int
     slot_num::Int
     channels::Dict{Int,Dict{Any,Any}}
 
-    InsDigitizerM3102A(serial::AbstractString) = begin
+    InsDigitizerM3102A(serial::AbstractString; num_channels::Integer = 4) = begin
         ins = new()
         ins.serial_num = serial
         ins.product_name = "M3102A"
         #below we simultaneously "open" the device and get its index
         SD_open_result = SD_Module_openWithSerialNumber(ins.product_name, ins.serial_num)
         SD_open_result < 0 && throw(InstrumentException(ins, SD_open_result))
-        ins.index = SD_open_result
-        ins.chassis_num  = @error_handler SD_Module_getChassis(ins.index)
-        ins.slot_num = @error_handler SD_Module_getSlot(ins.index)
+        ins.ID = SD_open_result
+        ins.chassis_num  = @KSerror_handler SD_Module_getChassis(ins.ID)
+        ins.slot_num = @KSerror_handler SD_Module_getSlot(ins.ID)
         ins.channels = Dict{Int, Dict{Any, Any}}()
-        configure_channels!(ins)
+        configure_channels!(ins, num_channels)
         return ins
     end
 
-    InsDigitizerM3102A(slot::Integer, chassis::Integer = 1) = begin
+    InsDigitizerM3102A(slot::Integer, chassis::Integer = 1; num_channels::Integer = 4) = begin
         ins = new()
         ins.chassis_num = chassis
         ins.slot_num = slot
         ins.product_name = SD_Module_getProductNameBySlot(ins.chassis_num, ins.slot_num)
         SD_open_result = SD_Module_openWithSlot(ins.product_name, ins.chassis_num, ins.slot_num)
         SD_open_result < 0 && throw(InstrumentException(ins, SD_open_result))
-        ins.index = SD_open_result
-        ins.serial_num = @error_handler SD_Module_getSerialNumber(ins.index)
+        ins.ID = SD_open_result
+        ins.serial_num = @KSerror_handler SD_Module_getSerialNumber(ins.ID)
         ins.channels = Dict{Int, Dict{Any, Any}}()
-        configure_channels!(ins)
+        configure_channels!(ins, num_channels)
         return ins
     end
 end
@@ -89,29 +89,13 @@ include("Configure.jl")
 include("Inspect.jl")
 include("Response.jl")
 
+make(ins::InsDigitizerM3102A) = "Keysight"
+model(ins::InsDigitizerM3102A) = ins.product_name
+
 #InstrumentException type defined in src/Definitions.jl in InstrumentControl
 InstrumentException(ins::InsDigitizerM3102A, error_code::Integer) =
     InstrumentException(ins, error_code, keysight_error(error_code))
 
-"""
-    @error_handler(expr)
-
-Takes an KeysightInstruments API call and brackets it with some error checking.
-Throws an InstrumentException if there is an error. This macro is compatible with
-all SD_AIN functions and most, but not all, SD_Module functions.
-"""
-macro error_handler(expr)
-    quote
-        SD_call_result = $(esc(expr))
-        if typeof(SD_call_result) <: Integer
-            SD_call_result < 0 &&
-            #the expression will be a call to a KeysightInstruments SD function,
-            #where the function signature will be SD_name(ins.index, args...);
-            # expr.args[2] is ins.index; expr.args[2].args[1] is ins
-            throw(InstrumentException($(esc(expr.args[2].args[1])), SD_call_result))
-        SD_call_result
-    end
-end
 
 #Miscallenous
 """

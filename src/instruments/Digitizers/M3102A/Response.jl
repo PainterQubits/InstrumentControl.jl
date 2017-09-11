@@ -20,15 +20,15 @@ function measure(resp::SingleChStream)
 
     #SET UP BUFFERS, NEEDS WORK
     buffer= Ref{Vector{Int16}} #NEEDS TO BE CHANGED
-    @error_handler SD_AIN_DAQbufferAdd(ins.index, resp.ch, buffer, resp.daq_points)
+    @KSerror_handler SD_AIN_DAQbufferAdd(ins.ID, resp.ch, buffer, resp.daq_points)
     #Below I assume one buffer is needed for this type of measurement, which is
     #what the manual implies I think
-    @error_handler SD_AIN_DAQbufferPoolConfig(ins.index, resp.ch, resp.daq_points, 0)
+    @KSerror_handler SD_AIN_DAQbufferPoolConfig(ins.ID, resp.ch, resp.daq_points, 0)
     #I set the buffer timeout to zero since DAQ read has its own timeout?
     #I think this is what the manual implies
     #if using multiple smaller buffers, maybe make their timeout infinity
-    @error_handler SD_AIN_DAQstart(ins.index, resp.ch)
-    data = @error_handler SD_AIN_DAQread(ins.index, resp.ch, resp.daq_points, resp.timeout)
+    @KSerror_handler SD_AIN_DAQstart(ins.ID, resp.ch)
+    data = @KSerror_handler SD_AIN_DAQread(ins.ID, resp.ch, resp.daq_points, resp.timeout)
     return data
 end
 
@@ -40,7 +40,7 @@ mutable struct SingleChPXITrig <: Response
     PXI_trig_source::Int
 end
 
-function measure(resp::SingleChTriggered)
+function measure(resp::SingleChPXITrig)
     ins = resp.ins
     ins[DAQTrigMode, ch] = :Digital
     ins[DAQTrigSource, ch] = :PXI
@@ -52,20 +52,20 @@ function measure(resp::SingleChTriggered)
     #SET UP BUFFERS, NEEDS WORK
     if daq_points*2 < 2e9
         buffer= Ref{Vector{Int16}} #NEEDS TO BE CHANGED
-        @error_handler SD_AIN_DAQbufferAdd(ins.index, resp.ch, buffer, daq_points)
-        @error_handler SD_AIN_DAQbufferPoolConfig(ins.index, resp.ch, daq_points, 0)
-        @error_handler SD_AIN_DAQstart(ins.index, resp.ch)
-        data = @error_handler SD_AIN_DAQread(ins.index, resp.ch, daq_points, 0)
+        @KSerror_handler SD_AIN_DAQbufferAdd(ins.ID, resp.ch, buffer, daq_points)
+        @KSerror_handler SD_AIN_DAQbufferPoolConfig(ins.ID, resp.ch, daq_points, 0)
+        @KSerror_handler SD_AIN_DAQstart(ins.ID, resp.ch)
+        data = @KSerror_handler SD_AIN_DAQread(ins.ID, resp.ch, daq_points, 0)
         return data
     else
         total_data = []
         num_buffers = ceil(daq_points/2e9)
         for i in 1:num_buffers
             buffer= Ref{Vector{Int16}} #NEEDS TO BE CHANGED
-            @error_handler SD_AIN_DAQbufferAdd(ins.index, resp.ch, buffer, daq_points/num_buffers)
-            @error_handler SD_AIN_DAQbufferPoolConfig(ins.index, resp.ch, daq_points/num_buffers, 0)
-            @error_handler SD_AIN_DAQstart(ins.index, resp.ch)
-            data = @error_handler SD_AIN_DAQread(ins.index, resp.ch, daq_points/num_buffers, 0)
+            @KSerror_handler SD_AIN_DAQbufferAdd(ins.ID, resp.ch, buffer, daq_points/num_buffers)
+            @KSerror_handler SD_AIN_DAQbufferPoolConfig(ins.ID, resp.ch, daq_points/num_buffers, 0)
+            @KSerror_handler SD_AIN_DAQstart(ins.ID, resp.ch)
+            data = @KSerror_handler SD_AIN_DAQread(ins.ID, resp.ch, daq_points/num_buffers, 0)
             push!(total_data, data)
         end
         return total_data
@@ -97,13 +97,13 @@ function measure(resp::IQTrigResponse)
     if daq_points*2 < 2e-9
         for ch in [resp.I_ch, resp.Q_ch]
             buffer= Ref{Vector{Int16}} #NEEDS TO BE CHANGED
-            @error_handler SD_AIN_DAQbufferAdd(ins.index, ch, buffer, daq_points)
-            @error_handler SD_AIN_DAQbufferPoolConfig(ins.index, ch, daq_points, 0)
+            @KSerror_handler SD_AIN_DAQbufferAdd(ins.ID, ch, buffer, daq_points)
+            @KSerror_handler SD_AIN_DAQbufferPoolConfig(ins.ID, ch, daq_points, 0)
         end
         mask=chs_to_mask(resp.I_ch, resp.Q_ch)
-        @error_handler SD_AIN_DAQstartMultiple(ins.index, mask)
-        I_data =  @error_handler SD_AIN_DAQread(ins.index, resp.I_ch, daq_points, 0)
-        Q_data = @error_handler SD_AIN_DAQread(ins.index, resp.Q_ch, daq_points, 0)
+        @KSerror_handler SD_AIN_DAQstartMultiple(ins.ID, mask)
+        I_data =  @KSerror_handler SD_AIN_DAQread(ins.ID, resp.I_ch, daq_points, 0)
+        Q_data = @KSerror_handler SD_AIN_DAQread(ins.ID, resp.Q_ch, daq_points, 0)
         #process I_data and Q_data
     else
         total_I_data = []
@@ -112,13 +112,13 @@ function measure(resp::IQTrigResponse)
         for i in 1:num_buffers
             for ch in [resp.I_ch, resp.Q_ch]
                 buffer= Ref{Vector{Int16}} #NEEDS TO BE CHANGED
-                @error_handler SD_AIN_DAQbufferAdd(ins.index, ch, buffer, daq_points/num_buffers)
-                @error_handler SD_AIN_DAQbufferPoolConfig(ins.index, ch, daq_points/num_buffers, 0)
+                @KSerror_handler SD_AIN_DAQbufferAdd(ins.ID, ch, buffer, daq_points/num_buffers)
+                @KSerror_handler SD_AIN_DAQbufferPoolConfig(ins.ID, ch, daq_points/num_buffers, 0)
             end
             mask=chs_to_mask(resp.I_ch, resp.Q_ch)
-            @error_handler SD_AIN_DAQstartMultiple(ins.index, mask)
-            I_data =  @error_handler SD_AIN_DAQread(ins.index, resp.I_ch, daq_points, 0)
-            Q_data = @error_handler SD_AIN_DAQread(ins.index, resp.Q_ch, daq_points, 0)
+            @KSerror_handler SD_AIN_DAQstartMultiple(ins.ID, mask)
+            I_data =  @KSerror_handler SD_AIN_DAQread(ins.ID, resp.I_ch, daq_points, 0)
+            Q_data = @KSerror_handler SD_AIN_DAQread(ins.ID, resp.Q_ch, daq_points, 0)
             push!(total_I_data, I_data)
             push!(total_Q_data, Q_data)
         end

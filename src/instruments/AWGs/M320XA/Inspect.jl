@@ -12,8 +12,8 @@ end
 # depending on the passed type T
 function getindex(ins::InsAWGM320XA,
                   ::Type{T}) where {T<:InstrumentProperty}
-    if T == ClockFrequency
-        return @error_handler SD_AIN_clockGetFrequency(ins.index)
+    if T == SampleRate
+        return @KSerror_handler SD_AOU_clockGetFrequency(ins.ID)
     else
         channels_list=[]
         for ch in keys(ins.channels)

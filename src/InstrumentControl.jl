@@ -41,8 +41,10 @@ include(joinpath(dirname(@__FILE__), "instruments", "VNAs", "E5071C.jl"))
 include(joinpath(dirname(@__FILE__), "instruments", "SMB100A.jl"))
 include(joinpath(dirname(@__FILE__), "instruments", "E8257D.jl"))
 include(joinpath(dirname(@__FILE__), "instruments", "AWGs", "AWG5014C.jl"))
+include(joinpath(dirname(@__FILE__), "instruments", "AWGs", "M320XA", "AWGM320XA.jl"))
 include(joinpath(dirname(@__FILE__), "instruments", "GS200.jl"))
 include(joinpath(dirname(@__FILE__), "instruments", "Digitizers", "Alazar", "Alazar.jl"))
+include(joinpath(dirname(@__FILE__), "instruments", "Digitizers", "M3102A", "DigitizerM3102A.jl"))
 
 # Not required but you can uncomment this to look for conflicting function
 # definitions that should be declared global and exported in InstrumentDefs.jl:
@@ -53,6 +55,8 @@ importall .E5071C
 importall .E8257D
 importall .GS200
 importall .SMB100A
+importall .AWGM320XA
+importall .DigitizerM3102A
 # importall .ZNB20Module
 
 # INITIALIZATION CODE FOLLOWS

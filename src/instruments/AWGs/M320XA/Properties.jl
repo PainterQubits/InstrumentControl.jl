@@ -1,26 +1,24 @@
 
-export ClockFrequency
-export WaveformType
+export DCOffset
+export OutputMode
 export FGFrequency
 export FGPhase
-export WaveAmplitude
-export DCOffset
 export TrigSource
 export TrigBehavior
 export TrigSync
 export Queue
 export QueueCycleMode
 export QueueSyncMode
-
-#AWG properties
-abstract type ClockFrequency <: InstrumentProperty end
+export AmpModMode
+export AngModMode
+export AmpModGain
+export AngModGain
 
 #channel properties
-abstract type WaveformShape <: InstrumentProperty end
+abstract type DCOffset <: InstrumentProperty end
+abstract type OutputMode <: InstrumentProperty end
 abstract type FGFrequency <: InstrumentProperty end
 abstract type FGPhase <: InstrumentProperty end
-abstract type WaveAmplitude <: InstrumentProperty end
-abstract type DCOffset <: InstrumentProperty end
 abstract type TrigSource <: InstrumentProperty end
 abstract type TrigBehavior <: InstrumentProperty end
 abstract type TrigSync <: InstrumentProperty end
@@ -127,7 +125,7 @@ function symbol_to_keysight(sym::Symbol)
         return KSI.AOU_MOD_OFFSET
     elseif sym == :FrequencyMod
         return KSI.AOU_MOD_FM
-    elseif sym == :PhaseMode
+    elseif sym == :PhaseMod
         return KSI. AOU_MOD_PM
     else
         error("Symbol input not acceptable")
