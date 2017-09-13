@@ -666,7 +666,7 @@
 </ul>
 <p>is not required if there is no documentation. This is used not only for interactive help but also in generating the documentation you are reading.</p>
 <p>The value of the <code>properties.type</code> field and entries in the <code>properties.values</code> and <code>properties.infixes</code> arrays are parsed into expressions or symbols for further manipulation. All generated dictionary keys are also converted to symbols for further manipulation.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/MetaprogrammingVISA.jl#L8-L62' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/MetaprogrammingVISA.jl#L8-L62' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.@generate_instruments' href='#InstrumentControl.@generate_instruments'>#</a>
 <strong><code>InstrumentControl.@generate_instruments</code></strong> &mdash; <em>Macro</em>.</p>
 <div class="codehilite"><pre><span></span>@generate_instruments(metadata)
@@ -693,7 +693,7 @@
 </ul>
 <p>The macro imports required modules and methods, defines and exports the <code>Instrument</code> subtype, and defines and exports and the <code>make</code> and <code>model</code> methods if they do not exist already (note generic functions <code>make</code> and <code>model</code> are defined in <code>src/Definitions.jl</code>).</p>
 <p>By convention we typically have the module name be the same as the model name, and the type is just the model prefixed by "Ins", e.g. <code>InsE5071C</code>. This is not required.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/MetaprogrammingVISA.jl#L135-L160' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/MetaprogrammingVISA.jl#L135-L160' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.@generate_properties' href='#InstrumentControl.@generate_properties'>#</a>
 <strong><code>InstrumentControl.@generate_properties</code></strong> &mdash; <em>Macro</em>.</p>
 <div class="codehilite"><pre><span></span>@generate_properties(metadata)
@@ -702,7 +702,7 @@
 
 <p>This macro takes a dictionary of metadata, typically obtained from a call to <a href="./#InstrumentControl.insjson"><code>insjson</code></a>. It operates on the <code>:properties</code> field of the dictionary, which is expected to be a list of dictionaries with information on each "property" of the instrument. This macro specifically operates on the <code>:type</code> field of each property dictionary; this field contains the name of the type we would like to assign to a given property of the instrument.</p>
 <p>For every property dictionary, the macro first checks if a type with name corresponding to the dictionary's <code>:type</code> field  has already been defined. If not, it then defines an abstract type with that name, and makes it a subtype of the <code>InstrumentProperty</code> type defined in the ICCommon package. The macro then finally exports that type</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/MetaprogrammingVISA.jl#L207-L221' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/MetaprogrammingVISA.jl#L207-L221' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.@generate_handlers' href='#InstrumentControl.@generate_handlers'>#</a>
 <strong><code>InstrumentControl.@generate_handlers</code></strong> &mdash; <em>Macro</em>.</p>
 <div class="codehilite"><pre><span></span>@generate_handlers(instype, p)
@@ -777,7 +777,7 @@
 
 
 <p>The above functions will be defined in the module where the macro is run. Note that the function <code>symbols</code> has its name chosen based on the dictionary name in the JSON file. Since this function is not exported from the instrument's module there should be few namespace worries and we maintain future flexibliity.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/MetaprogrammingVISA.jl#L237-L331' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/MetaprogrammingVISA.jl#L237-L331' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.@generate_configure' href='#InstrumentControl.@generate_configure'>#</a>
 <strong><code>InstrumentControl.@generate_configure</code></strong> &mdash; <em>Macro</em>.</p>
 <div class="codehilite"><pre><span></span>@generate_configure(instype, p)
@@ -801,7 +801,7 @@
 
 
 <p>The function should be defined in the module where the instrument type was defined.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/MetaprogrammingVISA.jl#L505-L542' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/MetaprogrammingVISA.jl#L505-L542' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.@generate_inspect' href='#InstrumentControl.@generate_inspect'>#</a>
 <strong><code>InstrumentControl.@generate_inspect</code></strong> &mdash; <em>Macro</em>.</p>
 <div class="codehilite"><pre><span></span>@generate_inspect(instype, p)
@@ -825,7 +825,7 @@
 
 
 <p>The function should be defined in the module where the instrument type was defined.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/MetaprogrammingVISA.jl#L409-L444' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/MetaprogrammingVISA.jl#L409-L444' class='documenter-source'>source</a><br></p>
 <p><a id='Sweep,-Sweep-Jobs,-and-Sweep-Queueing-implementation-1'></a></p>
 <h2 id="sweep-sweep-jobs-and-sweep-queueing-implementation">Sweep, Sweep Jobs, and Sweep Queueing implementation</h2>
 <p>We stratify InstrumentControl "sweeps" functionality into different types, along with helper functions for each type, in order to achieve a object-oriented architecture with code modularity.</p>
@@ -843,7 +843,7 @@ end
 
 
 <p>Object representing a sweep; which will contain information on stimuli sent to the instruments, information on what kind of response we will be measuring, and the numerical data obtained from the measurement. <code>dep</code> (short for dependent) is a <code>Response</code> that will be measured. <code>indep</code> is a tuple of <code>Stimulus</code> objects and the values they will be sourced over. <code>result</code> is the result array of the sweep, which need not be provided at the time the <code>Sweep</code> object is created.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/Sweep.jl#L16-L33' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/Sweep.jl#L16-L33' class='documenter-source'>source</a><br></p>
 <p>However, additional metadata is needed for scheduling and queueing of sweeps, as well as logging of job information on ICDataServer. We "bundle" that information, along with a <code>Sweep</code> object, in a more comprehensive <code>SweepJob</code> type:</p>
 <div class="codehilite"><pre><span></span>InstrumentControl.SweepJob
 InstrumentControl.SweepJob()
@@ -883,7 +883,7 @@ end
 <p>When a <code>SweepJobQueue</code> is created through it's argumentless inner constructor (made for initialization purposes), two tasks are initialized. One task manages job updates, the other task is responsible for starting jobs; the former task executes the <code>job_updater</code> function, the latter task executes the <code>job_starter</code> function. Both functions execute infinite while loops, therefore they never end.</p>
 <p>When the job starter task is notified with the <code>trystart::Condition</code> object in the <code>SweepJobQueue</code> object, it will find the highest priority job in the queue. Then, if a job is not running, and the prioritized job is waiting, and if the prioritized job is runnable (the priority may be "NEVER"), then the job is started. The database is updated asynchronously to reflect the new job, the queue's <code>running_id</code> is changed to the job's id, and the job's status is changed to "Running".</p>
 <p>The job updater task tries to take a <code>SweepJob</code> from <code>update_channel</code>, the unbuffered job <code>Channel</code> of the <code>SweepJobQueue</code> object. The task is blocked until a job is put into the channel. Once a job arrives, provided the job has finished or has been aborted, the database is asynchronously updated, the job is marked as no longer running (by updating the <code>running_id</code> and <code>last_finished_id</code> channels), the sweep result is asynchronously saved to disk, and finally the job starter task is notified through the queue's <code>trystart</code> <code>Condition</code> object. The job updater task loops around and waits for another job to arrive at its channel.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/Sweep.jl#L261-L319' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/Sweep.jl#L261-L319' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.job_updater' href='#InstrumentControl.job_updater'>#</a>
 <strong><code>InstrumentControl.job_updater</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>job_updater(sjq::SweepJobQueue, update_channel::Channel{SweepJob})
@@ -892,7 +892,7 @@ end
 
 <p>Used when a sweep job finishes; archieves the result of the finished sweep job, updates all job and queue metadata, asynchronously updates ICDataServer, and notifies the job_starter task to run through <code>sjq</code>'s <code>trystart</code> <code>Condition</code> object. This function continuously runs continuously without stopping once called. In its current implementation, this function is executed through a Task when a <code>SweepJobQueue</code> object is initialized; this allows the function to be stopped and recontinued asynchronously as is appropriate.</p>
 <p>The function first waits until the update_channel is populated with a job. Once a job arrives, the function takes the job from the channel, and given that it's status is "Done" or "Aborted", it executes the items described above</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/Sweep.jl#L345-L358' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/Sweep.jl#L345-L358' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.job_starter' href='#InstrumentControl.job_starter'>#</a>
 <strong><code>InstrumentControl.job_starter</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>job_starter(sjq::SweepJobQueue)
@@ -901,7 +901,7 @@ end
 
 <p>Used when starting a new sweep job. The function first obtains the highest priority job in <code>sjq</code>; and given that a job is not running, it's status is "Waiting", and if the prioritized job is runnable (the priority may be "never"), then the job is started. The function updates all job and queue metadata and asynchronously updates ICDataServer. This function continuously runs continuously without stopping once called. In its current implementation, this function is executed through a Task when a <code>SweepJobQueue</code> object is initialized; this allows the function to be stopped and recontinued asynchronously as is appropriate.</p>
 <p>The last thing the function does is change the job status to "Running". When a job is scheduled with the sweep function, the sweep function waits for the status of the job to be changed from "Waiting" to start sourcing the instruments and performing measurements</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/Sweep.jl#L389-L404' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/Sweep.jl#L389-L404' class='documenter-source'>source</a><br></p>
 <p>When InstrumentControl is imported, a default 'SweepJobQueue' object is instantiated via the <code>SweepJobQueue()</code> constructor, and associated with a pointer called <code>sweepjobqueue</code>. This is THE queue running in the background automatically scheduling jobs, and referred to as the "default sweep job queue object" in the documentation. This object can be returned by the following function:</p>
 <p><a id='InstrumentControl.jobs-Tuple{}' href='#InstrumentControl.jobs-Tuple{}'>#</a>
 <strong><code>InstrumentControl.jobs</code></strong> &mdash; <em>Method</em>.</p>
@@ -910,7 +910,7 @@ end
 
 
 <p>Returns the default <code>SweepJobQueue</code> object, initialized when the InstrumentControl module is imported/used. All jobs are scheduled in this object. Typically you call this to see what jobs are waiting, aborted, or finished, and what job is running.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/Sweep.jl#L499-L504' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/Sweep.jl#L499-L504' class='documenter-source'>source</a><br></p>
 <p>Sweeps are scheduled by a call to the <code>sweep</code> function:</p>
 <p><a id='InstrumentControl.sweep' href='#InstrumentControl.sweep'>#</a>
 <strong><code>InstrumentControl.sweep</code></strong> &mdash; <em>Function</em>.</p>
@@ -927,7 +927,7 @@ end
 <p>obtained from the database, 4) adding the job to the default <code>SweepJobQueue</code> object (defined when the InstrumentControl module is used/imported), and 5) launching an asynchronous sweep job.</p>
 <p>The <code>priority</code> keyword may be <code>LOW</code>, <code>NORMAL</code>, or <code>HIGH</code>, or any integer greater than or equal to zero.</p>
 <p>The actual sweeping, i.e., the actual <code>source</code> and <code>measure</code> loops to measure data are in a private function <a href="./#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a>. Note that if <a href="./#InstrumentControl._sweep!"><code>InstrumentControl._sweep!</code></a> is not defined yet, this function will also define the method in order to it to be used to schedule a sweep.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/Sweep.jl#L596-L619' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/Sweep.jl#L596-L619' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl._sweep!' href='#InstrumentControl._sweep!'>#</a>
 <strong><code>InstrumentControl._sweep!</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>_sweep!(::Val{D}, ::Val{N}, sj, update_channel)
@@ -937,7 +937,7 @@ end
 <p>This is a private function which should not be called directly by the user. It is launched asynchronously by <a href="./#InstrumentControl.sweep"><code>sweep</code></a>. The implementation uses macros from <a href="https://docs.julialang.org/en/stable/devdocs/cartesian/">Base.Cartesian</a>. The stimuli are sourced only when they need to be, at the start of each <code>for</code> loop level.</p>
 <p><code>D</code> is the dimension of the output array of the measure function (if multiple things are measured for one Response type, the array will be multi-dimensional). <code>N</code> is the number of stimuli which the sweep sources over. sj is the handle to the <code>SweepJob</code> object, and update_channel is a channel of the queue used for intertask comunication.</p>
 <p>The axis scaling of <code>measure(sj.sweep.dep)</code>, i.e., the dimensions of the output array of the function. is presumed to be fixed, as it is only looked at once, the first time <code>measure</code> is called.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/8ef23864bcd41226dc0ddfccab92a27927c06c4f/src/Sweep.jl#L655-L674' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/ca08e5d51b1d59961cd78a90990fd843f5b150ae/src/Sweep.jl#L655-L674' class='documenter-source'>source</a><br></p>
                 
                   
                 
