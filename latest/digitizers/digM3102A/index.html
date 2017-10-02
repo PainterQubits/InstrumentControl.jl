@@ -20,7 +20,7 @@
     
     
       
-        <title>AWG5014C - InstrumentControl.jl</title>
+        <title>M3102A - InstrumentControl.jl</title>
       
     
     
@@ -88,11 +88,11 @@
                 </span>
               
                 <span class="md-header-nav__parent">
-                  Waveform Generators
+                  Digitizers
                 </span>
               
             
-            AWG5014C
+            M3102A
           
         </span>
       </div>
@@ -304,12 +304,10 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
     
     <label class="md-nav__link" for="nav-3-1">
       Waveform Generators
@@ -327,7 +325,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../awgM320XA/" title="M320XA" class="md-nav__link">
+    <a href="../../waveform_generator/awgM320XA/" title="M320XA" class="md-nav__link">
       M320XA
     </a>
   </li>
@@ -337,18 +335,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-    
-    <a href="./" title="AWG5014C" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../../waveform_generator/awg5014c/" title="AWG5014C" class="md-nav__link">
       AWG5014C
     </a>
-    
   </li>
 
         
@@ -361,10 +352,12 @@
           
           
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2" checked>
     
     <label class="md-nav__link" for="nav-3-2">
       Digitizers
@@ -380,11 +373,74 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../../digitizers/digM3102A/" title="M3102A" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        M3102A
+      </label>
+    
+    <a href="./" title="M3102A" class="md-nav__link md-nav__link--active">
       M3102A
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usageconfiguration" title="Usage/Configuration" class="md-nav__link">
+    Usage/Configuration
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instrument-overview" title="Instrument Overview" class="md-nav__link">
+    Instrument Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage" title="Usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" title="Configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -394,7 +450,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../digitizers/Alazar/" title="Alazar digitizers" class="md-nav__link">
+    <a href="../Alazar/" title="Alazar digitizers" class="md-nav__link">
       Alazar digitizers
     </a>
   </li>
@@ -532,6 +588,49 @@
 <nav class="md-nav md-nav--secondary">
   
   
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usageconfiguration" title="Usage/Configuration" class="md-nav__link">
+    Usage/Configuration
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instrument-overview" title="Instrument Overview" class="md-nav__link">
+    Instrument Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage" title="Usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" title="Configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
   
 </nav>
                   </div>
@@ -543,12 +642,41 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/PainterQubits/InstrumentControl.jl/edit/master/docs/waveform_generator/awg5014c.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/PainterQubits/InstrumentControl.jl/edit/master/docs/digitizers/digM3102A.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>AWG5014C</h1>
-                
-                <p>Documentation forthcoming.</p>
+                <p><a id='Keysight-M3102A-Digitizer-1'></a></p>
+<h1 id="keysight-m3102a-digitizer">Keysight M3102A Digitizer</h1>
+<p>This module contains the many methods and types necessary to control and configure the Keysight M3102A Digitizer. In essence, it wraps the <a href="https://github.com/PainterQubits/KeysightInstruments.jl">KeysightInstruments.jl</a> package, which in itself is a bare-bones wrapper to the native C library which controls the Keysight instruments, in a way which affords compatibility with the rest of the InstrumentControl package, as well as consistency between the control code of this instrument and other instruments represented in this package.</p>
+<p><a id='Usage/Configuration-1'></a></p>
+<h2 id="usageconfiguration">Usage/Configuration</h2>
+<h3 id="instrument-overview">Instrument Overview</h3>
+<p>Each MM3102A Digitizer card has several channels; each channel has it's own DAQ for reading data. The DAQ reads data upon acquisition of triggers, and stores the data in a buffer allocated in the onboard RAM of the digitizer card. Upon reaching a user defined threshold for data acquisition, either an memory threshold or a time threshold, the contents of the buffer are passed on to the computer through the (fast) PXI cables. The DAQ can also be configured to read the data in "cycles", where acquisition for each cycle commences upon receiving a trigger, in which the user configures the amount of data acquired in each cycle.</p>
+<p>Moreover, each Digitizer card has it's own internal 100MHz clock which is phase-locked to the chassis clock: any actions taken by the AWG occur on a clock tick (so in intervals of 10ns), and different AWG/Digitizer cards are synchronized through the chassis clock. Each card also has an extra port called the TRG port, on which triggers can be received or generated</p>
+<h3 id="usage">Usage</h3>
+<p>All instrument control and configuration happens through the following <code>Instrument</code> subtype:</p>
+<div class="codehilite"><pre><span></span>    InsDigitizerM3102A
+</pre></div>
+
+
+<p>For example, calling <code>InsDigitizerM3102A(16,1,num_channels = 4)</code> will open the Digitizer card on slot 16 on the PXI chassis indexed by 1 (internal Keysight software does the chassis "indexing"); <code>num_channels</code> corresponds to the number of channels in the Digitizer card. The second input, which sets the value for the <code>chassis</code> field in the <code>InsDigitizerM3102A</code> object, is an optional argument with default value <code>1</code> (for the case when only one chassis is connected to the computer), while the <code>num_channels</code> input is a keyword argument whose default value is <code>4</code> –&gt; Hence, <code>InsDigitizerM3102A(16)</code> would make an instance of the same object.</p>
+<h3 id="configuration">Configuration</h3>
+<p>Configuration/Inspection of settings happens through setindex!/getindex methods, as described in <a href="https://painterqubits.github.io/InstrumentControl.jl/latest/ins_meas/">Overview</a></p>
+<p>These are the following properties which can be configured, each of which has it's own <code>InstrumentProperty</code> subtype:</p>
+<div class="codehilite"><pre><span></span>    FullScale
+    InputMode
+    Impedance
+    Prescaler
+    AnalogTrigBehavior
+    AnalogTrigThreshold
+    DAQTrigMode
+    DAQTrigDelay
+    DAQPointsPerCycle
+    DAQCycles
+    ExternalTrigSource
+    ExternalTrigBehavior
+    AnalogTrigSource
+</pre></div>
                 
                   
                 
@@ -567,7 +695,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../awgM320XA/" title="M320XA" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../../waveform_generator/awg5014c/" title="AWG5014C" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -576,19 +704,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                M320XA
+                AWG5014C
               </span>
             </div>
           </a>
         
         
-          <a href="../../digitizers/digM3102A/" title="M3102A" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../Alazar/" title="Alazar digitizers" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                M3102A
+                Alazar digitizers
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

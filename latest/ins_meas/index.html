@@ -277,6 +277,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#keysight" title="Keysight" class="md-nav__link">
+    Keysight
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#visa" title="VISA" class="md-nav__link">
     VISA
   </a>
@@ -287,6 +295,11 @@
   <a href="#alazar-digitizers" title="Alazar digitizers" class="md-nav__link">
     Alazar digitizers
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -418,10 +431,46 @@
           
 
 
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Waveform Generators
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        Waveform Generators
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
   <li class="md-nav__item">
-    <a href="../Alazar/" title="Alazar digitizers" class="md-nav__link">
-      Alazar digitizers
+    <a href="../waveform_generator/awgM320XA/" title="M320XA" class="md-nav__link">
+      M320XA
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../waveform_generator/awg5014c/" title="AWG5014C" class="md-nav__link">
+      AWG5014C
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
         
@@ -435,11 +484,11 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
     
     <label class="md-nav__link" for="nav-3-2">
-      Waveform generators
+      Digitizers
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
       <label class="md-nav__title" for="nav-3-2">
-        Waveform generators
+        Digitizers
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -450,8 +499,20 @@
 
 
   <li class="md-nav__item">
-    <a href="../waveform_generator/awg5014c/" title="AWG5014C" class="md-nav__link">
-      AWG5014C
+    <a href="../digitizers/digM3102A/" title="M3102A" class="md-nav__link">
+      M3102A
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../digitizers/Alazar/" title="Alazar digitizers" class="md-nav__link">
+      Alazar digitizers
     </a>
   </li>
 
@@ -603,6 +664,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#keysight" title="Keysight" class="md-nav__link">
+    Keysight
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#visa" title="VISA" class="md-nav__link">
     VISA
   </a>
@@ -613,6 +682,11 @@
   <a href="#alazar-digitizers" title="Alazar digitizers" class="md-nav__link">
     Alazar digitizers
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -705,6 +779,9 @@
 <h2 id="what-is-an-instrument">What is an instrument?</h2>
 <p>For the purposes of this package, an instrument is just something connected to the computer that we need to communicate with, and which can apply some stimulus or measure something. Every instrument may connect to the computer by different hardware, comms protocols, and command dialects.</p>
 <p>All instruments are Julia objects, subtypes of the abstract type <code>Instrument</code>. The implementation of each subtype (it's fields, constructors, etc) depend on the specific instrument.</p>
+<p><a id='Keysight-1'></a></p>
+<h3 id="keysight">Keysight</h3>
+<p>Keysight sells AWG and Digitizer module "cards", each of which can be connected to a PXI chassis which affords a single connection to the computer, as well as "PXI backplane" which can be used to synchronize actions of multiple module "cards". All cards are controlled by C libraries programmed by Keysight. We have wrapped these libraries in the <a href="https://github.com/PainterQubits/KeysightInstruments.jl">KeysightInstruments.jl</a> package, and InstrumentControl relies on this wrapper for instrument configuration/control.</p>
 <p><a id='VISA-1'></a></p>
 <h4 id="visa">VISA</h4>
 <p>Many instruments are able to be addressed using the <a href="http://www.ivifoundation.org/docs/vpp432_2014-06-19.pdf">VISA</a> standard (Virtual Instrument Software Architecture), currently maintained by the IVI Foundation.</p>
@@ -766,8 +843,35 @@
 <p><a id='Responses-1'></a></p>
 <h3 id="responses">Responses</h3>
 <p>All responses are objects, subtyped from the abstract <code>Response</code> type. Usually a response is associated with a particular instrument. The implementation of each subtype depends on the specific goals of the user: demonstrations of different response being used can be found in the example notebooks.</p>
-<p>(put example here)</p>
-<p>However, responses need not come from instruments. For test purposes, suppose we want to mimic a measurement by generating random numbers. <code>RandomResponse</code> produces a random number in the unit interval when it is measured. A <code>TimerResponse</code> will measure the time since creation of the <code>TimerResponse</code> object.</p>
+<p>As a simple example, consider the following M3102A Digitizer <code>Response</code> type:</p>
+<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">SingleChStream</span> <span class="o">&lt;:</span> <span class="n">Response</span>
+    <span class="n">dig</span><span class="o">::</span><span class="n">InsDigitizerM3102A</span>
+    <span class="n">ch</span><span class="o">::</span><span class="kt">Int</span> <span class="c">#ch for channel</span>
+    <span class="n">timeout</span><span class="o">::</span><span class="kt">Float64</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>with corresponding <code>measure</code> method:</p>
+<div class="codehilite"><pre><span></span><span class="k">function</span> <span class="n">measure</span><span class="p">(</span><span class="n">resp</span><span class="o">::</span><span class="n">SingleChStream</span><span class="p">)</span>
+    <span class="n">dig</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">dig</span>
+    <span class="n">ch</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">ch</span>
+    <span class="n">timeout</span>  <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">timeout</span> <span class="o">*</span><span class="mf">10e3</span><span class="p">)</span> <span class="c">#timeout should be integer in units of milliseconds</span>
+    <span class="n">daq_points</span> <span class="o">=</span> <span class="kt">Int</span><span class="p">(</span><span class="n">ceil</span><span class="p">((</span><span class="n">resp</span><span class="o">.</span><span class="n">timeout</span><span class="o">*</span> <span class="p">(</span><span class="mf">500e6</span><span class="p">))))</span> <span class="c">#number of samples expected</span>
+
+    <span class="n">dig</span><span class="p">[</span><span class="n">DAQTrigMode</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="o">:</span><span class="n">Auto</span>
+    <span class="n">dig</span><span class="p">[</span><span class="n">DAQCycles</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c">#infinite number of cycles</span>
+    <span class="n">dig</span><span class="p">[</span><span class="n">DAQPointsPerCycle</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">daq_points</span>
+
+    <span class="nd">@KSerror_handler</span> <span class="n">SD_AIN_DAQstart</span><span class="p">(</span><span class="n">dig</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">ch</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nd">@KSerror_handler</span> <span class="n">SD_AIN_DAQread</span><span class="p">(</span><span class="n">dig</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">ch</span><span class="p">,</span> <span class="n">daq_points</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>This response type would be used for measuring data on the M3102A digitizer, upon a call to it's corresponding <code>measure</code> function, on channel <code>ch</code> continuously for a time equal to the <code>timeout</code> field of the digitizer. The measure function properly configures the digitizer, starts the DAQ for trigger acquisition, and takes data for the computer through the <code>SD_AIN_DAQread</code> function. Thus, to perform this type of data acquisition, one would merely need to instantiate a <code>SingleChStream</code> object with desired digitizer object, channel, and timeout, and call <code>measure</code> with that object as input. Easy right?</p>
+<p>It is good to keep in mind responses need not come from instruments. For test purposes, suppose we want to mimic a measurement by generating random numbers. <code>RandomResponse</code> produces a random number in the unit interval when it is measured. A <code>TimerResponse</code> will measure the time since creation of the <code>TimerResponse</code> object.</p>
 <p><a id='Difference-between-stimuli-and-instrument-properties-1'></a></p>
 <h3 id="difference-between-stimuli-and-instrument-properties">Difference between stimuli and instrument properties</h3>
 <p>Because a stimulus is defined so broadly, the difference between a stimulus and an instrument property is not obvious. While in many cases there is an overlap between stimuli and properties, a stimulus is like a generalized instrument property: sourcing a stimulus may entail configuring zero or more instrument properties, on zero or more different instruments. As was mentioned earlier, a useful stimulus could be to change gate voltages on multiple different instruments all at once.</p>
