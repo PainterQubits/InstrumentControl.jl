@@ -16,7 +16,7 @@
       
         <link rel="shortcut icon" href="../../assets/images/favicon.png">
       
-      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.1">
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.2">
     
     
       
@@ -27,7 +27,7 @@
       <script src="../../assets/javascripts/modernizr-e826f8942a.js"></script>
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application-a20f419c8e.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application-408828a02a.css">
       
         <link rel="stylesheet" href="../../assets/stylesheets/application-23f75ab9c7.palette.css">
       
@@ -671,7 +671,7 @@ end
 <p>Object representing an DigitizerM3102A instrument. It holds, as fields, instrument information such as digitizer card instrument index, slot number, chassis number, serial number, product name, etc.</p>
 <p>This object also holds individual channel properties in a dictionary named <code>channels</code>, where in the type's implementation, the values of the dictionaries are themselves dictionaries that hold all configuration information for a particular channel.For example, for an object <code>ins::InsDigitizerM3102A</code>, <code>ins.channels[1]</code> will return a dictionary that holds all configuration information for channel 1; its keys will be subtypes of the <code>InstrumentProperty</code> abstract type, and its values will be the values which the instrument property associated that subtype are configured to in that channel in the digitizer.</p>
 <p>Two inner constructors are provided: one which initializes the object with a given slot number and chassis number, and one which initializes the object with a given serial number. When the object is initialized, it obtains all other instrument information described above with the passed arguments, and initializes all the channels properties to some standard values and records them in the <code>channels</code> dictionary through the <code>configure_channels!</code> function</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/DigitizerM3102A.jl#L18-L48' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/DigitizerM3102A.jl#L18-L48' class='documenter-source'>source</a><br></p>
 <p>For example, calling <code>InsDigitizerM3102A(16,1,num_channels = 4)</code> will open the Digitizer card on slot 16 on the PXI chassis indexed by 1 (internal Keysight software does the chassis "indexing"); <code>num_channels</code> corresponds to the number of channels in the Digitizer card. The second input, which sets the value for the <code>chassis</code> field in the <code>InsDigitizerM3102A</code> object, is an optional argument with default value <code>1</code> (for the case when only one chassis is connected to the computer), while the <code>num_channels</code> input is a keyword argument whose default value is <code>4</code> –&gt; Hence, <code>InsDigitizerM3102A(16)</code> would make an instance of the same object.</p>
 <h3 id="configuration">Configuration</h3>
 <p>Configuration/Inspection of settings happens through setindex!/getindex methods, as described in <a href="https://painterqubits.github.io/InstrumentControl.jl/latest/ins_meas/">Overview</a></p>
@@ -679,55 +679,55 @@ end
 <p><a id='InstrumentControl.DigitizerM3102A.FullScale' href='#InstrumentControl.DigitizerM3102A.FullScale'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.FullScale</code></strong> &mdash; <em>Type</em>.</p>
 <p>Fullscale of each channel. For example, if the fullscale is configured to be 1V, the digitizer measures voltages on the range of 1V to -1V, and truncates any values outside this interval to the interval's boundary. The data acquired by the digitizer is converted to voltages by the formula data*FullScale/2e15</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L16-L21' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L16-L21' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.InputMode' href='#InstrumentControl.DigitizerM3102A.InputMode'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.InputMode</code></strong> &mdash; <em>Type</em>.</p>
 <p>Can be configured to be either :DC or :AC</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L24-L26' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L24-L26' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.Impedance' href='#InstrumentControl.DigitizerM3102A.Impedance'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.Impedance</code></strong> &mdash; <em>Type</em>.</p>
 <p>Can be configured to be either :Ohm_50 or :Ohm_High, corresponding to either 50Ω impedance or 1MΩ impedance</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L29-L32' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L29-L32' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.Prescaler' href='#InstrumentControl.DigitizerM3102A.Prescaler'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.Prescaler</code></strong> &mdash; <em>Type</em>.</p>
 <p>Used to arbitrarily change the sampling rate of the digitizer: the effective sampling rate is 500e8/(1+prescaler). Can be configured to be an integer greater than or equal to zero</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L35-L39' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L35-L39' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.AnalogTrigBehavior' href='#InstrumentControl.DigitizerM3102A.AnalogTrigBehavior'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.AnalogTrigBehavior</code></strong> &mdash; <em>Type</em>.</p>
 <p>Analog trigger means trigger by the incoming data itself. Analog trigger behavior is what behavior by the incoming data triggers the DAQ to start acquiring data. Can be configured to either: :RisingAnalog, :FallingAnalog, or :BothAnalog, corresponding to, respectively, trigger on the rising edge, trigger on the falling edge, or trigger on any edge</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L42-L48' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L42-L48' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.AnalogTrigThreshold' href='#InstrumentControl.DigitizerM3102A.AnalogTrigThreshold'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.AnalogTrigThreshold</code></strong> &mdash; <em>Type</em>.</p>
 <p>Threshold on which, if the incoming data surpasses, generarates an analog trigger to the DAQ. Configured to be a <code>Float64</code> number.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L51-L54' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L51-L54' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.DAQTrigMode' href='#InstrumentControl.DigitizerM3102A.DAQTrigMode'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.DAQTrigMode</code></strong> &mdash; <em>Type</em>.</p>
 <p>Configures which type of trigger the DAQ will start measuring data upon trigger acquisition. Can be configured to :Auto (no trigger), :Software, :External, or :Analog.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L57-L61' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L57-L61' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.DAQTrigDelay' href='#InstrumentControl.DigitizerM3102A.DAQTrigDelay'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.DAQTrigDelay</code></strong> &mdash; <em>Type</em>.</p>
 <p>Delay between acquisition of trigger and measurement of incoming data. Configured to be an integer, the delay is measured in units of samples &lt;-&gt; in units of 2ns.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L64-L67' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L64-L67' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.DAQPointsPerCycle' href='#InstrumentControl.DigitizerM3102A.DAQPointsPerCycle'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.DAQPointsPerCycle</code></strong> &mdash; <em>Type</em>.</p>
 <p>Number of samples measured per DAQ cycle</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L77-L79' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L77-L79' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.DAQCycles' href='#InstrumentControl.DigitizerM3102A.DAQCycles'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.DAQCycles</code></strong> &mdash; <em>Type</em>.</p>
 <p>Number of "cycles" for which the digitizer will acquire data; data acquisition for each cycle starts upon receiving whatever trigger is configure by DAQTrigMode property</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L70-L74' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L70-L74' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.ExternalTrigSource' href='#InstrumentControl.DigitizerM3102A.ExternalTrigSource'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.ExternalTrigSource</code></strong> &mdash; <em>Type</em>.</p>
 <p>Source of external trigger. Can be configured to be either a number 0-7, which corresponds to a PXI line on the PXI backplane, or :TrgPort, which corresponds to the Trg port on the digitizer card</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L82-L86' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L82-L86' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.ExternalTrigBehavior' href='#InstrumentControl.DigitizerM3102A.ExternalTrigBehavior'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.ExternalTrigBehavior</code></strong> &mdash; <em>Type</em>.</p>
 <p>External trigger behavior is what behavior by the external trigger actually triggers the DAQ to start acquiring data. Can be configured to either: :Rising, :Falling, :High, or :Low; corresponding to, respectively, trigger on the rising edge, trigger on the falling edge, trigger on high voltage, trigger on low voltage</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L89-L94' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L89-L94' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.DigitizerM3102A.AnalogTrigSource' href='#InstrumentControl.DigitizerM3102A.AnalogTrigSource'>#</a>
 <strong><code>InstrumentControl.DigitizerM3102A.AnalogTrigSource</code></strong> &mdash; <em>Type</em>.</p>
 <p>Source of analog trigger; can be configured to be an integer corresponding to a channel number in the digitizer</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/6e699ccc1f364c63f278d6dc6bf389e61359f1ff/src/instruments/Digitizers/M3102A/Properties.jl#L97-L100' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/d48f91bca16b593f79fb0edf6229d9072150d915/src/instruments/Digitizers/M3102A/Properties.jl#L97-L100' class='documenter-source'>source</a><br></p>
                 
                   
                 
