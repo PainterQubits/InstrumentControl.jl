@@ -749,7 +749,7 @@ end
 <p>In addition, the AWG object holds all the waveforms stored in RAM in a dictionary, named <code>waveforms</code>,  where the waveforms are indexed by their identifier number, which the user specifies when he/she loads an waveform into the RAM of the AWG.</p>
 <p>This object also holds individual channel properties in a dictionary named <code>channels</code>, where in the type's implementation, the values of the dictionaries are themselves dictionaries that hold all configuration information for a particular channel.For example, for an object <code>ins::InsAWGM320XA</code>, <code>ins.channels[1]</code> will return a dictionary that holds all configuration information for channel 1; its keys will be subtypes of the <code>InstrumentProperty</code> abstract type, and its values will be the values which the instrument property associated that subtype are configured to in that channel in the digitizer.</p>
 <p>Two inner constructors are provided: one which initializes the object with a given slot number and chassis number, and one which initializes the object with a given serial number and name. Both inner constructors also take a <code>num_channels</code> keyword argument, corresponding to the number of channels on the instrument, which is used for initial configuration of the instrument channels. When the object is initialized, it obtains all other instrument information described above with the passed arguments, initializes the <code>waveforms</code> dictionary, and initializes all the channels properties to some standard values and records them in the <code>channels</code> dictionary through the <code>configure_channels!</code> function.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Core.jl#L52-L93' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Core.jl#L52-L93' class='documenter-source'>source</a><br></p>
 <p>For example, calling <code>InsAWGM320XA(3,1,num_channels = 4)</code> will open the AWG card on slot 3 on the PXI chassis indexed by 1 (internal Keysight software does the chassis "indexing"); <code>num_channels</code> corresponds to the number of channels in the AWG card. The second input, which sets the value for the <code>chassis</code> field in the <code>InsAWGM320XA</code> object, is an optional argument with default value <code>1</code> (for the case when only one chassis is connected to the computer), while the <code>num_channels</code> input is a keyword argument whose default value is <code>4</code> –&gt; Hence, <code>InsAWGM320XA(3)</code> would make an instance of the same object.</p>
 <p>Moreover, once waveforms are loaded and queued, each channel's AWG can be started and checked to see if it's running with the following methods</p>
 <p><a id='InstrumentControl.AWGM320XA.awg_start' href='#InstrumentControl.AWGM320XA.awg_start'>#</a>
@@ -762,7 +762,7 @@ queued on the awg(s) of channel `ch` or channels `chs`.
 </pre></div>
 
 
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/AWGM320XA.jl#L27-L33' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/AWGM320XA.jl#L27-L33' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.awg_is_running' href='#InstrumentControl.AWGM320XA.awg_is_running'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.awg_is_running</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>awg_is_run(awg::InsAWGM320XA, ch::Integer)
@@ -772,66 +772,66 @@ output waveforms     or is actively outputting waveforms. Prints either &quot;YE
 </pre></div>
 
 
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/AWGM320XA.jl#L46-L51' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/AWGM320XA.jl#L46-L51' class='documenter-source'>source</a><br></p>
 <h3 id="configuration">Configuration</h3>
 <p>Configuration/Inspection of settings happens through setindex!/getindex methods, as described in <a href="https://painterqubits.github.io/InstrumentControl.jl/latest/ins_meas/">Overview</a></p>
 <p>These are the following properties which can be configured, each of which has it's own <code>InstrumentProperty</code> subtype:</p>
 <p><a id='InstrumentControl.AWGM320XA.OutputMode' href='#InstrumentControl.AWGM320XA.OutputMode'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.OutputMode</code></strong> &mdash; <em>Type</em>.</p>
 <p>Configures the type of output from an AWG channel. Can be configured to be either :Off, :Sinusoidal, :Triangular, :Square, :DC, :Arbitrary, or :Differential</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L20-L23' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L20-L23' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.DCOffset' href='#InstrumentControl.AWGM320XA.DCOffset'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.DCOffset</code></strong> &mdash; <em>Type</em>.</p>
 <p>Sets a channel's DC offset on output. Configured to be a <code>Float64</code> number.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L26-L28' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L26-L28' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.FGFrequency' href='#InstrumentControl.AWGM320XA.FGFrequency'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.FGFrequency</code></strong> &mdash; <em>Type</em>.</p>
 <p>Sets a channel's function generator frequency. Configured to be a <code>Float64</code> number.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L31-L33' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L31-L33' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.FGPhase' href='#InstrumentControl.AWGM320XA.FGPhase'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.FGPhase</code></strong> &mdash; <em>Type</em>.</p>
 <p>Sets a channel's function generator's relative phase. Configured to be a <code>Float64</code> number.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L36-L38' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L36-L38' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.TrigSource' href='#InstrumentControl.AWGM320XA.TrigSource'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.TrigSource</code></strong> &mdash; <em>Type</em>.</p>
 <p>Source of external trigger. Can be configured to be either a number 0-7, which corresponds to a PXI line on the PXI backplane, or :TrgPort, which corresponds to the Trg port on the AWG card</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L41-L45' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L41-L45' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.TrigBehavior' href='#InstrumentControl.AWGM320XA.TrigBehavior'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.TrigBehavior</code></strong> &mdash; <em>Type</em>.</p>
 <p>External trigger behavior is what behavior by the external trigger actually triggers the DAQ to start acquiring data. Can be configured to either: :Rising, :Falling, :High, or :Low; corresponding to, respectively, trigger on the rising edge, trigger on the falling edge, trigger on high voltage, trigger on low voltage</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L48-L53' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L48-L53' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.TrigSync' href='#InstrumentControl.AWGM320XA.TrigSync'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.TrigSync</code></strong> &mdash; <em>Type</em>.</p>
 <p>Can be configured to be :CLKsys or :CLK10, which, respectively, corresponds to processing an acquired trigger on the next internal clock tick, or on the next chassis clock tick.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L56-L60' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L56-L60' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.Queue' href='#InstrumentControl.AWGM320XA.Queue'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.Queue</code></strong> &mdash; <em>Type</em>.</p>
 <p>List of waveform IDs, corresponding to waveforms queued in a particular channel. Order of waveform IDs corresponds to order of queued waveforms</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L63-L66' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L63-L66' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.QueueCycleMode' href='#InstrumentControl.AWGM320XA.QueueCycleMode'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.QueueCycleMode</code></strong> &mdash; <em>Type</em>.</p>
 <p>Can be configured to, respectively, :Cyclic or :OneShot, which corresponds to, respectively, configuring the queue to repeat indefinitely, or configuring the queue to only be outputted one time</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L69-L73' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L69-L73' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.QueueSyncMode' href='#InstrumentControl.AWGM320XA.QueueSyncMode'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.QueueSyncMode</code></strong> &mdash; <em>Type</em>.</p>
 <p>Can be configured to be :CLKsys or :CLK10, which, respectively, corresponds to start sequencing a queue on the next internal clock tick, or on the next chassis clock tick.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L76-L80' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L76-L80' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.AmpModMode' href='#InstrumentControl.AWGM320XA.AmpModMode'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.AmpModMode</code></strong> &mdash; <em>Type</em>.</p>
 <p>Amplitude modulation mode. Can be configured to either :NoMod, :AmplitudeMod, or :DCMod</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L83-L86' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L83-L86' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.AngModMode' href='#InstrumentControl.AWGM320XA.AngModMode'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.AngModMode</code></strong> &mdash; <em>Type</em>.</p>
 <p>Angle modulation mode. Can be configure to either :NoMod, :PhaseMod, or :FrequencyMod.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L89-L91' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L89-L91' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.AmpModGain' href='#InstrumentControl.AWGM320XA.AmpModGain'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.AmpModGain</code></strong> &mdash; <em>Type</em>.</p>
 <p>Amplitude of amplitude modulating signal. Configured to be a <code>Float64</code> number.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L94-L96' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L94-L96' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.AngModGain' href='#InstrumentControl.AWGM320XA.AngModGain'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.AngModGain</code></strong> &mdash; <em>Type</em>.</p>
 <p>Amplitude of angle modulating signal. Configured to be a <code>Float64</code> number.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Properties.jl#L99-L101' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Properties.jl#L99-L101' class='documenter-source'>source</a><br></p>
 <p><a id='Waveforms-1'></a></p>
 <h2 id="waveforms">Waveforms</h2>
 <h3 id="basics-in-this-modules-implementation-we-allow-for-handling-of-waveforms-through-the-following-type">Basics In this module's implementation, we allow for handling of waveforms through the following type:</h3>
@@ -855,7 +855,7 @@ end
 <p>Object representing a waveform; it holds as fields a waveform name, the actual waveform digital values, and  individual channel properties in a dictionary named <code>ch_properties</code>. When waveforms are queued in an AWG channel from the RAM, various settings pertaining to when and how the waveform will be generated and outputted must be specified, such as: what triggers the waveform to start, how many times it should repeat in a cycle, what is the delay between the trigger and the generation of the waveform, etc. These settings can also vary from channel to channel, and cannot be queried directly from the instrument</p>
 <p>Thus, we store this waveform channel configuration information in the dictionary <code>ch_properties</code>. In this type's implementation, the values of the dictionaries are themselves dictionaries that hold all configuration information particular to a channel.For example, for an object <code>wav::Waveform</code>, <code>wav.ch_properties[1]</code> will return a dictionary that holds all configuration information specific to channel 1. Its keys will be subtypes of the <code>WaveChProperty</code> abstract type, and its values will be the values which the channel property associated that subtype are configured to for the waveform.</p>
 <p>The inner constructor provided takes an array of points and a waveform name, and initializes a blank <code>ch_properties</code> dictionary.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Core.jl#L1-L37' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Core.jl#L1-L37' class='documenter-source'>source</a><br></p>
 <p>When a waveform is loaded into the RAM, the corresponding <code>Waveform</code> object is stored in the <code>waveforms</code> field of the <code>InsAWGM320XA</code> object, indexed by the ID specified when loading the waveform. When a waveform is queued in a particular channel, it's ID is added to a list of the queued waveforms which can be accessed by a <code>getindex</code> with <code>Queue</code> as the "index". This object conveniently stores the waveform array values, a name (meant to be more descriptive than an integer), and queue properties once a waveform is queued.</p>
 <p>Natively, you load waveforms into the AWG as arrays through Keysight's native C functions, where you specify an "id" which is the defacto handle for handling waveforms for all subsequent queueing. However, once you load a waveform you can't query the instrument to see it, and an id is not exactly a descriptive handle; moreover, once you queue a waveform you can't query the instrument for what settings the waveform was queued with (trigger_mode, delay, etc). We get around these nuisances by making all loading and queueing of waveforms be tied to instantiating and manipulating these <code>Waveform</code> objects. However, waveform manipulation can also be done through the waveform ID's if so desired by the user.</p>
 <p><a id='Usage-1'></a></p>
@@ -874,7 +874,7 @@ end
 
 <p>Loads a waveform into the the RAM of the AWG corresponding to object <code>ins</code>. When loading a waveform, the user picks an id to be the identifier and handle for the loaded waveform. Thus, the function takes as arguments either: A <code>Waveform</code> object , or the waveform digital values, or a filepath to a waveform file, as well as the user-specified id, a name for the waveform (meant to be a more descriptive identifier than an integer), and the input type(refer to Table 9 of the userguide for discussion on input types). The waveform digital values can be passed as an array of values, or as a path to a file containing the values.</p>
 <p>The loads a the waveform, initializes a waveform object if passed an array or filepath, and initializes the blank dictionaries for each channel in the field <code>ch_properties</code>. The function returns a handle to the new <code>Waveform</code> object created and stored in <code>ins.waveforms</code>, indexed by it's user-specified id.</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Waveform.jl#L27-L48' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Waveform.jl#L27-L48' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.queue_waveform' href='#InstrumentControl.AWGM320XA.queue_waveform'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.queue_waveform</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span><span class="nt">queue_waveform</span><span class="o">(</span><span class="nt">ins</span><span class="p">::</span><span class="nd">InsAWGM320XA</span><span class="o">,</span> <span class="nt">ch</span><span class="p">::</span><span class="nd">Integer</span><span class="o">,</span> <span class="nt">id</span><span class="p">::</span><span class="nd">Integer</span><span class="o">,</span> <span class="nt">trigger_mode</span><span class="p">::</span><span class="nd">Symbol</span><span class="o">;</span>
@@ -885,7 +885,7 @@ end
 
 
 <p>Queues a waveform in a channel of the AWG either by a passed <code>Waveform</code> object or the waveform id. It also takes inputs for configuration settings pertaining to when and how the waveform will be generated and outputted, such as trigger mode, number of repetitions, delay between the trigger and generation, and the prescaler value for the outputted waveform. While the channel and trigger_mode must be specified, the other settings are used as keyword arguments with standard values (chosen by me).</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Waveform.jl#L90-L103' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Waveform.jl#L90-L103' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.waveforms_flush' href='#InstrumentControl.AWGM320XA.waveforms_flush'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.waveforms_flush</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>waveforms_flush(ins::InsAWGM320XA)
@@ -893,7 +893,7 @@ end
 
 
 <p>Erases all waveforms stored in the RAM of the AWG, and empties the queue of all the channels. This function both: uses the native C <code>SD_AOU_waveformFlush</code> function to empty the erase the RAM and empty the queues in the instrument, it re-initializes <code>ins.channels[ch][Queue]</code> vector as a blank vector for all channels, erasing the record of the queue in the <code>InsAWGM30XA</code> object as well, and re-initializes <code>ins.waveforms</code> as a blank dictionary</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Waveform.jl#L155-L164' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Waveform.jl#L155-L164' class='documenter-source'>source</a><br></p>
 <p><a id='InstrumentControl.AWGM320XA.memory_size' href='#InstrumentControl.AWGM320XA.memory_size'>#</a>
 <strong><code>InstrumentControl.AWGM320XA.memory_size</code></strong> &mdash; <em>Function</em>.</p>
 <div class="codehilite"><pre><span></span>memory_size(ins::InsAWGM320XA, wav::Waveform)
@@ -902,7 +902,7 @@ memory_size(ins::InsAWGM320XA, id::Integer)
 
 
 <p>Obtain size of waveform in memory</p>
-<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/178941447a19d21a874164f0063dbe533abc2dd9/src/instruments/AWGs/M320XA/Waveform.jl#L174-L178' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/PainterQubits/InstrumentControl.jl/tree/a0b90a16b6170adb065aeed254bc69fd945dfdaa/src/instruments/AWGs/M320XA/Waveform.jl#L174-L178' class='documenter-source'>source</a><br></p>
                 
                   
                 
