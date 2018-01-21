@@ -2,7 +2,7 @@ __precompile__(true)
 module InstrumentControl
 importall ICCommon
 import JSON, ZMQ
-
+using ODBC, DataFrames, JuliaWebAPI
 export Instrument, InstrumentProperty, Stimulus, Response
 export source, measure
 
@@ -59,53 +59,36 @@ importall .AWGM320XA
 importall .DigitizerM3102A
 # importall .ZNB20Module
 
-# INITIALIZATION CODE FOLLOWS
+# Make Refs for objects that cannot be precompiled and must be instantiated on
+# package load.
 
-# First make pointers (references) for objects that will be made in functions,
-# thereby extending their scope beyond the function # through these pointers
-
-# ZeroMQ is used for communication between the Julia enviroment being used for measurement
-# and the ICDataServer. See ZeroMQ documentation for further details
+# ZeroMQ is used for communication between Julia processes, including the client process
+# and the ICDataServer. See ZeroMQ documentation for further details.
 
 const global ctx = Ref{ZMQ.Context}()
 const global plotsock = Ref{ZMQ.Socket}()
-const global dbsock = Ref{ZMQ.Socket}() #socket used to communicate to ICDataServer
-const global qsock = Ref{ZMQ.Socket}() #dedicated socket used update job in ICDataServer
+const global api = Ref{APIInvoker{ZMQTransport,SerializedMsgFormat}}()
 const global resourcemanager = Ref{UInt32}() #VISA instruments resource manager
 const global sweepjobqueue = Ref{SweepJobQueue}() #default jobs queue
 
 const global plotsockopened = Ref{Bool}(false)
-const global dbsockopened = Ref{Bool}(false)
-const global qsockopened = Ref{Bool}(false)
+const global apiopened = Ref{Bool}(false)
 
 """
-    dbsocket()
-Opens dbsock, the socket used to connect to the ICDataServer
+    apiinvoker()
+Opens a JuliaWebAPI.APIInvoker to communicate with the ICDataServer
 """
-function dbsocket()
-    if !dbsockopened[]
-        dbsock[] = ZMQ.Socket(ctx[], ZMQ.REQ)
-        ZMQ.connect(dbsock[], confd["dbserver"])
-        dbsockopened[] = true
+function apiinvoker()
+    if !apiopened[]
+        api[] = APIInvoker(
+            ZMQTransport(confd["dbserver"], JuliaWebAPI.REQ, false, ctx[]),
+            SerializedMsgFormat())
+        apiopened[] = true
         # Now that the database server is connected, check that username is valid.
         validate_username(confd["username"])
     end
-    return dbsock[]
+    return api[]
 end
-
-"""
-    qsocket()
-Opens qsock, the socket used to connect to the ICDataServer
-"""
-function qsocket()
-    if !qsockopened[]
-        qsock[] = ZMQ.Socket(ctx[], ZMQ.REQ)
-        ZMQ.connect(qsock[],  confd["dbserver"])
-        qsockopened[] = true
-    end
-    return qsock[]
-end
-
 
 # Live plotting
 function plotsocket()
@@ -121,7 +104,7 @@ end
 # initializes a default SweepJobQueue object used for jobs queuing, and initializes
 # a VISA instruments resource manager
 function __init__()
-    # ZeroMQ context for communication with ICDataServer
+    # ZeroMQ context for inter-process communication
     ctx[] = ZMQ.Context()
 
     # Set up and initialize a sweep queue.
@@ -134,6 +117,7 @@ function __init__()
     if !haskey(ENV, "ICTESTMODE")
         # VISA resource manager
         resourcemanager[] = VISA.viOpenDefaultRM()
+        apiinvoker()
     end
 end
 

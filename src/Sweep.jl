@@ -1,7 +1,8 @@
 export sweep, eta, status, progress, abort!, prune!, jobs, result
-export reconstruct
+export reconstruct, @dataserver
 using Base.Cartesian, JLD
 using AxisArrays
+using MacroTools
 import AxisArrays: axes
 import Base.Cartesian.inlineanonymous
 import Base: show, isless, getindex, push!, length, eta
@@ -14,16 +15,58 @@ const NORMAL = 5
 const HIGH = 10
 
 """
-```
-mutable struct Sweep
-    dep::Response
-    indep::Tuple{Tuple{Stimulus, AbstractVector}}
-    result::AxisArray
-    Sweep(a,b) = new(a,b)
-    Sweep(a,b,c) = new(a,b,c)
+    macro handler(expr)
+Macro for handling the response from remote calls via JuliaWebAPI.
+"""
+macro handler(expr)
+    return quote
+        response = $(esc(expr))
+        c = response["code"]
+        c != 200 && error("remote call failed with HTTP response code: ", string(c))
+        response["data"]
+    end
 end
-```
 
+"""
+    macro dataserver(expr)
+Macro for interfacing painlessly with the running ICDataServer.
+
+- Any function call in `expr` will be replaced by a corresponding remote call to the
+  ICDataServer, provided that function call has been exposed by ICDataServer's inter-process
+  communication API.
+- Functions that have not been exposed will be called locally.
+- Any arguments to the function calls are evaluated locally.
+"""
+macro dataserver(expr)
+    validapi = @handler apicall(apiinvoker(), "ipcapi")
+    esc(MacroTools.postwalk(expr) do x
+        if @capture(x, f_(args__))
+            f in validapi ? :(InstrumentControl.@handler $(transform_remote(f, args...))) : x
+        elseif @capture(x, f_(args__; kwargs__))
+            f in validapi ? :(InstrumentControl.@handler $(transform_remote(f, args..., kwargs...))) : x
+        else
+            return x
+        end
+    end)
+end
+
+"""
+    transform_remote(f, args...)
+Given symbol `f` and `args...`, construct a remote function call to execute on ICDataServer.
+"""
+function transform_remote(f, args...)
+    return Expr(:call, :(InstrumentControl.apicall),
+                Expr(:call, :(InstrumentControl.apiinvoker)), string(f), args...)
+end
+
+"""
+    mutable struct Sweep
+        dep::Response
+        indep::Tuple{Tuple{Stimulus, AbstractVector}}
+        result::AxisArray
+        Sweep(a,b) = new(a,b)
+        Sweep(a,b,c) = new(a,b,c)
+    end
 Object representing a sweep; which will contain information on stimuli sent to
 the instruments, information on what kind of response we will be measuring, and
 the numerical data obtained from the measurement. `dep` (short for dependent) is
@@ -42,10 +85,7 @@ end
 @enum SweepStatus Waiting Running Aborted Done
 
 """
-```
-@enum SweepStatus Waiting Running Aborted Done
-```
-
+    @enum SweepStatus Waiting Running Aborted Done
 Sweep statuses are represented with an enum for performance and code readibility
 
 ```jldoctest
@@ -60,19 +100,16 @@ Done = 3
 SweepStatus
 
 """
-```
-mutable struct SweepJob
-    sweep::Sweep
-    priority::Int
-    job_id::Int
-    status::Channel{SweepStatus}
-    progress::Channel{Float64}
-    whensub::DateTime
-    username::String
-    notifications::Bool
-end
-```
-
+    mutable struct SweepJob
+        sweep::Sweep
+        priority::Int
+        job_id::Int
+        status::Channel{SweepStatus}
+        progress::Channel{Float64}
+        whensub::DateTime
+        username::String
+        notifications::Bool
+    end
 Object representing a "sweep job." While a `Sweep` object has all information
 related to the actual measurement, we would like to have some metadata associated
 with each `Sweep` oject for the purposes of queueing multiple different sweeps,
@@ -362,8 +399,7 @@ function job_updater(sjq::SweepJobQueue, update_channel::Channel{SweepJob})
         st = status(sj)
         if st == Done || st == Aborted
             @async begin
-                update_job_in_db(sj, jobstop=now(), jobstatus=Int(st)) ||
-                    error("failed to update job ", sj.job_id, ".")
+                @handle apicall(api, "updatejob", sj.job_id, jobstop=now(), jobstatus=Int(st))
             end
 
             # Set to priority lower than can be specified by the user
@@ -414,9 +450,8 @@ function job_starter(sjq::SweepJobQueue)
             if sttop == Waiting && rid == -1 && sjtop.priority > NEVER
                 sjtop.whenstart = now()
                 @async begin
-                    update_job_in_db(sjtop, jobstart=sjtop.whenstart,
-                    jobstatus=Int(Running)) ||
-                        error("failed to update job $(sjtop.job_id).")
+                    apicall(api, "updatejob", sjtop.job_id, jobstart=sjtop.whenstart,
+                    jobstatus=Int(Running))
                 end
                 take!(sjq.running_id)
                 put!(sjq.running_id, k)
@@ -425,31 +460,6 @@ function job_starter(sjq::SweepJobQueue)
             end
         end
     end
-end
-
-# TODO: default username and server mechanism
-function new_job_in_db(;username="default")::Tuple{UInt, DateTime}
-    request = ICCommon.NewJobRequest(username=username, dataserver="local_data")
-    io = IOBuffer()
-    serialize(io, request)
-    ZMQ.send(dbsocket(), ZMQ.Message(io))
-    # Note that it is totally possible a task switch can happen here!
-    msg = ZMQ.recv(dbsocket())
-    out = convert(IOStream, msg)
-    seekstart(out)
-    job_id, jobsubmit = deserialize(out)
-end
-
-function update_job_in_db(sw; kwargs...)::Bool
-    request = ICCommon.UpdateJobRequest(sw.job_id; kwargs...)
-    io = IOBuffer()
-    serialize(io, request)
-    ZMQ.send(qsocket(), ZMQ.Message(io))
-    # Note that it is totally possible a task switch can happen here!
-    msg = ZMQ.recv(qsocket())
-    out = convert(IOStream, msg)
-    seekstart(out)
-    deserialize(out)
 end
 
 # Base method extensions for SweepJobQueue
@@ -531,8 +541,14 @@ function result()
 end
 
 """
+    abort!()
+Abort the currently running job (if any). If no job is running, the method does
+not throw an error.
+
+    abort!(x::Integer)
     abort!(x::SweepJob)
-Abort a sweep job. Practically, the status of the job is changed to "Aborted",
+Abort a sweep job, either by passing the job index number or the SweepJob object.
+Practically, the status of the job is changed to "Aborted",
 and the job is put into the update_channel of the default `SweepJobQueue` object.
 This automatically leads to: update of job metadata in the `SweepJob` object
 as well as in the ICDataServer, update of queue metadata, archiving of the job's
@@ -545,6 +561,17 @@ also abort a sweep before it even begins.
 Presently this function does not interrupt `measure`, so if a single
 measurement takes a long time then the sweep is only aborted after that finishes.
 """
+function abort! end
+
+function abort!()
+    sjq = sweepjobqueue[]
+    job_id = fetch(sjq.running_id)
+    if job_id > 0
+        abort!(sjq[job_id])
+    end
+end
+
+abort!(i::Integer) = abort!(jobs(i))
 function abort!(x::SweepJob)
     isready(x.status) || error("status unavailable.")
     sjq = sweepjobqueue[]
@@ -561,19 +588,6 @@ function abort!(x::SweepJob)
         end
     end
     x
-end
-
-"""
-    abort!()
-Abort the currently running job (if any). If no job is running, the method does
-not throw an error.
-"""
-function abort!()
-    sjq = sweepjobqueue[]
-    job_id = fetch(sjq.running_id)
-    if job_id > 0
-        abort!(sjq[job_id])
-    end
 end
 
 """
@@ -623,8 +637,7 @@ function sweep(dep::Response, indep::Vararg{Tuple{Stimulus, AbstractVector}, N};
 
     # Initialize sockets so they are ready to use (maybe unnecessary)
     plotsocket()
-    dbsocket()
-    qsocket()
+    apiinvoker()
 
     # Check if measure function has been appropriately defined
     T = Base.promote_op(measure, typeof(dep))
@@ -634,7 +647,9 @@ function sweep(dep::Response, indep::Vararg{Tuple{Stimulus, AbstractVector}, N};
     # Make a new SweepJob object and assign appropriate id and metadata
     sj = SweepJob(dep, indep; priority = priority, username = username,
         notifications = notifications)
-    job_id, jobsubmit = new_job_in_db(username=username) #get id from ICDataServer
+    df = @handle apicall(api, "newjob", username=username, dataserver="local_data")
+    job_id = df[:job_id][1]
+    jobsubmit = df[:jobsubmit][1]
     sj.job_id = job_id
     sj.whensub = jobsubmit
     sj.whenstart = jobsubmit

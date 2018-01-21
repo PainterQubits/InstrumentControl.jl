@@ -33,11 +33,7 @@ if !haskey(ENV, "ICTESTMODE")
         end
         confd["archivepath"] = joinpath(confd["archivepath"]...)
 
-        if !isdir(confd["archivepath"])
-            error("`archivepath` key does not refer to an existing directory. ",
-                "Please change the path or create a directory at ",
-                "$(confd["archivepath"])")
-        end
+        !isdir(confd["archivepath"]) && mkdir(confd["archivepath"])
     else
         error("configuration file not found at $(confpath).")
     end
@@ -46,19 +42,8 @@ end
 # Some functions for user handling.
 
 function validate_username(username)
-    (username in listusers()) ||
+    (username in apicall(api[], "listusers")["data"]) ||
         error("username not found in database.")
-end
-
-function listusers()
-    io = IOBuffer()
-    serialize(io, ICCommon.ListUsersRequest())
-    ZMQ.send(dbsocket(), ZMQ.Message(io))
-
-    msg = ZMQ.recv(dbsocket())
-    out = convert(IOStream, msg)
-    seekstart(out)
-    deserialize(out)
 end
 
 function set_user(username)

@@ -1,6 +1,5 @@
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
-deps/config.json
 docs/build/
 docs/site/
