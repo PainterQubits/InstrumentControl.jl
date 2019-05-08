@@ -4,8 +4,8 @@ Large majority of code in VISA.jl package:
 Random.jl, Time.jl, and a few other snippets here and there:
 > Copyright (c) 2014: Menyoung Lee.
 
-Alll other code:
-> Copyright (c) 2015: Andrew Keller.
+All other code:
+> Copyright © 2019, California Institute of Technology. All rights reserved. Neither the name of the California Institute of Technology (“Caltech”) nor the names of its contributors (and/or sponsors) may be used to endorse or promote products derived from this software without specific prior written permission.
 
 All of the code is licensed under the MIT "Expat" License by the respective
 copyright holders:
